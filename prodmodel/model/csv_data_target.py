@@ -31,3 +31,8 @@ class CSVDataTarget(DataTarget):
       self.file.close()
       self.file = None
     self.reader = None
+
+
+  def params(self) -> dict:
+    return {'dtypes': {k: str(v) for k, v in self.dtypes.items()}}
+

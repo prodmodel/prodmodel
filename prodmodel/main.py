@@ -1,9 +1,11 @@
 import sys
 import rules
 import importlib
+import logging
 from os.path import abspath
 from pathlib import Path
 
+logging.basicConfig(level=logging.INFO)
 
 def main():
   # print command line arguments
@@ -14,7 +16,7 @@ def main():
   mod = importlib.util.module_from_spec(spec)
   spec.loader.exec_module(mod)
   result = getattr(mod, target).output()
-  print(result)
+  logging.info(f'Created {result}.')
 
 
 

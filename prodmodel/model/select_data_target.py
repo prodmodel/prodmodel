@@ -31,3 +31,8 @@ class SelectDataTarget(DataTarget):
 
   def finish(self):
     pass
+
+
+  def params(self) -> dict:
+    return {'columns': self.columns, 'keep': self.keep}
+

@@ -27,3 +27,8 @@ class LabelEncoderTarget(Target):
           label_encoder_dict[column][value] = np.int_(0)
     self.source.finish_with_deps()
     return label_encoder_dict
+
+
+  def params(self) -> dict:
+    return {'columns': self.columns}
+

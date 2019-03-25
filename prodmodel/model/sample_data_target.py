@@ -28,3 +28,8 @@ class SampleDataTarget(DataTarget):
 
   def finish(self):
     pass
+
+
+  def params(self) -> dict:
+    return {'ratio': self.ratio, 'seed': self.seed}
+

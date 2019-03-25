@@ -17,10 +17,10 @@ def data_source(file: str, type: str, dtypes: dict, cache: bool=False) -> DataTa
 
 
 def split(data: DataTarget, test_ratio: float, target_column: str, seed:int=0) -> Tuple[DataTarget, DataTarget, DataTarget, DataTarget]:
-  train_x = SelectDataTarget(SampleDataTarget(data, test_ratio, seed), [target_column], keep=False)
-  train_y = SelectDataTarget(SampleDataTarget(data, test_ratio, seed), [target_column], keep=True)
-  test_x  = SelectDataTarget(SampleDataTarget(data, 1.0 - test_ratio, seed), [target_column], keep=False)
-  test_y  = SelectDataTarget(SampleDataTarget(data, 1.0 - test_ratio, seed), [target_column], keep=True)
+  train_x = SelectDataTarget(SampleDataTarget(data, 1.0 - test_ratio, seed), [target_column], keep=False)
+  train_y = SelectDataTarget(SampleDataTarget(data, 1.0 - test_ratio, seed), [target_column], keep=True)
+  test_x  = SelectDataTarget(SampleDataTarget(data, test_ratio, seed), [target_column], keep=False)
+  test_y  = SelectDataTarget(SampleDataTarget(data, test_ratio, seed), [target_column], keep=True)
   return train_x, train_y, test_x, test_y
 
 
