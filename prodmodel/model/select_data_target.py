@@ -1,0 +1,33 @@
+from typing import List
+
+from model.data_target import DataTarget
+
+
+class SelectDataTarget(DataTarget):
+  def __init__(self, data: DataTarget, columns: List[str], keep: bool):
+    super().__init__(sources=[], deps=[data], cache=False)
+    self.data = data
+    self.columns = columns
+    self.keep = keep
+
+
+  def read_record(self) -> dict:
+    if self.data is not None:
+      record = self.data.read_record()
+      if self.keep:
+        result = {}
+        for column in self.columns:
+          result[column] = record[column]
+      else:
+        result = dict(record)
+        for column in self.columns:
+          del result[column]
+      return result
+
+
+  def init(self):
+    pass
+
+
+  def finish(self):
+    pass
