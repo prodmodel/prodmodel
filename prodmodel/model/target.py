@@ -6,8 +6,7 @@ from os.path import abspath
 import os
 import logging
 import json
-import traceback
-import sys
+import util
 
 from typing import List
 from model.artifact import Artifact
@@ -21,10 +20,7 @@ class Target:
     self.cache = cache
     self.cached_output = None
     self.cached_hash_id = None
-    for stack_frame in traceback.extract_stack():
-      if stack_frame.filename.endswith('build.py'):
-        self.lineno = str(stack_frame.lineno)
-        break
+    self.lineno = str(util.build_file().lineno)
 
 
   @abstractmethod

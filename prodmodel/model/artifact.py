@@ -1,7 +1,8 @@
 from datetime import datetime
 import os
 import hashlib
-
+from pathlib import Path
+import util
 
 BLOCKSIZE = 65536
     
@@ -9,7 +10,8 @@ BLOCKSIZE = 65536
 class Artifact:
 
   def __init__(self, file_name: str):
-    self.file_name = file_name
+    root = Path(util.build_file().filename).parent
+    self.file_name = root / file_name
     self.last_modified = None
     self.cached_hash_id = None
 

@@ -2,7 +2,7 @@ import rules
 
 
 csv_data = rules.data_source(
-  file='example/data.csv',
+  file='data.csv',
   type='csv',
   dtypes = {
     'age':int,
@@ -29,12 +29,12 @@ train_data_x, train_data_y, test_data_x, test_data_y = rules.split(
   data=csv_data,
   test_ratio=0.2,
   target_column='y',
-  seed=3
+  seed=5
 )
 
 enriched_train_data_x = rules.transform(
   data=train_data_x,
-  file='example/transform_record.py'
+  file='transform_record.py'
 )
 
 label_encoder_x = rules.create_label_encoder(
@@ -60,13 +60,13 @@ final_train_data_y = rules.encode_labels(
 model = rules.train(
   features_data=final_train_data_x,
   labels_data=final_train_data_y,
-  file='example/train.py'
+  file='train.py'
 )
 
 
 enriched_test_data_x = rules.transform(
   data=test_data_x,
-  file='example/transform_record.py'
+  file='transform_record.py'
 )
 
 final_test_data_x = rules.encode_labels(
@@ -77,7 +77,7 @@ final_test_data_x = rules.encode_labels(
 test_predictions = rules.predict(
   model=model,
   data=final_test_data_x,
-  file='example/predict.py'
+  file='predict.py'
 )
 
 final_test_data_y = rules.encode_labels(
@@ -88,6 +88,6 @@ final_test_data_y = rules.encode_labels(
 evaluate = rules.evaluate(
   labels_data=final_test_data_y,
   predictions_data=test_predictions,
-  file='example/evaluate_results.py'
+  file='evaluate_results.py'
 )
 

@@ -3,7 +3,7 @@ import importlib
 from model.artifact import Artifact
 from model.data_target import DataTarget
 
-  
+
 class EvaluationTarget(DataTarget):
   def __init__(self, labels_data: DataTarget, predictions_data: DataTarget, source: Artifact):
     super().__init__(sources=[source], deps=[labels_data, predictions_data], cache=False)
