@@ -6,6 +6,8 @@ from os.path import abspath
 import os
 import logging
 import json
+import traceback
+import sys
 
 from typing import List
 from model.artifact import Artifact
@@ -19,6 +21,10 @@ class Target:
     self.cache = cache
     self.cached_output = None
     self.cached_hash_id = None
+    for stack_frame in traceback.extract_stack():
+      if stack_frame.filename.endswith('build.py'):
+        self.lineno = str(stack_frame.lineno)
+        break
 
 
   @abstractmethod
@@ -71,13 +77,13 @@ class Target:
 
   def output(self):
     class_name = self.__class__.__name__
-    logging.info(f'Executing {class_name}.')
+    logging.info(f'Executing {class_name} defined at build.py:{self.lineno}.')
     hash_id = self.hash_id()
     if hash_id == self.cached_hash_id and self.cached_output is not None:
       logging.info(f'  Re-using cached version {hash_id}.')
       return self.cached_output
     else:
-      root_dir = Path('target') / (class_name + '_' + hash_id)
+      root_dir = Path('target') / (class_name + '_' + self.lineno + '_' + hash_id)
       os.makedirs(root_dir, exist_ok=True)
       file_path = root_dir / '1.pickle'
       if file_path.is_file():

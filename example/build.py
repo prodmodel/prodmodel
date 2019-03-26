@@ -27,9 +27,9 @@ csv_data = rules.data_source(
 
 train_data_x, train_data_y, test_data_x, test_data_y = rules.split(
   data=csv_data,
-  test_ratio=0.25,
+  test_ratio=0.2,
   target_column='y',
-  seed=1
+  seed=3
 )
 
 enriched_train_data_x = rules.transform(
