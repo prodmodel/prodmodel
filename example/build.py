@@ -27,7 +27,7 @@ csv_data = rules.data_source(
 
 train_data_x, train_data_y, test_data_x, test_data_y = rules.split(
   data=csv_data,
-  test_ratio=0.0,
+  test_ratio=0.2,
   target_column='y'
 )
 
@@ -62,25 +62,31 @@ model = rules.train(
   file='example/train.py'
 )
 
-'''
-predict = rules.predict(
-  file='predict.py'
+
+enriched_test_data_x = rules.transform(
+  data=test_data_x,
+  file='example/transform_record.py'
 )
 
-enriched_test_data = rules.transform(
-  data=test_data,
-  file='transform_record.py'
+final_test_data_x = rules.encode_labels(
+  data=enriched_test_data_x,
+  label_encoder=label_encoder_x
 )
 
-final_test_data = rules.encode_labels(
-  data=enriched_test_data,
-  label_encoder=label_encoder
+test_predictions = rules.predict(
+  model=model,
+  data=final_test_data_x,
+  file='example/predict.py'
+)
+
+final_test_data_y = rules.encode_labels(
+  data=test_data_y,
+  label_encoder=label_encoder_y
 )
 
 evaluate = rules.evaluate(
-  model=model,
-  data=final_test_data,
-  predict=predict,
-  file='evaluate_results.py'
+  labels_data=final_test_data_y,
+  predictions_data=test_predictions,
+  file='example/evaluate_results.py'
 )
-'''
+

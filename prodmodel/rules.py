@@ -9,6 +9,8 @@ from model.label_encoder_target import LabelEncoderTarget
 from model.encode_label_data_target import EncodeLabelDataTarget
 from model.artifact import Artifact
 from model.model_target import ModelTarget
+from model.prediction_target import PredictionTarget
+from model.evaluation_target import EvaluationTarget
 
 
 def data_source(file: str, type: str, dtypes: dict, cache: bool=False) -> DataTarget:
@@ -40,15 +42,13 @@ def train(features_data: DataTarget, labels_data: DataTarget, file: str) -> Mode
   return ModelTarget(features_data, labels_data, Artifact(file))
 
 
-'''
-def predict(file: str) -> PredictionTarget:
-  return PredictionTarget(Artifacts(file))
+def predict(model: ModelTarget, data: DataTarget, file: str) -> PredictionTarget:
+  return PredictionTarget(model, data, Artifact(file))
 
 
 def evaluate(
-  model: ModelTarget,
-  data: DataTarget,
-  predict: PredictTarget,
+  labels_data: DataTarget,
+  predictions_data: DataTarget,
   file: str) -> EvaluationTarget:
-  return EvaluationTarget(model, data, predict, Artifact(file))
-'''
+  return EvaluationTarget(labels_data, predictions_data, Artifact(file))
+
