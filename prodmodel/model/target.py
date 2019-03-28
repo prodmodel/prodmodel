@@ -50,6 +50,8 @@ class Target:
 
   def init_with_deps(self):
     self.init()
+    for source in self.sources:
+      source.init()
     for dep in self.deps:
       dep.init_with_deps()
 

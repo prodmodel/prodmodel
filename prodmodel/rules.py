@@ -7,7 +7,8 @@ from model.select_data_target import SelectDataTarget
 from model.sample_data_target import SampleDataTarget
 from model.label_encoder_target import LabelEncoderTarget
 from model.encode_label_data_target import EncodeLabelDataTarget
-from model.artifact import Artifact
+from model.data_file import DataFile
+from model.py_file import PyFile
 from model.model_target import ModelTarget
 from model.prediction_target import PredictionTarget
 from model.evaluation_target import EvaluationTarget
@@ -15,19 +16,21 @@ from model.evaluation_target import EvaluationTarget
 
 def data_source(file: str, type: str, dtypes: dict, cache: bool=False) -> DataTarget:
   assert type == 'csv'
-  return CSVDataTarget(Artifact(file), dtypes, cache)
+  return CSVDataTarget(DataFile(file), dtypes, cache)
 
 
 def split(data: DataTarget, test_ratio: float, target_column: str, seed:int=0) -> Tuple[DataTarget, DataTarget, DataTarget, DataTarget]:
-  train_x = SelectDataTarget(SampleDataTarget(data, 1.0 - test_ratio, seed), [target_column], keep=False)
-  train_y = SelectDataTarget(SampleDataTarget(data, 1.0 - test_ratio, seed), [target_column], keep=True)
-  test_x  = SelectDataTarget(SampleDataTarget(data, test_ratio, seed), [target_column], keep=False)
-  test_y  = SelectDataTarget(SampleDataTarget(data, test_ratio, seed), [target_column], keep=True)
+  train_data = SampleDataTarget(data, 1.0 - test_ratio, seed)
+  test_data = SampleDataTarget(data, test_ratio, seed)
+  train_x = SelectDataTarget(train_data, [target_column], keep=False)
+  train_y = SelectDataTarget(train_data, [target_column], keep=True)
+  test_x  = SelectDataTarget(test_data,  [target_column], keep=False)
+  test_y  = SelectDataTarget(test_data,  [target_column], keep=True)
   return train_x, train_y, test_x, test_y
 
 
 def transform(data: DataTarget, file: str, cache: bool=False) -> DataTarget:
-  return TransformDataTarget(data, Artifact(file), cache)
+  return TransformDataTarget(data, PyFile(file), cache)
 
 
 def create_label_encoder(data: DataTarget, columns: List[str]) -> LabelEncoderTarget:
@@ -39,16 +42,16 @@ def encode_labels(data: DataTarget, label_encoder: LabelEncoderTarget) -> DataTa
 
 
 def train(features_data: DataTarget, labels_data: DataTarget, file: str) -> ModelTarget:
-  return ModelTarget(features_data, labels_data, Artifact(file))
+  return ModelTarget(features_data, labels_data, PyFile(file))
 
 
 def predict(model: ModelTarget, data: DataTarget, file: str) -> PredictionTarget:
-  return PredictionTarget(model, data, Artifact(file))
+  return PredictionTarget(model, data, PyFile(file))
 
 
 def evaluate(
   labels_data: DataTarget,
   predictions_data: DataTarget,
   file: str) -> EvaluationTarget:
-  return EvaluationTarget(labels_data, predictions_data, Artifact(file))
+  return EvaluationTarget(labels_data, predictions_data, PyFile(file))
 

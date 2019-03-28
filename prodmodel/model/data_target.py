@@ -13,19 +13,6 @@ class DataTarget(Target):
     self.deps = deps
 
 
-  @abstractmethod
-  def read_record(self) -> dict:
-    pass
-
-
-  def __iter__(self):
-    return self
-
-
-  def __next__(self):
-     return self.read_record()
-
-
   def execute(self):
     self.init_with_deps()
     array = np.stack([np.fromiter(record.values(), dtype=float) for record in self])

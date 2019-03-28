@@ -14,7 +14,6 @@ class LabelEncoderTarget(Target):
 
   def execute(self) -> dict:
     label_encoder_dict = {}
-    self.source.init_with_deps()
     for record in self.source:
       for column in self.columns:
         value = record[column]
@@ -25,7 +24,6 @@ class LabelEncoderTarget(Target):
         else:
           label_encoder_dict[column] = {}
           label_encoder_dict[column][value] = np.int_(0)
-    self.source.finish_with_deps()
     return label_encoder_dict
 
 

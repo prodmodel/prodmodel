@@ -14,9 +14,7 @@ class ModelTarget(Target):
 
 
   def execute(self):
-    spec = importlib.util.spec_from_file_location(self.hash_id(), self.source.file_name)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
+    mod = self.source.output()
     assert 'train' in dir(mod)
     X = self.features_data.output()
     y = self.labels_data.output()

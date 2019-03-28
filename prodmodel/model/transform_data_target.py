@@ -9,20 +9,16 @@ class TransformDataTarget(DataTarget):
     super().__init__(sources=[source], deps=[data], cache=cache)
     self.data = data
     self.source = source
-    self.mod = None
 
 
-  def read_record(self) -> dict:
-    if self.data is not None and self.mod is not None:
-      return self.mod.transform_record(self.data.read_record())
+  def __iter__(self):
+    mod = self.source.output()
+    assert 'transform_record' in dir(mod)
+    return map(mod.transform_record, self.data.__iter__())
 
 
   def init(self):
-    spec = importlib.util.spec_from_file_location(self.hash_id(), self.source.file_name)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    assert 'transform_record' in dir(mod)
-    self.mod = mod
+    pass
 
 
   def finish(self):

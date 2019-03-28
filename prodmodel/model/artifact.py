@@ -4,8 +4,9 @@ import hashlib
 from pathlib import Path
 import util
 
+
 BLOCKSIZE = 65536
-    
+
 
 class Artifact:
 

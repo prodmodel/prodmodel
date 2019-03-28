@@ -12,17 +12,14 @@ class SampleDataTarget(DataTarget):
     self.seed = seed
 
 
-  def read_record(self) -> dict:
-    if self.data is not None:
-      while True:
-        record = self.data.read_record()
-        if random.random() < self.ratio:
-          break
-      return record
+  def __iter__(self):
+    random.seed(self.seed)
+    def sample(record):
+      return random.random() < self.ratio
+    return filter(sample, self.data.__iter__())
 
 
   def init(self):
-    random.seed(self.seed)
     pass
 
 

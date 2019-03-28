@@ -11,9 +11,8 @@ class SelectDataTarget(DataTarget):
     self.keep = keep
 
 
-  def read_record(self) -> dict:
-    if self.data is not None:
-      record = self.data.read_record()
+  def __iter__(self):
+    def select(record):
       if self.keep:
         result = {}
         for column in self.columns:
@@ -23,6 +22,7 @@ class SelectDataTarget(DataTarget):
         for column in self.columns:
           del result[column]
       return result
+    return map(select, self.data.__iter__())
 
 
   def init(self):

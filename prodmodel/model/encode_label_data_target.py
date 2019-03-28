@@ -11,15 +11,17 @@ class EncodeLabelDataTarget(DataTarget):
     self.label_encoder = label_encoder
 
 
-  def read_record(self) -> dict:
-    record = self.data.read_record()
-    for column, encoder in self.label_encoder_dict.items():
-      record[column] = encoder[record[column]]
-    return record
+  def __iter__(self):
+    self.label_encoder_dict = self.label_encoder.output()
+    def encode(record):
+      for column, encoder in self.label_encoder_dict.items():
+        record[column] = encoder[record[column]]
+      return record
+    return map(encode, self.data.__iter__())
 
 
   def init(self):
-    self.label_encoder_dict = self.label_encoder.output()
+    pass
 
 
   def finish(self):
