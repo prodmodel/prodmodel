@@ -64,6 +64,7 @@ class Target:
 
   def hash_id(self) -> str:
     m = hashlib.sha256()
+    m.update(util.lib_hash_id().encode('utf-8'))
     m.update(self.__class__.__name__.encode('utf-8'))
     m.update(json.dumps(self.params()).encode('utf-8'))
     for source in self.sources:

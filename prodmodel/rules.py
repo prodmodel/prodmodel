@@ -12,6 +12,28 @@ from model.py_file import PyFile
 from model.model_target import ModelTarget
 from model.prediction_target import PredictionTarget
 from model.evaluation_target import EvaluationTarget
+from pathlib import Path
+import pip._internal
+import sys
+import os
+import hashlib
+
+
+class RuleException(Exception):
+  pass
+
+
+def requirements(packages: List[str]):
+  m = hashlib.sha256()
+  for package in packages:
+    m.update(package.encode('utf-8'))
+  hash_id = m.hexdigest()
+  lib_dir = str((Path('target') / 'lib' / hash_id).resolve())
+  if not os.path.isdir(lib_dir):
+    return_value = pip._internal.main(['install', f'--target={lib_dir}', '--ignore-installed'] + packages)
+    if return_value > 0:
+      raise RuleException('Error happened while installing requirements.')
+  sys.path.insert(0, lib_dir)
 
 
 def data_source(file: str, type: str, dtypes: dict, cache: bool=False) -> DataTarget:

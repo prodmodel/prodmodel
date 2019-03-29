@@ -1,5 +1,9 @@
 import rules
 
+rules.requirements(
+  packages=['sklearn']
+)
+
 
 csv_data = rules.data_source(
   file='data.csv',
