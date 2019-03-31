@@ -25,3 +25,11 @@ class IsolatedSysPath:
 
   def __exit__(self, type, value, traceback):
     sys.path = self.original_sys_path
+
+
+def red_color(msg: str) -> str:
+  return '\033[91m'+ msg + '\033[0m'
+
+
+def green_color(msg: str) -> str:
+  return '\033[92m'+ msg + '\033[0m'

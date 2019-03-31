@@ -19,4 +19,4 @@ class IterableDataTarget(DataTarget):
 
 
   def execute(self):
-    return np.stack([np.fromiter(record.values(), dtype=float) for record in self])
+    return np.stack([np.array(list(record.values())) for record in self])

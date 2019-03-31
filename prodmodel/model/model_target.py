@@ -14,9 +14,8 @@ class ModelTarget(Target):
 
 
   def execute(self):
-    mod = self.source.output()
-    assert 'train' in dir(mod)
+    train_fn = self.source.method('train')
     X = self.features_data.output()
     y = self.labels_data.output()
-    return mod.train(X=X, y=y)
+    return train_fn(X=X, y=y)
 

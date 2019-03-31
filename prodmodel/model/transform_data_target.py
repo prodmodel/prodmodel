@@ -14,8 +14,7 @@ class TransformDataTarget(DataTarget):
 
 
   def execute(self):
-    mod = self.source.output()
-    assert 'transform' in dir(mod)
+    transform_fn = self.source.method('transform')
     streams = {k: v.__iter__() for k, v in self.streams.items()}
     objects = {k: v.output() for k, v in self.objects.items()}
-    return mod.transform(**{**streams, **objects})
+    return transform_fn(**{**streams, **objects})

@@ -14,9 +14,8 @@ class PredictionTarget(DataTarget):
 
 
   def execute(self):
-    mod = self.source.output()
-    assert 'predict' in dir(mod)
+    predict_fn = self.source.method('predict')
     model = self.model.output()
     data = self.data.output()
-    return mod.predict(model=model, records=data)
+    return predict_fn(model=model, records=data)
 

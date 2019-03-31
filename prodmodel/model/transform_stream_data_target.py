@@ -15,8 +15,7 @@ class TransformStreamDataTarget(IterableDataTarget):
 
 
   def __iter__(self):
-    mod = self.source.output()
-    assert 'transform_record' in dir(mod)
+    transform_record_fn = self.source.method('transform_record')
     objects = {k: v.output() for k, v in self.objects.items()}
-    map_fn = partial(mod.transform_record, **objects)
+    map_fn = partial(transform_record_fn, **objects)
     return map(map_fn, self.stream.__iter__())

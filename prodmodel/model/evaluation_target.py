@@ -14,9 +14,8 @@ class EvaluationTarget(Target):
 
 
   def execute(self):
-    mod = self.source.output()
-    assert 'evaluate' in dir(mod)
+    evaluate_fn = self.source.method('evaluate')
     labels_data = self.labels_data.output()
     predictions_data = self.predictions_data.output()
-    return mod.evaluate(predicted_y=predictions_data, test_y=labels_data)
+    return evaluate_fn(predicted_y=predictions_data, test_y=labels_data)
 
