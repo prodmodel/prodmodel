@@ -1,5 +1,6 @@
 import rules
 
+
 rules.requirements(
   packages=['sklearn']
 )
@@ -109,5 +110,10 @@ evaluate = rules.evaluate(
   labels_data=final_test_data_y,
   predictions_data=test_predictions,
   file='evaluate_results.py'
+)
+
+test_transform = rules.test(
+  test_file='tests/test_transform_record.py',
+  source_files=['transform_record.py']
 )
 
