@@ -53,8 +53,8 @@ def split(data: IterableDataTarget, test_ratio: float, target_column: str, seed:
   return train_x, train_y, test_x, test_y
 
 
-def transform_stream(data: IterableDataTarget, file: str, objects: Dict[str, DataTarget]={}, cache: bool=False) -> IterableDataTarget:
-  return TransformStreamDataTarget(data, PyFile(file), objects, cache)
+def transform_stream(stream: IterableDataTarget, file: str, objects: Dict[str, DataTarget]={}, cache: bool=False) -> IterableDataTarget:
+  return TransformStreamDataTarget(stream, PyFile(file), objects, cache)
 
 
 def transform(file: str, streams: Dict[str, IterableDataTarget]={}, objects: Dict[str, DataTarget]={}, cache: bool=False) -> DataTarget:

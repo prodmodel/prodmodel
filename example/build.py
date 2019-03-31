@@ -51,7 +51,7 @@ train_data_x, train_data_y, test_data_x, test_data_y = rules.split(
 )
 
 enriched_train_data_x = rules.transform_stream(
-  data=train_data_x,
+  stream=train_data_x,
   objects={'education_scores': education_scores},
   file='transform_record.py'
 )
@@ -84,7 +84,7 @@ model = rules.train(
 
 
 enriched_test_data_x = rules.transform_stream(
-  data=test_data_x,
+  stream=test_data_x,
   objects={'education_scores': education_scores},
   file='transform_record.py'
 )

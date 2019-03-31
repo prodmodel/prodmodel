@@ -7,9 +7,9 @@ from model.iterable_data_target import IterableDataTarget
 
 
 class TransformStreamDataTarget(IterableDataTarget):
-  def __init__(self, data: IterableDataTarget, source: Artifact, objects: Dict[str, DataTarget], cache: bool):
-    super().__init__(sources=[source], deps=[data] + list(objects.values()), cache=cache)
-    self.data = data
+  def __init__(self, stream: IterableDataTarget, source: Artifact, objects: Dict[str, DataTarget], cache: bool):
+    super().__init__(sources=[source], deps=[stream] + list(objects.values()), cache=cache)
+    self.stream = stream
     self.source = source
     self.objects = objects
 
@@ -19,4 +19,4 @@ class TransformStreamDataTarget(IterableDataTarget):
     assert 'transform_record' in dir(mod)
     objects = {k: v.output() for k, v in self.objects.items()}
     map_fn = partial(mod.transform_record, **objects)
-    return map(map_fn, self.data.__iter__())
+    return map(map_fn, self.stream.__iter__())
