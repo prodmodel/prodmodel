@@ -1,5 +1,6 @@
 import importlib
 from model.artifact import Artifact
+from util import RuleException
 
 
 class PyFile(Artifact):
@@ -22,3 +23,9 @@ class PyFile(Artifact):
       self.mod = mod
     return self.mod
 
+
+  def method(self, name):
+    mod = self.output()
+    if name not in dir(mod):
+      raise RuleException(f'Method {name} is not found in {self.file_name}.')
+    return getattr(mod, name)

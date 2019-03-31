@@ -9,6 +9,7 @@ import os
 import subprocess
 from rules import RuleException
 from model.target import Target
+from util import red_color, green_color
 
 
 logging.basicConfig(level=logging.INFO)
@@ -32,16 +33,23 @@ def main():
         target.init_with_deps()
         result = target.output()
         logging.info(f'Created {result}.')
+        success = True
       else:
         raise RuleException(f'Variable "{target_name}" is not a target but a "{type(target).__name__}".')
     else:
       raise RuleException(f'Target "{target_name}" not found in {build_file}.')
   except RuleException as e:
-    logging.error(str(e))
+    logging.error(red_color(str(e)))
+    success = False
 
   end_time = time.time()
   duration = round(end_time - start_time, 3)
-  logging.info(f'Build finished in {duration} secs.')
+  if success:
+    logging.info(green_color(f'Build successfully finished in {duration} secs.'))
+    return 0
+  else:
+    logging.error(red_color(f'Build failed in {duration} secs.'))
+    return 1
 
 
 if __name__ == "__main__":
