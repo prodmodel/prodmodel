@@ -15,7 +15,7 @@ csv_data_scores = rules.data_source(
 
 education_scores = rules.transform(
   streams={'csv': csv_data_scores},
-  file='csv_to_dict.py'
+  file='load_education_scores.py'
 )
 
 csv_data = rules.data_source(
