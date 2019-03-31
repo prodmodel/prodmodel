@@ -1,11 +1,11 @@
 import csv
 
 from model.data_file import DataFile
-from model.data_target import DataTarget
+from model.iterable_data_target import IterableDataTarget
 
 
-class CSVDataTarget(DataTarget):
-  def __init__(self, source: DataFile, dtypes: dict, cache: bool):
+class CSVDataTarget(IterableDataTarget):
+  def __init__(self, source: IterableDataTarget, dtypes: dict, cache: bool):
     super().__init__(sources=[source], deps=[], cache=cache)
     self.source = source
     self.dtypes = dtypes

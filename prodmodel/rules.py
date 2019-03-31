@@ -1,8 +1,10 @@
-from typing import Tuple, List
+from typing import Tuple, List, Dict
 from model.target import Target
 from model.data_target import DataTarget
+from model.iterable_data_target import IterableDataTarget
 from model.csv_data_target import CSVDataTarget
 from model.transform_data_target import TransformDataTarget
+from model.transform_stream_data_target import TransformStreamDataTarget
 from model.select_data_target import SelectDataTarget
 from model.sample_data_target import SampleDataTarget
 from model.label_encoder_target import LabelEncoderTarget
@@ -36,12 +38,12 @@ def requirements(packages: List[str]):
   sys.path.insert(0, lib_dir)
 
 
-def data_source(file: str, type: str, dtypes: dict, cache: bool=False) -> DataTarget:
+def data_source(file: str, type: str, dtypes: dict, cache: bool=False) -> IterableDataTarget:
   assert type == 'csv'
   return CSVDataTarget(DataFile(file), dtypes, cache)
 
 
-def split(data: DataTarget, test_ratio: float, target_column: str, seed:int=0) -> Tuple[DataTarget, DataTarget, DataTarget, DataTarget]:
+def split(data: IterableDataTarget, test_ratio: float, target_column: str, seed:int=0) -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]:
   train_data = SampleDataTarget(data, 1.0 - test_ratio, seed)
   test_data = SampleDataTarget(data, test_ratio, seed)
   train_x = SelectDataTarget(train_data, [target_column], keep=False)
@@ -51,29 +53,33 @@ def split(data: DataTarget, test_ratio: float, target_column: str, seed:int=0) -
   return train_x, train_y, test_x, test_y
 
 
-def transform(data: DataTarget, file: str, cache: bool=False) -> DataTarget:
-  return TransformDataTarget(data, PyFile(file), cache)
+def transform_stream(data: IterableDataTarget, file: str, objects: Dict[str, DataTarget]={}, cache: bool=False) -> IterableDataTarget:
+  return TransformStreamDataTarget(data, PyFile(file), objects, cache)
 
 
-def create_label_encoder(data: DataTarget, columns: List[str]) -> LabelEncoderTarget:
+def transform(file: str, streams: Dict[str, IterableDataTarget]={}, objects: Dict[str, DataTarget]={}, cache: bool=False) -> DataTarget:
+  return TransformDataTarget(PyFile(file), streams, objects, cache)
+
+
+def create_label_encoder(data: IterableDataTarget, columns: List[str]) -> LabelEncoderTarget:
   return LabelEncoderTarget(data, columns)
 
 
-def encode_labels(data: DataTarget, label_encoder: LabelEncoderTarget) -> DataTarget:
+def encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget) -> IterableDataTarget:
   return EncodeLabelDataTarget(data, label_encoder)
 
 
-def train(features_data: DataTarget, labels_data: DataTarget, file: str) -> ModelTarget:
+def train(features_data: IterableDataTarget, labels_data: IterableDataTarget, file: str) -> ModelTarget:
   return ModelTarget(features_data, labels_data, PyFile(file))
 
 
-def predict(model: ModelTarget, data: DataTarget, file: str) -> PredictionTarget:
+def predict(model: ModelTarget, data: IterableDataTarget, file: str) -> PredictionTarget:
   return PredictionTarget(model, data, PyFile(file))
 
 
 def evaluate(
-  labels_data: DataTarget,
-  predictions_data: DataTarget,
+  labels_data: IterableDataTarget,
+  predictions_data: IterableDataTarget,
   file: str) -> EvaluationTarget:
   return EvaluationTarget(labels_data, predictions_data, PyFile(file))
 

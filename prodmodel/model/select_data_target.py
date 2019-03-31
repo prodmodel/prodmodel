@@ -1,10 +1,10 @@
 from typing import List
 
-from model.data_target import DataTarget
+from model.iterable_data_target import IterableDataTarget
 
 
-class SelectDataTarget(DataTarget):
-  def __init__(self, data: DataTarget, columns: List[str], keep: bool):
+class SelectDataTarget(IterableDataTarget):
+  def __init__(self, data: IterableDataTarget, columns: List[str], keep: bool):
     super().__init__(sources=[], deps=[data], cache=False)
     self.data = data
     self.columns = columns

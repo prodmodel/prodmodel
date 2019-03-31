@@ -1,11 +1,11 @@
 import csv
 
 from model.label_encoder_target import LabelEncoderTarget
-from model.data_target import DataTarget
+from model.iterable_data_target import IterableDataTarget
 
 
-class EncodeLabelDataTarget(DataTarget):
-  def __init__(self, data: DataTarget, label_encoder: LabelEncoderTarget):
+class EncodeLabelDataTarget(IterableDataTarget):
+  def __init__(self, data: IterableDataTarget, label_encoder: LabelEncoderTarget):
     super().__init__(sources=[], deps=[data, label_encoder], cache=False)
     self.data = data
     self.label_encoder = label_encoder

@@ -1,11 +1,11 @@
 import random
 
 from model.artifact import Artifact
-from model.data_target import DataTarget
+from model.iterable_data_target import IterableDataTarget
 
 
-class SampleDataTarget(DataTarget):
-  def __init__(self, data: DataTarget, ratio: float, seed: int):
+class SampleDataTarget(IterableDataTarget):
+  def __init__(self, data: IterableDataTarget, ratio: float, seed: int):
     super().__init__(sources=[], deps=[data], cache=False)
     self.data = data
     self.ratio = ratio
