@@ -1,11 +1,12 @@
 import importlib
 
 from model.artifact import Artifact
-from model.data_target import DataTarget
+from model.target import Target
+from model.iterable_data_target import IterableDataTarget
 
 
-class EvaluationTarget(DataTarget):
-  def __init__(self, labels_data: DataTarget, predictions_data: DataTarget, source: Artifact):
+class EvaluationTarget(Target):
+  def __init__(self, labels_data: IterableDataTarget, predictions_data: IterableDataTarget, source: Artifact):
     super().__init__(sources=[source], deps=[labels_data, predictions_data], cache=False)
     self.source = source
     self.labels_data = labels_data

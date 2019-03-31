@@ -82,7 +82,7 @@ class Target:
       logging.info(f'  Re-using cached version {hash_id}.')
       return self.cached_output
     else:
-      root_dir = Path('target') / (class_name + '_' + self.lineno) / hash_id
+      root_dir = Path('target') / class_name / hash_id
       os.makedirs(root_dir, exist_ok=True)
       file_path = root_dir / '1.pickle'
       if file_path.is_file():

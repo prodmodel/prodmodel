@@ -4,12 +4,25 @@ rules.requirements(
   packages=['sklearn']
 )
 
+csv_data_scores = rules.data_source(
+  file='education_lookup.csv',
+  type='csv',
+  dtypes = {
+    'education': str,
+    'score': int
+  }
+)
+
+education_scores = rules.transform(
+  streams={'csv': csv_data_scores},
+  file='load_education_scores.py'
+)
 
 csv_data = rules.data_source(
   file='data.csv',
   type='csv',
   dtypes = {
-    'age':int,
+    'age': int,
     'job': str,
     'marital': str,
     'education': str,
@@ -29,6 +42,7 @@ csv_data = rules.data_source(
   }
 )
 
+
 train_data_x, train_data_y, test_data_x, test_data_y = rules.split(
   data=csv_data,
   test_ratio=0.2,
@@ -36,8 +50,9 @@ train_data_x, train_data_y, test_data_x, test_data_y = rules.split(
   seed=3
 )
 
-enriched_train_data_x = rules.transform(
-  data=train_data_x,
+enriched_train_data_x = rules.transform_stream(
+  stream=train_data_x,
+  objects={'education_scores': education_scores},
   file='transform_record.py'
 )
 
@@ -68,8 +83,9 @@ model = rules.train(
 )
 
 
-enriched_test_data_x = rules.transform(
-  data=test_data_x,
+enriched_test_data_x = rules.transform_stream(
+  stream=test_data_x,
+  objects={'education_scores': education_scores},
   file='transform_record.py'
 )
 
