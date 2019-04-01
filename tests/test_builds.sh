@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-cd ..
-rm -rf target/
-source .env
+BASEDIR=$(dirname "$0")/..
+source $BASEDIR/.env
+cd $BASEDIR
 
 python3.6 prodmodel/main.py test_transform
 python3.6 prodmodel/main.py evaluate
