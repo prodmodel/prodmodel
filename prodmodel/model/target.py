@@ -74,6 +74,11 @@ class Target:
     return m.hexdigest()
 
 
+  def output_path(self) -> str:
+    class_name = self.__class__.__name__
+    return str(Path('target') / class_name / self.hash_id() / '1.pickle')
+
+
   def output(self):
     class_name = self.__class__.__name__
     logging.info(f'Executing {class_name} defined at build.py:{self.lineno}.')

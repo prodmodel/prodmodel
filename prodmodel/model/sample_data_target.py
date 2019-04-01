@@ -19,14 +19,6 @@ class SampleDataTarget(IterableDataTarget):
     return filter(sample, self.data.__iter__())
 
 
-  def init(self):
-    pass
-
-
-  def finish(self):
-    pass
-
-
   def params(self) -> dict:
     return {'ratio': self.ratio, 'seed': self.seed}
 

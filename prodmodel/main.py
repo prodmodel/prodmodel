@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO)
 def main():
   target_name = sys.argv[1:][0]
 
-  sys.path = [path for path in sys.path if 'site-packages' not in path]
+  #sys.path = [path for path in sys.path if 'site-packages' not in path]
 
   start_time = time.time()
   root = Path(abspath('example'))
