@@ -20,7 +20,7 @@ import sys
 import os
 import hashlib
 from file_cache import PyFileCache
-from util import RuleException
+from util import RuleException, checkargtypes
 
 
 def requirements(packages: List[str]):
@@ -36,11 +36,13 @@ def requirements(packages: List[str]):
   sys.path.insert(0, lib_dir)
 
 
+@checkargtypes
 def data_source(file: str, type: str, dtypes: dict, cache: bool=False) -> IterableDataTarget:
   assert type == 'csv'
   return CSVDataTarget(DataFile(file), dtypes, cache)
 
 
+@checkargtypes
 def split(data: IterableDataTarget, test_ratio: float, target_column: str, seed:int=0) -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]:
   train_data = SampleDataTarget(data, 1.0 - test_ratio, seed)
   test_data = SampleDataTarget(data, test_ratio, seed)
@@ -51,37 +53,45 @@ def split(data: IterableDataTarget, test_ratio: float, target_column: str, seed:
   return train_x, train_y, test_x, test_y
 
 
+@checkargtypes
 def transform_stream(stream: IterableDataTarget, file: str, objects: Dict[str, DataTarget]={}, cache: bool=False) -> IterableDataTarget:
   return TransformStreamDataTarget(stream, PyFileCache.get(file), objects, cache)
 
 
+@checkargtypes
 def transform(file: str, streams: Dict[str, IterableDataTarget]={}, objects: Dict[str, DataTarget]={}, cache: bool=False) -> DataTarget:
   return TransformDataTarget(PyFileCache.get(file), streams, objects, cache)
 
 
+@checkargtypes
 def create_label_encoder(data: IterableDataTarget, columns: List[str]) -> LabelEncoderTarget:
   return LabelEncoderTarget(data, columns)
 
 
+@checkargtypes
 def encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget) -> IterableDataTarget:
   return EncodeLabelDataTarget(data, label_encoder)
 
 
+@checkargtypes
 def train(features_data: IterableDataTarget, labels_data: IterableDataTarget, file: str) -> ModelTarget:
   return ModelTarget(features_data, labels_data, PyFileCache.get(file))
 
 
+@checkargtypes
 def predict(model: ModelTarget, data: IterableDataTarget, file: str) -> PredictionTarget:
   return PredictionTarget(model, data, PyFileCache.get(file))
 
 
+@checkargtypes
 def evaluate(
-  labels_data: IterableDataTarget,
-  predictions_data: IterableDataTarget,
+  labels_data: DataTarget,
+  predictions_data: DataTarget,
   file: str) -> EvaluationTarget:
   return EvaluationTarget(labels_data, predictions_data, PyFileCache.get(file))
 
 
+@checkargtypes
 def test(test_file: str, source_files: List[str], cache: bool=False):
   return TestTarget(
     test_file=PyFileCache.get(test_file),
