@@ -1,4 +1,5 @@
 import rules
+from ee import aws_rules
 
 
 rules.requirements(
@@ -117,3 +118,8 @@ test_transform = rules.test(
   source_files=['transform_record.py']
 )
 
+model_in_s3 = aws_rules.copy_to_s3(
+  data=model,
+  s3_bucket='prodmodel-test',
+  s3_key='models/model1.pickle'
+)

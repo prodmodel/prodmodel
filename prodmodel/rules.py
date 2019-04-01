@@ -23,9 +23,6 @@ from file_cache import PyFileCache
 from util import RuleException
 
 
-py_file_cache = PyFileCache()
-
-
 def requirements(packages: List[str]):
   m = hashlib.sha256()
   for package in packages:
@@ -55,11 +52,11 @@ def split(data: IterableDataTarget, test_ratio: float, target_column: str, seed:
 
 
 def transform_stream(stream: IterableDataTarget, file: str, objects: Dict[str, DataTarget]={}, cache: bool=False) -> IterableDataTarget:
-  return TransformStreamDataTarget(stream, py_file_cache.get(file), objects, cache)
+  return TransformStreamDataTarget(stream, PyFileCache.get(file), objects, cache)
 
 
 def transform(file: str, streams: Dict[str, IterableDataTarget]={}, objects: Dict[str, DataTarget]={}, cache: bool=False) -> DataTarget:
-  return TransformDataTarget(py_file_cache.get(file), streams, objects, cache)
+  return TransformDataTarget(PyFileCache.get(file), streams, objects, cache)
 
 
 def create_label_encoder(data: IterableDataTarget, columns: List[str]) -> LabelEncoderTarget:
@@ -71,22 +68,22 @@ def encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget) -
 
 
 def train(features_data: IterableDataTarget, labels_data: IterableDataTarget, file: str) -> ModelTarget:
-  return ModelTarget(features_data, labels_data, py_file_cache.get(file))
+  return ModelTarget(features_data, labels_data, PyFileCache.get(file))
 
 
 def predict(model: ModelTarget, data: IterableDataTarget, file: str) -> PredictionTarget:
-  return PredictionTarget(model, data, py_file_cache.get(file))
+  return PredictionTarget(model, data, PyFileCache.get(file))
 
 
 def evaluate(
   labels_data: IterableDataTarget,
   predictions_data: IterableDataTarget,
   file: str) -> EvaluationTarget:
-  return EvaluationTarget(labels_data, predictions_data, py_file_cache.get(file))
+  return EvaluationTarget(labels_data, predictions_data, PyFileCache.get(file))
 
 
 def test(test_file: str, source_files: List[str], cache: bool=False):
   return TestTarget(
-    test_file=py_file_cache.get(test_file),
-    source_files=[py_file_cache.get(f) for f in source_files],
+    test_file=PyFileCache.get(test_file),
+    source_files=[PyFileCache.get(f) for f in source_files],
     cache=cache)
