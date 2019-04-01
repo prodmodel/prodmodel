@@ -3,11 +3,10 @@ import os
 
 
 from model.target import Target
-from model.data_target import DataTarget
 
 
 class S3DataTarget(Target):
-  def __init__(self, data: DataTarget, s3_bucket: str, s3_key: str):
+  def __init__(self, data: Target, s3_bucket: str, s3_key: str):
     super().__init__(sources=[], deps=[data], cache=False)
     self.s3_key = s3_key
     self.s3_bucket = s3_bucket
