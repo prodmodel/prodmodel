@@ -7,15 +7,16 @@ from model.iterable_data_target import IterableDataTarget
 
 
 class TransformStreamDataTarget(IterableDataTarget):
-  def __init__(self, stream: IterableDataTarget, source: Artifact, objects: Dict[str, DataTarget], cache: bool):
+  def __init__(self, source: Artifact, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget], cache: bool):
     super().__init__(sources=[source], deps=[stream] + list(objects.values()), cache=cache)
     self.stream = stream
     self.source = source
     self.objects = objects
+    self.fn = fn
 
 
   def __iter__(self):
-    transform_record_fn = self.source.method('transform_record')
+    transform_record_fn = self.source.method(self.fn)
     objects = {k: v.output() for k, v in self.objects.items()}
     map_fn = partial(transform_record_fn, **objects)
     return map(map_fn, self.stream.__iter__())

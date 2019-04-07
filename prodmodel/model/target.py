@@ -74,9 +74,13 @@ class Target:
     return m.hexdigest()
 
 
-  def output_path(self) -> str:
+  def output_dir(self) -> str:
     class_name = self.__class__.__name__
-    return str(Path('target') / class_name / self.hash_id() / '1.pickle')
+    return Path('target') / class_name / self.hash_id()
+
+
+  def output_path(self) -> str:
+    return str(self.output_dir() / '1.pickle')
 
 
   def output(self):
