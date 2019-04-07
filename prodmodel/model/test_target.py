@@ -7,6 +7,7 @@ from model.artifact import Artifact
 import pytest
 import sys
 from pathlib import Path
+import shutil
 
 
 class TestTarget(Target):
@@ -17,9 +18,12 @@ class TestTarget(Target):
 
 
   def execute(self):
-    dirs = list(set([str(Path(f.file_name).parent) for f in self.source_files]))
+    lib_dir = self.output_dir() / 'lib'
+    lib_dir.mkdir(parents=True, exist_ok=True)
+    for f in self.source_files:
+      shutil.copy(f.file_name, lib_dir)
     with IsolatedSysPath():
-      sys.path.extend(dirs)
+      sys.path.append(str(lib_dir))
       return_value = pytest.main([str(self.test_file.file_name)])
     if return_value > 0:
       raise RuleException('Test failed.')

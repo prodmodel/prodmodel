@@ -10,9 +10,6 @@ from model.sample_data_target import SampleDataTarget
 from model.label_encoder_target import LabelEncoderTarget
 from model.encode_label_data_target import EncodeLabelDataTarget
 from model.data_file import DataFile
-from model.model_target import ModelTarget
-from model.prediction_target import PredictionTarget
-from model.evaluation_target import EvaluationTarget
 from model.test_target import TestTarget
 from pathlib import Path
 import pip._internal
@@ -54,13 +51,13 @@ def split(data: IterableDataTarget, test_ratio: float, target_column: str, seed:
 
 
 @checkargtypes
-def transform_stream(stream: IterableDataTarget, file: str, objects: Dict[str, DataTarget]={}, cache: bool=False) -> IterableDataTarget:
-  return TransformStreamDataTarget(stream, PyFileCache.get(file), objects, cache)
+def transform_stream(file: str, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget]={}, cache: bool=False) -> IterableDataTarget:
+  return TransformStreamDataTarget(source=PyFileCache.get(file), fn=fn, stream=stream, objects=objects, cache=cache)
 
 
 @checkargtypes
-def transform(file: str, streams: Dict[str, IterableDataTarget]={}, objects: Dict[str, DataTarget]={}, cache: bool=False) -> DataTarget:
-  return TransformDataTarget(PyFileCache.get(file), streams, objects, cache)
+def transform(file: str, fn: str, streams: Dict[str, IterableDataTarget]={}, objects: Dict[str, DataTarget]={}, cache: bool=False) -> DataTarget:
+  return TransformDataTarget(source=PyFileCache.get(file), fn=fn, streams=streams, objects=objects, cache=cache)
 
 
 @checkargtypes
@@ -71,24 +68,6 @@ def create_label_encoder(data: IterableDataTarget, columns: List[str]) -> LabelE
 @checkargtypes
 def encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget) -> IterableDataTarget:
   return EncodeLabelDataTarget(data, label_encoder)
-
-
-@checkargtypes
-def train(features_data: IterableDataTarget, labels_data: IterableDataTarget, file: str) -> ModelTarget:
-  return ModelTarget(features_data, labels_data, PyFileCache.get(file))
-
-
-@checkargtypes
-def predict(model: ModelTarget, data: IterableDataTarget, file: str) -> PredictionTarget:
-  return PredictionTarget(model, data, PyFileCache.get(file))
-
-
-@checkargtypes
-def evaluate(
-  labels_data: DataTarget,
-  predictions_data: DataTarget,
-  file: str) -> EvaluationTarget:
-  return EvaluationTarget(labels_data, predictions_data, PyFileCache.get(file))
 
 
 @checkargtypes

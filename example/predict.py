@@ -1,2 +1,2 @@
-def predict(model, records):
-  return model.predict(records)
+def predict(model, data):
+  return model.predict(data)

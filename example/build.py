@@ -17,7 +17,8 @@ csv_data_scores = rules.data_source(
 
 education_scores = rules.transform(
   streams={'csv': csv_data_scores},
-  file='load_education_scores.py'
+  file='load_education_scores.py',
+  fn='transform'
 )
 
 csv_data = rules.data_source(
@@ -55,7 +56,8 @@ train_data_x, train_data_y, test_data_x, test_data_y = rules.split(
 enriched_train_data_x = rules.transform_stream(
   stream=train_data_x,
   objects={'education_scores': education_scores},
-  file='transform_record.py'
+  file='transform_record.py',
+  fn='transform_record'
 )
 
 label_encoder_x = rules.create_label_encoder(
@@ -78,17 +80,21 @@ final_train_data_y = rules.encode_labels(
   label_encoder=label_encoder_y
 )
 
-model = rules.train(
-  features_data=final_train_data_x,
-  labels_data=final_train_data_y,
-  file='train.py'
+model = rules.transform(
+  objects={
+      'X': final_train_data_x,
+      'y': final_train_data_y
+  },
+  file='train.py',
+  fn='train'
 )
 
 
 enriched_test_data_x = rules.transform_stream(
   stream=test_data_x,
   objects={'education_scores': education_scores},
-  file='transform_record.py'
+  file='transform_record.py',
+  fn='transform_record'
 )
 
 final_test_data_x = rules.encode_labels(
@@ -96,10 +102,13 @@ final_test_data_x = rules.encode_labels(
   label_encoder=label_encoder_x
 )
 
-test_predictions = rules.predict(
-  model=model,
-  data=final_test_data_x,
-  file='predict.py'
+test_predictions = rules.transform(
+  objects={
+      'model': model,
+      'data': final_test_data_x
+  },
+  file='predict.py',
+  fn='predict'
 )
 
 final_test_data_y = rules.encode_labels(
@@ -107,10 +116,13 @@ final_test_data_y = rules.encode_labels(
   label_encoder=label_encoder_y
 )
 
-evaluate = rules.evaluate(
-  labels_data=final_test_data_y,
-  predictions_data=test_predictions,
-  file='evaluate_results.py'
+evaluate = rules.transform(
+  objects={
+      'test_y': final_test_data_y,
+      'predicted_y': test_predictions
+  },
+  file='evaluate_results.py',
+  fn='evaluate'
 )
 
 test_transform = rules.test(
