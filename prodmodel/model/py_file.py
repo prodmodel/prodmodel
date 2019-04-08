@@ -1,6 +1,7 @@
 import importlib
 from model.artifact import Artifact
 from util import RuleException
+import time
 
 
 class PyFile(Artifact):
@@ -9,10 +10,13 @@ class PyFile(Artifact):
     super().__init__(file_name=file_name)
     self.mod = None
     self.current_hash_id = None
+    self.current_build_time = None
 
 
   def init(self, args):
-    self.current_hash_id = self.hash_id()
+    if self.current_build_time != args.build_time:
+      self.current_hash_id = self.hash_id()
+      self.current_build_time = args.build_time
 
 
   def output(self):

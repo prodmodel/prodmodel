@@ -11,7 +11,7 @@ class DataFile(Artifact):
 
 
   def init(self, args):
-    self.original_hash_id = self.hash_id()
+    self.cached_hash_id = self.hash_id()
 
 
   def __iter__(self):
