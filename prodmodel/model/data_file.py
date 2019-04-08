@@ -15,5 +15,6 @@ class DataFile(Artifact):
 
 
   def __iter__(self):
-    f = open(self.file_name, newline='')
-    return csv.DictReader(f, delimiter=',')
+    with open(self.file_name, newline='') as f:
+      reader = csv.DictReader(f, delimiter=',')
+      return [row for row in reader]
