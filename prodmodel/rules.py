@@ -83,5 +83,5 @@ def test(test_file: str, source_files: List[str], cache: bool=False):
 
 @checkargtypes
 def external_data(file: str, fn: str, args: Dict[str, str]) -> ExternalDataTarget:
-  edt = ExternalDataTarget(source=PyFileCache.get(file), fn=fn, args=args)
-  return PickleDataTarget(ExternalDataArtifact(edt))
+  external_data_target = ExternalDataTarget(source=PyFileCache.get(file), fn=fn, args=args)
+  return PickleDataTarget(ExternalDataArtifact(external_data_target))
