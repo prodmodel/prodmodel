@@ -11,8 +11,11 @@ BLOCKSIZE = 65536
 class Artifact:
 
   def __init__(self, file_name: str):
-    root = Path(util.build_file().filename).parent
-    self.file_name = root / file_name
+    if Path(file_name).is_absolute():
+      self.file_name = file_name
+    else:
+      root = Path(util.build_file().filename).parent
+      self.file_name = root / file_name
     self.last_modified = None
     self.cached_hash_id = None
 

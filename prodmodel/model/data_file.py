@@ -10,8 +10,8 @@ class DataFile(Artifact):
     super().__init__(file_name=file_name)
 
 
-  def init(self):
-    self.original_hash_id = self.hash_id()
+  def init(self, args):
+    self.cached_hash_id = self.hash_id()
 
 
   def __iter__(self):

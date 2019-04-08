@@ -11,6 +11,9 @@ from model.label_encoder_target import LabelEncoderTarget
 from model.encode_label_data_target import EncodeLabelDataTarget
 from model.data_file import DataFile
 from model.test_target import TestTarget
+from model.external_data_target import ExternalDataTarget
+from model.external_data_artifact import ExternalDataArtifact
+from model.pickle_data_target import PickleDataTarget
 from pathlib import Path
 import pip._internal
 import sys
@@ -76,3 +79,9 @@ def test(test_file: str, source_files: List[str], cache: bool=False):
     test_file=PyFileCache.get(test_file),
     source_files=[PyFileCache.get(f) for f in source_files],
     cache=cache)
+
+
+@checkargtypes
+def external_data(file: str, fn: str, args: Dict[str, str]) -> ExternalDataTarget:
+  external_data_target = ExternalDataTarget(source=PyFileCache.get(file), fn=fn, args=args)
+  return PickleDataTarget(ExternalDataArtifact(external_data_target))

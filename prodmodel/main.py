@@ -10,12 +10,20 @@ import subprocess
 from rules import RuleException
 from model.target import Target
 from util import red_color, green_color
+import argparse
 
 
 logging.basicConfig(level=logging.INFO)
 
+parser = argparse.ArgumentParser(description='Build, deploy and test Python data science models.')
+parser.add_argument('target')
+parser.add_argument('--force_external', action='store_true')
+parser.add_argument('--build_time', type=int, default=int(time.time()))
+
+
 def main():
-  target_name = sys.argv[1:][0]
+  args = parser.parse_args()
+  target_name = args.target
 
   start_time = time.time()
   root = Path(abspath('example'))
@@ -28,7 +36,7 @@ def main():
     if target_name in dir(build_mod):
       target = getattr(build_mod, target_name)
       if isinstance(target, Target):
-        target.init_with_deps()
+        target.init_with_deps(args)
         result = target.output()
         logging.info(f'Created {result}.')
         success = True
