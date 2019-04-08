@@ -48,12 +48,12 @@ class Target:
     pass
 
 
-  def init_with_deps(self):
+  def init_with_deps(self, args):
     self.init()
     for source in self.sources:
-      source.init()
+      source.init(args)
     for dep in self.deps:
-      dep.init_with_deps()
+      dep.init_with_deps(args)
 
 
   def finish_with_deps(self):
@@ -74,16 +74,16 @@ class Target:
     return m.hexdigest()
 
 
-  def output_dir(self) -> str:
+  def output_dir(self) -> Path:
     class_name = self.__class__.__name__
     return Path('target') / class_name / self.hash_id()
 
 
-  def output_path(self) -> str:
-    return str(self.output_dir() / '1.pickle')
+  def output_path(self) -> Path:
+    return self.output_dir() / '1.pickle'
 
 
-  def output(self):
+  def output(self, force=False):
     class_name = self.__class__.__name__
     logging.info(f'Executing {class_name} defined at build.py:{self.lineno}.')
     hash_id = self.hash_id()
@@ -94,7 +94,7 @@ class Target:
       root_dir = Path('target') / class_name / hash_id
       os.makedirs(root_dir, exist_ok=True)
       file_path = root_dir / '1.pickle'
-      if file_path.is_file():
+      if not force and file_path.is_file():
         logging.info(f'  Loading cached version {hash_id}.')
         with open(file_path, 'rb') as f:
           output = pickle.load(f)

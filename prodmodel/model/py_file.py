@@ -11,7 +11,7 @@ class PyFile(Artifact):
     self.current_hash_id = None
 
 
-  def init(self):
+  def init(self, args):
     self.current_hash_id = self.hash_id()
 
 

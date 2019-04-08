@@ -6,17 +6,17 @@ rules.requirements(
   packages=['sklearn']
 )
 
-csv_data_scores = rules.data_source(
-  file='education_lookup.csv',
-  type='csv',
-  dtypes = {
-    'education': str,
-    'score': int
+
+csv_data_scores = rules.external_data(
+  file='sql_data.py',
+  fn='load_table',
+  args={
+    'table': 'education_lookup'
   }
 )
 
 education_scores = rules.transform(
-  streams={'csv': csv_data_scores},
+  objects={'csv': csv_data_scores},
   file='load_education_scores.py',
   fn='transform'
 )
