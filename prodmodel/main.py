@@ -21,18 +21,28 @@ parser.add_argument('--force_external', action='store_true')
 parser.add_argument('--build_time', type=int, default=int(time.time()))
 
 
-def main():
-  args = parser.parse_args()
-  target_name = args.target
-
-  start_time = time.time()
+def load_build_mod():
   root = Path(abspath('example'))
   build_file = root / 'build.py'
   spec = importlib.util.spec_from_file_location('build', build_file)
   build_mod = importlib.util.module_from_spec(spec)
 
+  spec.loader.exec_module(build_mod)
+  for field_name in dir(build_mod):
+    field_obj = getattr(build_mod, field_name)
+    if isinstance(field_obj, Target):
+      field_obj.set_name(field_name)
+
+  return build_mod
+
+
+def main():
+  args = parser.parse_args()
+  target_name = args.target
+
+  start_time = time.time()
   try:
-    spec.loader.exec_module(build_mod)
+    build_mod = load_build_mod()
     if target_name in dir(build_mod):
       target = getattr(build_mod, target_name)
       if isinstance(target, Target):

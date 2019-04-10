@@ -21,6 +21,7 @@ class Target:
     self.cached_output = None
     self.cached_hash_id = None
     self.lineno = str(util.build_file().lineno)
+    self.name = None
 
 
   @abstractmethod
@@ -74,9 +75,16 @@ class Target:
     return m.hexdigest()
 
 
+  def _name(self):
+    return self.name if self.name is not None else self.__class__.__name__
+
+
+  def set_name(self, name: str):
+    self.name = name
+
+
   def output_dir(self) -> Path:
-    class_name = self.__class__.__name__
-    return Path('target') / class_name / self.hash_id()
+    return Path('target') / self._name() / self.hash_id()
 
 
   def output_path(self) -> Path:
@@ -84,14 +92,14 @@ class Target:
 
 
   def output(self, force=False):
-    class_name = self.__class__.__name__
-    logging.info(f'Executing {class_name} defined at build.py:{self.lineno}.')
+    target_name = self._name()
+    logging.info(f'Executing {target_name} defined at build.py:{self.lineno}.')
     hash_id = self.hash_id()
     if hash_id == self.cached_hash_id and self.cached_output is not None:
       logging.info(f'  Re-using cached version {hash_id}.')
       return self.cached_output
     else:
-      root_dir = Path('target') / class_name / hash_id
+      root_dir = Path('target') / target_name / hash_id
       os.makedirs(root_dir, exist_ok=True)
       file_path = root_dir / '1.pickle'
       if not force and file_path.is_file():
