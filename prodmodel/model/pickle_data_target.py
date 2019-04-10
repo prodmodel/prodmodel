@@ -13,3 +13,7 @@ class PickleDataTarget(DataTarget):
   def execute(self):
     with open(self.source.file_name, 'rb') as f:
       return pickle.load(f)
+
+
+  def output(self, force=False):
+    return self.execute()
