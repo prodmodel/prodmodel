@@ -29,6 +29,21 @@ class IsolatedSysPath:
     sys.path = self.original_sys_path
 
 
+class IsolatedModules:
+  def __init__(self, source_files: List):
+    self.modules = [f.output() for f in source_files]
+
+
+  def __enter__(self):
+    for module in self.modules:
+      sys.modules[module.__name__] = module
+
+
+  def __exit__(self, type, value, traceback):
+    for module in self.modules:
+      del sys.modules[module.__name__]
+
+
 def red_color(msg: str) -> str:
   return '\033[91m'+ msg + '\033[0m'
 

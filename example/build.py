@@ -127,7 +127,7 @@ evaluate = rules.transform(
 
 test_transform = rules.test(
   test_file='tests/test_transform_record.py',
-  source_files=['transform_record.py']
+  file_deps=['transform_record.py']
 )
 
 model_in_s3 = aws_rules.copy_to_s3(
