@@ -86,7 +86,8 @@ model = rules.transform(
       'y': final_train_data_y
   },
   file='train.py',
-  fn='train'
+  fn='train',
+  deps=['feature_definitions.py']
 )
 
 

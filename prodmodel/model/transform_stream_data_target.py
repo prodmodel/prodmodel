@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 from functools import partial
 
 from model.artifact import Artifact
@@ -7,7 +7,7 @@ from model.iterable_data_target import IterableDataTarget
 
 
 class TransformStreamDataTarget(IterableDataTarget):
-  def __init__(self, source: Artifact, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget], cache: bool):
+  def __init__(self, source: Artifact, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget], deps: List[str], cache: bool):
     super().__init__(sources=[source], deps=[stream] + list(objects.values()), cache=cache)
     self.stream = stream
     self.source = source

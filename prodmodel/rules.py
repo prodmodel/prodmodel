@@ -54,13 +54,13 @@ def split(data: IterableDataTarget, test_ratio: float, target_column: str, seed:
 
 
 @checkargtypes
-def transform_stream(file: str, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget]={}, cache: bool=False) -> IterableDataTarget:
-  return TransformStreamDataTarget(source=PyFileCache.get(file), fn=fn, stream=stream, objects=objects, cache=cache)
+def transform_stream(file: str, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget]={}, deps: List[str]=[], cache: bool=False) -> IterableDataTarget:
+  return TransformStreamDataTarget(source=PyFileCache.get(file), fn=fn, stream=stream, objects=objects, deps=deps, cache=cache)
 
 
 @checkargtypes
-def transform(file: str, fn: str, streams: Dict[str, IterableDataTarget]={}, objects: Dict[str, DataTarget]={}, cache: bool=False) -> DataTarget:
-  return TransformDataTarget(source=PyFileCache.get(file), fn=fn, streams=streams, objects=objects, cache=cache)
+def transform(file: str, fn: str, streams: Dict[str, IterableDataTarget]={}, objects: Dict[str, DataTarget]={}, deps: List[str]=[], cache: bool=False) -> DataTarget:
+  return TransformDataTarget(source=PyFileCache.get(file), fn=fn, streams=streams, objects=objects, deps=deps, cache=cache)
 
 
 @checkargtypes
