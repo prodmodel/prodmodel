@@ -16,7 +16,7 @@ from model.artifact import Artifact
 
 class Target:
   # TODO List[Target]
-  def __init__(self, sources: List[Artifact], deps: List, file_deps: List=[Artifact], cache: bool=False):
+  def __init__(self, sources: List[Artifact], deps: List, file_deps: List[Artifact]=[], cache: bool=False):
     self.sources = sources
     self.deps = deps
     self.cache = cache
@@ -119,13 +119,7 @@ class Target:
           output = pickle.load(f)
       else:
         logging.info(f'  Creating version {hash_id}.')
-        lib_dir = self.output_dir() / 'lib'
-        shutil.rmtree(lib_dir, ignore_errors=True)
-        lib_dir.mkdir(parents=True, exist_ok=True)
-        mod_names = []
-        for f in self.transitive_file_deps:
-          os.symlink(f.file_name, lib_dir / f.file_name.name)
-          mod_names.append(f.mod_name())
+        lib_dir, mod_names = self._setup_modules()
         with util.IsolatedSysPath(mod_names):
           sys.path.append(str(lib_dir))
           output = self.execute()
@@ -134,3 +128,15 @@ class Target:
       self.cached_output = output
       self.cached_hash_id = hash_id
       return output
+
+
+  def _setup_modules(self):
+    lib_dir = self.output_dir() / 'lib'
+    shutil.rmtree(lib_dir, ignore_errors=True)
+    lib_dir.mkdir(parents=True, exist_ok=True)
+    mod_names = []
+    for f in self.transitive_file_deps:
+      os.symlink(f.file_name, lib_dir / f.file_name.name)
+      mod_names.append(f.mod_name())
+    return lib_dir, mod_names
+        

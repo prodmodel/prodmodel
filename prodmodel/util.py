@@ -3,7 +3,6 @@ import sys
 from pathlib import Path
 from inspect import signature
 from typing import List, Dict, GenericMeta
-import copy
 
 
 def build_file():
@@ -32,9 +31,9 @@ class IsolatedSysPath:
 
 
   def __exit__(self, type, value, traceback):
-    for m in self.mod_names:
-      if m in sys.modules:
-        del sys.modules[m]
+    for mod_name in self.mod_names:
+      if mod_name in sys.modules:
+        del sys.modules[mod_name]
     sys.path = self.original_sys_path
 
 
