@@ -7,8 +7,8 @@ from model.data_target import DataTarget
 
 
 class IterableDataTarget(DataTarget):
-  def __init__(self, sources: List[Artifact], deps: List[DataTarget], cache):
-    super().__init__(sources=sources, deps=deps, cache=cache)
+  def __init__(self, sources: List[Artifact], deps: List[DataTarget], file_deps: List[Artifact], cache):
+    super().__init__(sources=sources, deps=deps, file_deps=file_deps, cache=cache)
     self.sources = sources
     self.deps = deps
 

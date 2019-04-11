@@ -6,7 +6,7 @@ from model.iterable_data_target import IterableDataTarget
 
 class EncodeLabelDataTarget(IterableDataTarget):
   def __init__(self, data: IterableDataTarget, label_encoder: LabelEncoderTarget):
-    super().__init__(sources=[], deps=[data, label_encoder], cache=False)
+    super().__init__(sources=[], deps=[data, label_encoder], file_deps=[], cache=False)
     self.data = data
     self.label_encoder = label_encoder
 

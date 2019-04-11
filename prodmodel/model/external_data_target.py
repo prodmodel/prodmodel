@@ -7,7 +7,7 @@ from model.data_target import DataTarget
 
 class ExternalDataTarget(DataTarget):
   def __init__(self, source: Artifact, fn: str, args: Dict[str, str]):
-    super().__init__(sources=[source], deps=[], cache=False)
+    super().__init__(sources=[source], deps=[], file_deps=[], cache=False)
     self.source = source
     self.fn = fn
     self.args = args

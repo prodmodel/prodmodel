@@ -6,7 +6,7 @@ from model.artifact import Artifact
 
 class PickleDataTarget(DataTarget):
   def __init__(self, source: Artifact):
-    super().__init__(sources=[source], deps=[], cache=False)
+    super().__init__(sources=[source], deps=[], file_deps=[], cache=False)
     self.source = source
 
 

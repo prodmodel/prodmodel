@@ -22,11 +22,34 @@ class RuleException(Exception):
 
 
 class IsolatedSysPath:
+  def __init__(self, mod_names: List[str]):
+    self.mod_names = mod_names
+
+
   def __enter__(self):
     self.original_sys_path = list(sys.path)
 
+
   def __exit__(self, type, value, traceback):
+    for mod_name in self.mod_names:
+      if mod_name in sys.modules:
+        del sys.modules[mod_name]
     sys.path = self.original_sys_path
+
+
+class IsolatedModules:
+  def __init__(self, source_files: List):
+    self.modules = [f.output() for f in source_files]
+
+
+  def __enter__(self):
+    for module in self.modules:
+      sys.modules[module.__name__] = module
+
+
+  def __exit__(self, type, value, traceback):
+    for module in self.modules:
+      del sys.modules[module.__name__]
 
 
 def red_color(msg: str) -> str:
