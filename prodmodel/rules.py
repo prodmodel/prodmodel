@@ -54,13 +54,25 @@ def split(data: IterableDataTarget, test_ratio: float, target_column: str, seed:
 
 
 @checkargtypes
-def transform_stream(file: str, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget]={}, deps: List[str]=[], cache: bool=False) -> IterableDataTarget:
-  return TransformStreamDataTarget(source=PyFileCache.get(file), fn=fn, stream=stream, objects=objects, deps=deps, cache=cache)
+def transform_stream(file: str, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget]={}, file_deps: List[str]=[], cache: bool=False) -> IterableDataTarget:
+  return TransformStreamDataTarget(
+    source=PyFileCache.get(file),
+    fn=fn,
+    stream=stream,
+    objects=objects,
+    file_deps=[PyFileCache.get(f) for f in file_deps],
+    cache=cache)
 
 
 @checkargtypes
-def transform(file: str, fn: str, streams: Dict[str, IterableDataTarget]={}, objects: Dict[str, DataTarget]={}, deps: List[str]=[], cache: bool=False) -> DataTarget:
-  return TransformDataTarget(source=PyFileCache.get(file), fn=fn, streams=streams, objects=objects, deps=deps, cache=cache)
+def transform(file: str, fn: str, streams: Dict[str, IterableDataTarget]={}, objects: Dict[str, DataTarget]={}, file_deps: List[str]=[], cache: bool=False) -> DataTarget:
+  return TransformDataTarget(
+    source=PyFileCache.get(file),
+    fn=fn,
+    streams=streams,
+    objects=objects,
+    file_deps=[PyFileCache.get(f) for f in file_deps],
+    cache=cache)
 
 
 @checkargtypes
@@ -74,10 +86,10 @@ def encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget) -
 
 
 @checkargtypes
-def test(test_file: str, source_files: List[str], cache: bool=False):
+def test(test_file: str, file_deps: List[str], cache: bool=False):
   return TestTarget(
     test_file=PyFileCache.get(test_file),
-    source_files=[PyFileCache.get(f) for f in source_files],
+    file_deps=[PyFileCache.get(f) for f in file_deps],
     cache=cache)
 
 

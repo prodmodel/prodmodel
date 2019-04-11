@@ -53,7 +53,7 @@ def main():
       else:
         raise RuleException(f'Variable "{target_name}" is not a target but a "{type(target).__name__}".')
     else:
-      raise RuleException(f'Target "{target_name}" not found in {build_file}.')
+      raise RuleException(f'Target "{target_name}" not found in {build_mod.__file__}.')
   except RuleException as e:
     logging.error(red_color(str(e)))
     success = False

@@ -5,7 +5,7 @@ from model.iterable_data_target import IterableDataTarget
 
 class SelectDataTarget(IterableDataTarget):
   def __init__(self, data: IterableDataTarget, columns: List[str], keep: bool):
-    super().__init__(sources=[], deps=[data], cache=False)
+    super().__init__(sources=[], deps=[data], file_deps=[], cache=False)
     self.data = data
     self.columns = columns
     self.keep = keep

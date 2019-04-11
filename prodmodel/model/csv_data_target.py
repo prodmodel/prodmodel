@@ -6,7 +6,7 @@ from model.iterable_data_target import IterableDataTarget
 
 class CSVDataTarget(IterableDataTarget):
   def __init__(self, source: DataFile, dtypes: dict, cache: bool):
-    super().__init__(sources=[source], deps=[], cache=cache)
+    super().__init__(sources=[source], deps=[], file_deps=[], cache=cache)
     self.source = source
     self.dtypes = dtypes
     self.file = None

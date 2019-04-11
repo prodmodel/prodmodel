@@ -53,11 +53,14 @@ train_data_x, train_data_y, test_data_x, test_data_y = rules.split(
   seed=3
 )
 
+feature_definitions = ['feature_definitions.py']
+
 enriched_train_data_x = rules.transform_stream(
   stream=train_data_x,
   objects={'education_scores': education_scores},
   file='transform_record.py',
-  fn='transform_record'
+  fn='transform_record',
+  file_deps=feature_definitions
 )
 
 label_encoder_x = rules.create_label_encoder(
@@ -86,8 +89,7 @@ model = rules.transform(
       'y': final_train_data_y
   },
   file='train.py',
-  fn='train',
-  deps=['feature_definitions.py']
+  fn='train'
 )
 
 
@@ -128,7 +130,7 @@ evaluate = rules.transform(
 
 test_transform = rules.test(
   test_file='tests/test_transform_record.py',
-  source_files=['transform_record.py']
+  file_deps=['transform_record.py'] + feature_definitions
 )
 
 model_in_s3 = aws_rules.copy_to_s3(
