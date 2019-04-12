@@ -18,6 +18,7 @@ logging.basicConfig(level=logging.INFO)
 parser = argparse.ArgumentParser(description='Build, deploy and test Python data science models.')
 parser.add_argument('target')
 parser.add_argument('--force_external', action='store_true')
+parser.add_argument('--cache_data', action='store_true')
 parser.add_argument('--build_time', type=int, default=int(time.time()))
 
 
