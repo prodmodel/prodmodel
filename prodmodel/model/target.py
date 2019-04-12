@@ -14,6 +14,9 @@ from typing import List
 from model.artifact import Artifact
 
 
+OUTPUT_FILE_NAME = 'output_1.pickle'
+
+
 class Target:
   # TODO List[Target]
   def __init__(self, sources: List[Artifact], deps: List, file_deps: List[Artifact]=[], cache: bool=False):
@@ -94,12 +97,16 @@ class Target:
     self.name = name
 
 
+  def _output_dir(self, hash_id) -> Path:
+    return Path('target') / 'output' / self._name() / hash_id
+
+
   def output_dir(self) -> Path:
-    return Path('target') / self._name() / self.hash_id()
+    return self._output_dir(self.hash_id())
 
 
   def output_path(self) -> Path:
-    return self.output_dir() / '1.pickle'
+    return self.output_dir() / OUTPUT_FILE_NAME
 
 
   def output(self, force=False):
@@ -110,9 +117,9 @@ class Target:
       logging.info(f'  Re-using cached version {hash_id}.')
       return self.cached_output
     else:
-      root_dir = Path('target') / target_name / hash_id
+      root_dir = self._output_dir(hash_id)
       os.makedirs(root_dir, exist_ok=True)
-      file_path = root_dir / '1.pickle'
+      file_path = root_dir / OUTPUT_FILE_NAME
       if not force and file_path.is_file():
         logging.info(f'  Loading cached version {hash_id}.')
         with open(file_path, 'rb') as f:
