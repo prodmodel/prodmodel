@@ -2,6 +2,7 @@ import importlib
 import csv
 import shutil
 from pathlib import Path
+from globals import TargetConfig
 
 
 from model.artifact import Artifact
@@ -19,7 +20,7 @@ class DataFile(Artifact):
       self.cached_hash_id = self.hash_id()
       self.cashed_build_time = args.build_time
       if args.cache_data:
-        path = Path('target') / 'data' / self.relative_name / self.cached_hash_id
+        path = TargetConfig.target_base_dir / 'data' / self.relative_name / self.cached_hash_id
         path.parent.mkdir(parents=True, exist_ok=True)
         if not path.is_file():
           shutil.copy(self.file_name, path)

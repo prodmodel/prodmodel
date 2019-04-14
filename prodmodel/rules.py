@@ -21,6 +21,7 @@ import os
 import hashlib
 from file_cache import PyFileCache
 from util import RuleException, checkargtypes
+from globals import TargetConfig
 
 
 def requirements(packages: List[str]):
@@ -28,7 +29,7 @@ def requirements(packages: List[str]):
   for package in packages:
     m.update(package.encode('utf-8'))
   hash_id = m.hexdigest()
-  lib_dir = str((Path('target') / 'lib' / hash_id).resolve())
+  lib_dir = str((TargetConfig.target_base_dir / 'lib' / hash_id).resolve())
   if not os.path.isdir(lib_dir):
     return_value = pip._internal.main(['install', f'--target={lib_dir}', '--ignore-installed'] + packages)
     if return_value > 0:
