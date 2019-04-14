@@ -1,3 +1,4 @@
+#!/usr/bin/env python3.6
 import sys
 import rules
 import importlib
@@ -11,6 +12,7 @@ from rules import RuleException
 from model.target import Target
 from util import red_color, green_color
 import argparse
+from globals import TargetConfig
 
 
 logging.basicConfig(level=logging.INFO)
@@ -22,9 +24,20 @@ parser.add_argument('--cache_data', action='store_true')
 parser.add_argument('--build_time', type=int, default=int(time.time()))
 
 
-def load_build_mod():
-  root = Path(abspath('example'))
-  build_file = root / 'build.py'
+def _parse_target(target_arg):
+  if ':' in target_arg:
+    target_parts = target_arg.split(':')
+    f = target_parts[0]
+    target = target_parts[1]
+    if f.endswith('build.py'):
+      return Path(f).resolve(), target
+    else:
+      return (Path(f) / 'build.py').resolve(), target
+  else:
+    return Path('build.py').resolve(), target_arg
+
+
+def _load_build_mod(build_file):
   spec = importlib.util.spec_from_file_location('build', build_file)
   build_mod = importlib.util.module_from_spec(spec)
 
@@ -39,11 +52,13 @@ def load_build_mod():
 
 def main():
   args = parser.parse_args()
-  target_name = args.target
 
   start_time = time.time()
   try:
-    build_mod = load_build_mod()
+    build_file, target_name = _parse_target(args.target)
+    TargetConfig.target_base_dir = build_file.parent / 'target'
+    logging.info(f'Executing target {target_name} in {build_file}.')
+    build_mod = _load_build_mod(build_file)
     if target_name in dir(build_mod):
       target = getattr(build_mod, target_name)
       if isinstance(target, Target):

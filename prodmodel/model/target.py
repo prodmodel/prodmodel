@@ -12,6 +12,7 @@ import shutil
 
 from typing import List
 from model.artifact import Artifact
+from globals import TargetConfig
 
 
 OUTPUT_FILE_NAME = 'output_1.pickle'
@@ -98,7 +99,7 @@ class Target:
 
 
   def _output_dir(self, hash_id) -> Path:
-    return Path('target') / 'output' / self._name() / hash_id
+    return TargetConfig.target_base_dir / 'output' / self._name() / hash_id
 
 
   def output_dir(self) -> Path:
