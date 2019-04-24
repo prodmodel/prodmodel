@@ -15,9 +15,9 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3.6",
-        "LICENSE :: OSI APPROVED :: APACHE SOFTWARE LICENSE",
+        "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
-        "DEVELOPMENT STATUS :: 3 - ALPHA"
+        "Development Status :: 3 - Alpha"
     ],
     entry_points={'console_scripts': ['prodmodel = prodmodel.__main__:main']}
 )
