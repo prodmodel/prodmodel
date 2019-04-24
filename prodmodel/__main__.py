@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.6
+
 import sys
-import rules
 import importlib
 import logging
 import time
@@ -8,10 +8,16 @@ from os.path import abspath
 from pathlib import Path
 import os
 import subprocess
-from rules import RuleException
+import argparse
+
+if __package__ == 'prodmodel':
+  # To be able to import when run as an executable:
+  path = os.path.dirname(__file__)
+  sys.path.append(path)
+
+import rules
 from model.target import Target
 from util import red_color, green_color
-import argparse
 from globals import TargetConfig
 
 
@@ -52,7 +58,6 @@ def _load_build_mod(build_file):
 
 def main():
   args = parser.parse_args()
-
   start_time = time.time()
   try:
     build_file, target_name = _parse_target(args.target)
@@ -67,10 +72,10 @@ def main():
         logging.info(f'Created {result}.')
         success = True
       else:
-        raise RuleException(f'Variable "{target_name}" is not a target but a "{type(target).__name__}".')
+        raise rules.RuleException(f'Variable "{target_name}" is not a target but a "{type(target).__name__}".')
     else:
-      raise RuleException(f'Target "{target_name}" not found in {build_mod.__file__}.')
-  except RuleException as e:
+      raise rules.RuleException(f'Target "{target_name}" not found in {build_mod.__file__}.')
+  except rules.RuleException as e:
     logging.error(red_color(str(e)))
     success = False
 
