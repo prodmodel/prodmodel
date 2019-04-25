@@ -11,11 +11,17 @@ class S3DataTarget(Target):
     self.s3_key = s3_key
     self.s3_bucket = s3_bucket
     self.data = data
-    self.s3 = boto3.client(
-      's3',
-      aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
-      aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
-    )
+    self.s3 = None
+
+
+  def _s3(self):
+    if self.s3 is None:
+      self.s3 = boto3.client(
+        's3',
+        aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
+        aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
+      )
+    return self.s3
 
 
   def params(self) -> dict:
@@ -25,5 +31,5 @@ class S3DataTarget(Target):
   def execute(self):
     self.data.output()
     path = str(self.data.output_path())
-    self.s3.upload_file(path, self.s3_bucket, self.s3_key)
+    self._s3().upload_file(path, self.s3_bucket, self.s3_key)
     return self.params()
