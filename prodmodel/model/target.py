@@ -11,7 +11,7 @@ import sys
 import shutil
 
 from typing import List
-from model.artifact import Artifact
+from model.input_file import InputFile
 from globals import TargetConfig
 
 
@@ -20,7 +20,7 @@ OUTPUT_FILE_NAME = 'output_1.pickle'
 
 class Target:
   # TODO List[Target]
-  def __init__(self, sources: List[Artifact], deps: List, file_deps: List[Artifact]=[], cache: bool=False):
+  def __init__(self, sources: List[InputFile], deps: List, file_deps: List[InputFile]=[], cache: bool=False):
     self.sources = sources
     self.deps = deps
     self.cache = cache

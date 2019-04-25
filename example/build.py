@@ -1,5 +1,5 @@
-import rules
-from ee import aws_rules
+from rules import rules
+from rules import aws_rules
 
 
 rules.requirements(

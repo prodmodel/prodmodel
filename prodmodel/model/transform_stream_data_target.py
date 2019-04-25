@@ -1,13 +1,13 @@
 from typing import Dict, List
 from functools import partial
 
-from model.artifact import Artifact
+from model.input_file import InputFile
 from model.data_target import DataTarget
 from model.iterable_data_target import IterableDataTarget
 
 
 class TransformStreamDataTarget(IterableDataTarget):
-  def __init__(self, source: Artifact, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget], file_deps: List[Artifact], cache: bool):
+  def __init__(self, source: InputFile, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget], file_deps: List[InputFile], cache: bool):
     super().__init__(sources=[source], deps=[stream] + list(objects.values()), file_deps=file_deps, cache=cache)
     self.stream = stream
     self.source = source

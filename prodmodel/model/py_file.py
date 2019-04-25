@@ -1,11 +1,11 @@
 import importlib
-from model.artifact import Artifact
+from model.input_file import InputFile
 from util import RuleException
 import time
 from pathlib import Path
 
 
-class PyFile(Artifact):
+class PyFile(InputFile):
 
   def __init__(self, file_name: str):
     super().__init__(file_name=file_name)

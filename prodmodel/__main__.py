@@ -15,7 +15,7 @@ if __package__ == 'prodmodel':
   path = os.path.dirname(__file__)
   sys.path.append(path)
 
-import rules
+from rules import rules
 from model.target import Target
 from util import red_color, green_color
 from globals import TargetConfig
@@ -46,8 +46,8 @@ def _parse_target(target_arg):
 def _load_build_mod(build_file):
   spec = importlib.util.spec_from_file_location('build', build_file)
   build_mod = importlib.util.module_from_spec(spec)
-
   spec.loader.exec_module(build_mod)
+
   for field_name in dir(build_mod):
     field_obj = getattr(build_mod, field_name)
     if isinstance(field_obj, Target):

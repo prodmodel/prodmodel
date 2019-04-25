@@ -5,10 +5,10 @@ from pathlib import Path
 from globals import TargetConfig
 
 
-from model.artifact import Artifact
+from model.input_file import InputFile
 
 
-class DataFile(Artifact):
+class DataFile(InputFile):
 
   def __init__(self, file_name: str):
     super().__init__(file_name=file_name)

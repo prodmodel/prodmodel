@@ -1,11 +1,11 @@
 import pickle
 
 from model.data_target import DataTarget
-from model.artifact import Artifact
+from model.input_file import InputFile
 
 
 class PickleDataTarget(DataTarget):
-  def __init__(self, source: Artifact):
+  def __init__(self, source: InputFile):
     super().__init__(sources=[source], deps=[], file_deps=[], cache=False)
     self.source = source
 

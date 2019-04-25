@@ -8,7 +8,7 @@ import util
 BLOCKSIZE = 65536
 
 
-class Artifact:
+class InputFile:
 
   def __init__(self, file_name: str):
     if Path(file_name).is_absolute():
