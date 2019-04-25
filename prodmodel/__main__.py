@@ -27,6 +27,7 @@ parser = argparse.ArgumentParser(description='Build, deploy and test Python data
 parser.add_argument('target')
 parser.add_argument('--force_external', action='store_true')
 parser.add_argument('--cache_data', action='store_true')
+parser.add_argument('--target_dir', type=str, default='.target')
 parser.add_argument('--build_time', type=int, default=int(time.time()))
 
 
@@ -56,12 +57,20 @@ def _load_build_mod(build_file):
   return build_mod
 
 
+def _target_dir(args, build_file) -> Path:
+  target_dir = Path(args.target_dir)
+  if target_dir.is_absolute():
+    return target_dir
+  else:
+    return build_file.parent / target_dir
+
+
 def main():
   args = parser.parse_args()
   start_time = time.time()
   try:
     build_file, target_name = _parse_target(args.target)
-    TargetConfig.target_base_dir = build_file.parent / 'target'
+    TargetConfig.target_base_dir = _target_dir(args, build_file)
     logging.info(f'Executing target {target_name} in {build_file}.')
     build_mod = _load_build_mod(build_file)
     if target_name in dir(build_mod):

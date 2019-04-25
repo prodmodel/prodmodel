@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 from inspect import signature
 from typing import List, Dict, GenericMeta
+from globals import TargetConfig
 
 
 def build_file():
@@ -13,7 +14,7 @@ def build_file():
 
 def lib_hash_id():
   lib_dir = sys.path[0]
-  assert 'target' in lib_dir and 'lib' in lib_dir 
+  assert str(TargetConfig.target_base_dir) in lib_dir and 'lib' in lib_dir
   return str(Path(lib_dir).name)
 
 
