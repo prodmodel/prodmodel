@@ -24,9 +24,10 @@ from globals import TargetConfig
 logging.basicConfig(level=logging.INFO)
 
 parser = argparse.ArgumentParser(description='Build, deploy and test Python data science models.')
-parser.add_argument('target')
-parser.add_argument('--force_external', action='store_true')
-parser.add_argument('--cache_data', action='store_true')
+parser.add_argument('target', help='The target to execute in a <path_to_build_file>:<target> format, or <target> if the command is executed from the directory of the build file.')
+parser.add_argument('--force_external', action='store_true', help='Force reloading external data sources instead of using the cached data.')
+parser.add_argument('--cache_data', action='store_true', help='Cache local data files.')
+parser.add_argument('--target_dir', type=str, default='.target', help='The target directory to build in.')
 parser.add_argument('--build_time', type=int, default=int(time.time()))
 
 
@@ -56,12 +57,20 @@ def _load_build_mod(build_file):
   return build_mod
 
 
+def _target_dir(args, build_file) -> Path:
+  target_dir = Path(args.target_dir)
+  if target_dir.is_absolute():
+    return target_dir
+  else:
+    return build_file.parent / target_dir
+
+
 def main():
   args = parser.parse_args()
   start_time = time.time()
   try:
     build_file, target_name = _parse_target(args.target)
-    TargetConfig.target_base_dir = build_file.parent / 'target'
+    TargetConfig.target_base_dir = _target_dir(args, build_file)
     logging.info(f'Executing target {target_name} in {build_file}.')
     build_mod = _load_build_mod(build_file)
     if target_name in dir(build_mod):
