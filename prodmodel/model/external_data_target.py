@@ -1,12 +1,12 @@
 from typing import Dict
 import hashlib
 
-from model.artifact import Artifact, BLOCKSIZE
+from model.input_file import InputFile, BLOCKSIZE
 from model.data_target import DataTarget
 
 
 class ExternalDataTarget(DataTarget):
-  def __init__(self, source: Artifact, fn: str, args: Dict[str, str]):
+  def __init__(self, source: InputFile, fn: str, args: Dict[str, str]):
     super().__init__(sources=[source], deps=[], file_deps=[], cache=False)
     self.source = source
     self.fn = fn

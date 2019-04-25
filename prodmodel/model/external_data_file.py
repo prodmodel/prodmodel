@@ -1,10 +1,10 @@
-from model.artifact import Artifact
+from model.input_file import InputFile
 from model.external_data_target import ExternalDataTarget
 
 from pathlib import Path
 
 
-class ExternalDataArtifact(Artifact):
+class ExternalDataFile(InputFile):
 
   def __init__(self, external_data_target: ExternalDataTarget):
     super().__init__(file_name=external_data_target.output_path().absolute())

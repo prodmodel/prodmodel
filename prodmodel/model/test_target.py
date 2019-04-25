@@ -2,13 +2,13 @@ from typing import List
 
 from util import RuleException
 from model.target import Target
-from model.artifact import Artifact
+from model.input_file import InputFile
 
 import pytest
 
 
 class TestTarget(Target):
-  def __init__(self, test_file: Artifact, file_deps: List[Artifact], cache: bool):
+  def __init__(self, test_file: InputFile, file_deps: List[InputFile], cache: bool):
     super().__init__(sources=[test_file], file_deps=file_deps, deps=[], cache=cache)
     self.test_file = test_file
 

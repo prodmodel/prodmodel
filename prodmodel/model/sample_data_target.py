@@ -1,6 +1,5 @@
 import random
 
-from model.artifact import Artifact
 from model.iterable_data_target import IterableDataTarget
 
 
