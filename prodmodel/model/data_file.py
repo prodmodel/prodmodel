@@ -17,8 +17,8 @@ class DataFile(Artifact):
 
   def init(self, args):
     if self.cashed_build_time != args.build_time:
-      self.cached_hash_id = self.hash_id()
       self.cashed_build_time = args.build_time
+      self.cached_hash_id = self.hash_id()
       if args.cache_data:
         path = TargetConfig.target_base_dir / 'data' / self.relative_name / self.cached_hash_id
         path.parent.mkdir(parents=True, exist_ok=True)
