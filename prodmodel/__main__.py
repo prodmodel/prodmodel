@@ -44,7 +44,6 @@ def _parse_target(target_arg):
 
 
 def _load_build_mod(build_file):
-  start_time = time.time()
   spec = importlib.util.spec_from_file_location('build', build_file)
   build_mod = importlib.util.module_from_spec(spec)
 
