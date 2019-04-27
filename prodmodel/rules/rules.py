@@ -1,24 +1,25 @@
 from typing import Tuple, List, Dict
-from model.target import Target
-from model.data_target import DataTarget
-from model.iterable_data_target import IterableDataTarget
-from model.csv_data_target import CSVDataTarget
-from model.transform_data_target import TransformDataTarget
-from model.transform_stream_data_target import TransformStreamDataTarget
-from model.select_data_target import SelectDataTarget
-from model.sample_data_target import SampleDataTarget
-from model.label_encoder_target import LabelEncoderTarget
-from model.encode_label_data_target import EncodeLabelDataTarget
-from model.data_file import DataFile
-from model.test_target import TestTarget
-from model.external_data_target import ExternalDataTarget
-from model.external_data_file import ExternalDataFile
-from model.pickle_data_target import PickleDataTarget
 from pathlib import Path
 import pip._internal
 import sys
 import os
 import hashlib
+
+from model.files.data_file import DataFile
+from model.files.external_data_file import ExternalDataFile
+from model.target.target import Target
+from model.target.data_target import DataTarget
+from model.target.iterable_data_target import IterableDataTarget
+from model.target.csv_data_target import CSVDataTarget
+from model.target.transform_data_target import TransformDataTarget
+from model.target.transform_stream_data_target import TransformStreamDataTarget
+from model.target.select_data_target import SelectDataTarget
+from model.target.sample_data_target import SampleDataTarget
+from model.target.label_encoder_target import LabelEncoderTarget
+from model.target.encode_label_data_target import EncodeLabelDataTarget
+from model.target.test_target import TestTarget
+from model.target.external_data_target import ExternalDataTarget
+from model.target.pickle_data_target import PickleDataTarget
 from model.file_cache import PyFileCache
 from util import RuleException, checkargtypes
 from globals import TargetConfig

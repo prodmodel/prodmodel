@@ -1,7 +1,7 @@
 import csv
 
-from model.label_encoder_target import LabelEncoderTarget
-from model.iterable_data_target import IterableDataTarget
+from model.target.label_encoder_target import LabelEncoderTarget
+from model.target.iterable_data_target import IterableDataTarget
 
 
 class EncodeLabelDataTarget(IterableDataTarget):
@@ -18,11 +18,3 @@ class EncodeLabelDataTarget(IterableDataTarget):
         record[column] = encoder[record[column]]
       return record
     return map(encode, self.data.__iter__())
-
-
-  def init(self):
-    pass
-
-
-  def finish(self):
-    pass

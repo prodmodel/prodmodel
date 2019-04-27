@@ -4,20 +4,17 @@ import shutil
 from pathlib import Path
 from globals import TargetConfig
 
-
-from model.input_file import InputFile
+from model.files.input_file import InputFile
 
 
 class DataFile(InputFile):
 
   def __init__(self, file_name: str):
     super().__init__(file_name=file_name)
-    self.cashed_build_time = None
+    self.cached_build_time = None
 
 
-  def init(self, args):
-    if self.cashed_build_time != args.build_time:
-      self.cashed_build_time = args.build_time
+  def init_impl(self, args):
       self.cached_hash_id = self.hash_id()
       if args.cache_data:
         path = TargetConfig.target_base_dir / 'data' / self.relative_name / self.cached_hash_id

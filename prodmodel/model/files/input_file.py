@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from datetime import datetime
 import os
 import hashlib
@@ -21,17 +22,32 @@ class InputFile:
     self.cached_hash_id = None
 
 
-  def hash_id(self):
-    last_modified = os.path.getmtime(self.file_name)
-    if self.cached_hash_id:
-      if self.last_modified == last_modified:
-        return self.cached_hash_id
+  def init(self, args):
+    if self.cached_build_time != args.build_time:
+      self.init_impl(args)
+      self.cached_build_time = args.build_time
+
+
+  @abstractmethod
+  def init_impl(self, args):
+    pass
+
+
+  def _compute_hash(self):
     m = hashlib.md5()
     with open(self.file_name, 'rb') as f:
       buf = f.read(BLOCKSIZE)
       while len(buf) > 0:
         m.update(buf)
         buf = f.read(BLOCKSIZE)
-    self.cached_hash_id = m.hexdigest()
+    return m.hexdigest()
+
+
+  def hash_id(self):
+    last_modified = os.path.getmtime(self.file_name)
+    if self.last_modified == last_modified and self.cached_hash_id:
+      return self.cached_hash_id
+
+    self.cached_hash_id = self._compute_hash()
     self.last_modified = last_modified
     return self.cached_hash_id

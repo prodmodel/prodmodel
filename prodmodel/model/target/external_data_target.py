@@ -1,8 +1,8 @@
 from typing import Dict
 import hashlib
 
-from model.input_file import InputFile, BLOCKSIZE
-from model.data_target import DataTarget
+from model.files.input_file import InputFile, BLOCKSIZE
+from model.target.data_target import DataTarget
 
 
 class ExternalDataTarget(DataTarget):

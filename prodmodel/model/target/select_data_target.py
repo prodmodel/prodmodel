@@ -1,6 +1,6 @@
 from typing import List
 
-from model.iterable_data_target import IterableDataTarget
+from model.target.iterable_data_target import IterableDataTarget
 
 
 class SelectDataTarget(IterableDataTarget):
@@ -23,14 +23,6 @@ class SelectDataTarget(IterableDataTarget):
           del result[column]
       return result
     return map(select, self.data.__iter__())
-
-
-  def init(self):
-    pass
-
-
-  def finish(self):
-    pass
 
 
   def params(self) -> dict:

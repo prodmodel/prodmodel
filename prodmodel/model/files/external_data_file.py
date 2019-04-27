@@ -1,5 +1,5 @@
-from model.input_file import InputFile
-from model.external_data_target import ExternalDataTarget
+from model.files.input_file import InputFile
+from model.target.external_data_target import ExternalDataTarget
 
 from pathlib import Path
 
@@ -12,7 +12,7 @@ class ExternalDataFile(InputFile):
     self.cached_build_time = None
 
 
-  def init(self, args):
-    if (args.force_external and args.build_time != self.cached_build_time) or not Path(self.file_name).is_file():
+  def init_impl(self, args):
+    if args.force_external or not Path(self.file_name).is_file():
+      # Re-create input file.
       self.external_data_target.output(force=True)
-      self.cached_build_time = args.build_time

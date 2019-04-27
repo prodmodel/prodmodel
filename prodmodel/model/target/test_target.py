@@ -1,8 +1,8 @@
 from typing import List
 
 from util import RuleException
-from model.target import Target
-from model.input_file import InputFile
+from model.target.target import Target
+from model.files.input_file import InputFile
 
 import pytest
 

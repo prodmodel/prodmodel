@@ -1,8 +1,9 @@
 import importlib
-from model.input_file import InputFile
-from util import RuleException
 import time
 from pathlib import Path
+
+from model.files.input_file import InputFile
+from util import RuleException
 
 
 class PyFile(InputFile):
@@ -11,13 +12,11 @@ class PyFile(InputFile):
     super().__init__(file_name=file_name)
     assert file_name.endswith('.py')
     self.mod = None
-    self.cashed_build_time = None
+    self.cached_build_time = None
 
 
-  def init(self, args):
-    if self.cashed_build_time != args.build_time:
-      self.cached_hash_id = self.hash_id()
-      self.cashed_build_time = args.build_time
+  def init_impl(self, args):
+    pass
 
 
   def mod_name(self):

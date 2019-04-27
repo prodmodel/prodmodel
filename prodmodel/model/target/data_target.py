@@ -2,8 +2,8 @@ from abc import abstractmethod
 import numpy as np
 from typing import List
 
-from model.input_file import InputFile
-from model.target import Target
+from model.files.input_file import InputFile
+from model.target.target import Target
 
 
 class DataTarget(Target):
