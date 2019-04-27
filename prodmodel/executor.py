@@ -52,7 +52,9 @@ def run_target(args):
     if target_name in dir(build_mod):
       target = getattr(build_mod, target_name)
       if isinstance(target, Target):
+        logging.info(f'Initializing target {target_name}.')
         target.init_with_deps(args)
+        logging.info(f'Target {target_name} initialized.')
         result = target.output()
         logging.info(f'Created {result}.')
         success = True

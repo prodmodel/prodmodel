@@ -14,9 +14,7 @@ class DataFile(InputFile):
     self.cashed_build_time = None
 
 
-  def init(self, args):
-    if self.cashed_build_time != args.build_time:
-      self.cashed_build_time = args.build_time
+  def init_impl(self, args):
       self.cached_hash_id = self.hash_id()
       if args.cache_data:
         path = TargetConfig.target_base_dir / 'data' / self.relative_name / self.cached_hash_id

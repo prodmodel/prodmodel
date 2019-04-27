@@ -16,9 +16,7 @@ class PyFile(InputFile):
 
 
   def init(self, args):
-    if self.cashed_build_time != args.build_time:
-      self.cached_hash_id = self.hash_id()
-      self.cashed_build_time = args.build_time
+    pass
 
 
   def mod_name(self):

@@ -25,14 +25,6 @@ class SelectDataTarget(IterableDataTarget):
     return map(select, self.data.__iter__())
 
 
-  def init(self):
-    pass
-
-
-  def finish(self):
-    pass
-
-
   def params(self) -> dict:
     return {'columns': self.columns, 'keep': self.keep}
 

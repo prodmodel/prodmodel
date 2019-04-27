@@ -36,22 +36,7 @@ class Target:
 
 
   @abstractmethod
-  def is_changed(self):
-    pass
-
-
-  @abstractmethod
-  def init(self):
-    pass
-
-
-  @abstractmethod
   def execute(self) -> object:
-    pass
-
-
-  @abstractmethod
-  def finish(self):
     pass
 
 
@@ -61,7 +46,6 @@ class Target:
 
 
   def init_with_deps(self, args):
-    self.init()
     for source in self.sources:
       source.init(args)
     for file_dep in self.file_deps:
@@ -69,11 +53,6 @@ class Target:
     for dep in self.deps:
       dep.init_with_deps(args)
 
-
-  def finish_with_deps(self):
-    self.finish()
-    for dep in self.deps:
-      dep.finish_with_deps()
 
 
   def hash_id(self) -> str:

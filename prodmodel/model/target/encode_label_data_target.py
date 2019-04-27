@@ -18,11 +18,3 @@ class EncodeLabelDataTarget(IterableDataTarget):
         record[column] = encoder[record[column]]
       return record
     return map(encode, self.data.__iter__())
-
-
-  def init(self):
-    pass
-
-
-  def finish(self):
-    pass
