@@ -23,9 +23,9 @@ class InputFile:
 
 
   def init(self, args):
-    if self.cashed_build_time != args.build_time:
+    if self.cached_build_time != args.build_time:
       self.init_impl(args)
-      self.cashed_build_time = args.build_time
+      self.cached_build_time = args.build_time
 
 
   @abstractmethod

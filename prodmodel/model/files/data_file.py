@@ -11,7 +11,7 @@ class DataFile(InputFile):
 
   def __init__(self, file_name: str):
     super().__init__(file_name=file_name)
-    self.cashed_build_time = None
+    self.cached_build_time = None
 
 
   def init_impl(self, args):

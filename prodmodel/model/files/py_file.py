@@ -12,10 +12,10 @@ class PyFile(InputFile):
     super().__init__(file_name=file_name)
     assert file_name.endswith('.py')
     self.mod = None
-    self.cashed_build_time = None
+    self.cached_build_time = None
 
 
-  def init(self, args):
+  def init_impl(self, args):
     pass
 
 
