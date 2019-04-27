@@ -1,7 +1,8 @@
 from typing import Tuple, List, Dict
-from model.target import Target
-from model.data_target import DataTarget
-from model.s3_data_target import S3DataTarget
+
+from model.target.target import Target
+from model.target.data_target import DataTarget
+from model.target.s3_data_target import S3DataTarget
 from util import checkargtypes
 
 

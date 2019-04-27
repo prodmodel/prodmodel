@@ -1,8 +1,9 @@
 import importlib
-from model.input_file import InputFile
-from util import RuleException
 import time
 from pathlib import Path
+
+from model.files.input_file import InputFile
+from util import RuleException
 
 
 class PyFile(InputFile):

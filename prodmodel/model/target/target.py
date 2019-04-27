@@ -9,9 +9,9 @@ import json
 import util
 import sys
 import shutil
-
 from typing import List
-from model.input_file import InputFile
+
+from model.files.input_file import InputFile
 from globals import TargetConfig
 
 

@@ -1,9 +1,9 @@
 from typing import Dict, List
 from functools import partial
 
-from model.input_file import InputFile
-from model.data_target import DataTarget
-from model.iterable_data_target import IterableDataTarget
+from model.files.input_file import InputFile
+from model.target.data_target import DataTarget
+from model.target.iterable_data_target import IterableDataTarget
 
 
 class TransformStreamDataTarget(IterableDataTarget):

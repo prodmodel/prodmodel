@@ -1,7 +1,7 @@
 import csv
 
-from model.data_file import DataFile
-from model.iterable_data_target import IterableDataTarget
+from model.files.data_file import DataFile
+from model.target.iterable_data_target import IterableDataTarget
 
 
 class CSVDataTarget(IterableDataTarget):

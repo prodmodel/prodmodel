@@ -1,6 +1,6 @@
 import random
 
-from model.iterable_data_target import IterableDataTarget
+from model.target.iterable_data_target import IterableDataTarget
 
 
 class SampleDataTarget(IterableDataTarget):

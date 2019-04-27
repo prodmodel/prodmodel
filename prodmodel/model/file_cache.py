@@ -1,11 +1,11 @@
-from model.py_file import PyFile
+from model.files.py_file import PyFile
 
 
 class PyFileCache:
 
   cache = {}
 
-  def get(file: str):
+  def get(file: str) -> PyFile:
     if file not in PyFileCache.cache:
       PyFileCache.cache[file] = PyFile(file)
     return PyFileCache.cache[file]

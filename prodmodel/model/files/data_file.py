@@ -4,8 +4,7 @@ import shutil
 from pathlib import Path
 from globals import TargetConfig
 
-
-from model.input_file import InputFile
+from model.files.input_file import InputFile
 
 
 class DataFile(InputFile):

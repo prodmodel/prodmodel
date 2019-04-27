@@ -1,8 +1,8 @@
 from typing import List
 import numpy as np
 
-from model.target import Target
-from model.data_target import DataTarget
+from model.target.target import Target
+from model.target.data_target import DataTarget
 
 
 class LabelEncoderTarget(Target):
