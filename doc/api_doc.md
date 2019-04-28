@@ -21,7 +21,7 @@ Loads an external dataset by calling `fn` in `file` called with `args`.
 List of Python packages used by the project.
 
 ## split
-`split(data: IterableDataTarget, test_ratio: float, target_column: str, seed: int) -> Tuple`<br/>
+`split(data: IterableDataTarget, test_ratio: float, target_column: str, seed: int) -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]`<br/>
 Splits the source data into train X, train y, test X and test y data, respectively.
 
 ## test

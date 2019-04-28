@@ -4,7 +4,19 @@ import os
 import sys
 import re
 from inspect import getmembers, isfunction, signature, Signature
-from typing import List, Dict, GenericMeta
+from typing import GenericMeta
+
+
+def _annotation_str(a):
+  if isinstance(a, GenericMeta) and a.__extra__ == dict and a.__args__:
+    return f'{a.__name__}[{a.__args__[0].__name__}, {a.__args__[1].__name__}]'
+  elif isinstance(a, GenericMeta) and a.__extra__ == list and a.__args__:
+    return f'{a.__name__}[{a.__args__[0].__name__}]'
+  elif isinstance(a, GenericMeta) and a.__extra__ == tuple and a.__args__:
+    args_str = ', '.join([arg.__name__ for arg in a.__args__])
+    return f'{a.__name__}[{args_str}]'
+  else:
+    return f'{a.__name__}'
 
 
 def gen_doc(module, f):
@@ -16,16 +28,11 @@ def gen_doc(module, f):
       sign = signature(fn)
       for p in sign.parameters:
         a = sign.parameters[p].annotation
-        if isinstance(a, GenericMeta) and a.__extra__ == dict and a.__args__:
-          p_strs.append(f'''{p}: {a.__name__}[{a.__args__[0].__name__}, {a.__args__[1].__name__}]''') 
-        elif isinstance(a, GenericMeta) and a.__extra__ == list and a.__args__:
-          p_strs.append(f'''{p}: {a.__name__}[{a.__args__[0].__name__}]''')
-        else:
-          p_strs.append(f'{p}: {a.__name__}')
+        p_strs.append(f'{p}: {_annotation_str(a)}')
       if sign.return_annotation == Signature.empty:
         ret_str = ''
       else:
-        ret_str = ' -> ' + sign.return_annotation.__name__
+        ret_str = ' -> ' + _annotation_str(sign.return_annotation)
       sig_str = f'''{name}({', '.join(p_strs)}){ret_str}'''
 
       param_names = [p for p in sign.parameters]
