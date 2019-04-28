@@ -1,10 +1,11 @@
 import importlib
 import csv
 import shutil
+import os
 from pathlib import Path
-from globals import TargetConfig
 
 from model.files.input_file import InputFile
+from model.files.file_util import build_file
 
 
 class DataFile(InputFile):
@@ -14,13 +15,9 @@ class DataFile(InputFile):
     self.cached_build_time = None
 
 
-  def init_impl(self, args):
-      self.cached_hash_id = self.hash_id()
-      if args.cache_data:
-        path = TargetConfig.target_base_dir / 'data' / self.relative_name / self.cached_hash_id
-        path.parent.mkdir(parents=True, exist_ok=True)
-        if not path.is_file():
-          shutil.copy(self.file_name, path)
+  def init_impl(self, args) -> Path:
+    self.cached_hash_id = self.hash_id()
+    return build_file(args, self)
 
 
   def __iter__(self):

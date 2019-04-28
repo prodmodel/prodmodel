@@ -12,7 +12,10 @@ class ExternalDataFile(InputFile):
     self.cached_build_time = None
 
 
-  def init_impl(self, args):
-    if args.force_external or not Path(self.file_name).is_file():
+  def init_impl(self, args) -> Path:
+    self.external_data_target.init_with_deps(args)
+    path = Path(self.file_name)
+    if args.force_external or not path.is_file():
       # Re-create input file.
       self.external_data_target.output(force=True)
+    return path

@@ -24,12 +24,12 @@ class InputFile:
 
   def init(self, args):
     if self.cached_build_time != args.build_time:
-      self.init_impl(args)
+      self.dest_file_path = self.init_impl(args)
       self.cached_build_time = args.build_time
 
 
   @abstractmethod
-  def init_impl(self, args):
+  def init_impl(self, args) -> Path:
     pass
 
 

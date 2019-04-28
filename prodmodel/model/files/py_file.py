@@ -1,8 +1,11 @@
 import importlib
 import time
+import shutil
+import os
 from pathlib import Path
 
 from model.files.input_file import InputFile
+from model.files.file_util import build_file
 from util import RuleException
 
 
@@ -15,8 +18,9 @@ class PyFile(InputFile):
     self.cached_build_time = None
 
 
-  def init_impl(self, args):
-    pass
+  def init_impl(self, args) -> Path:
+    self.cached_hash_id = self.hash_id()
+    return build_file(args, self)
 
 
   def mod_name(self):
