@@ -1,6 +1,6 @@
 # Prodmodel
 
-Prodmodel is a [build system](https://en.wikipedia.org/wiki/List_of_build_automation_software) for data science pipelines. Please *hit a star* if you like the project.
+Prodmodel is a [build system](https://en.wikipedia.org/wiki/List_of_build_automation_software) for data science pipelines. Users, testers, contributors are welcome! Please don't forget to **hit a star** if you like the project.
 
 ## Concepts
 
