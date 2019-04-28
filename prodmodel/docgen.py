@@ -3,7 +3,8 @@
 import os
 import sys
 import re
-from inspect import getmembers, isfunction, signature
+from inspect import getmembers, isfunction, signature, Signature
+from typing import List, Dict, GenericMeta
 
 
 def gen_doc(module, f):
@@ -11,13 +12,28 @@ def gen_doc(module, f):
     if member[1].__name__ == 'wrapper_fn':
       name = member[0]
       fn = member[1].__closure__[0].cell_contents
-      sig_str = str(signature(fn))
-      param_names = [p for p in signature(fn).parameters]
+      p_strs = []
+      sign = signature(fn)
+      for p in sign.parameters:
+        a = sign.parameters[p].annotation
+        if isinstance(a, GenericMeta) and a.__extra__ == dict and a.__args__:
+          p_strs.append(f'''{p}: {a.__name__}[{a.__args__[0].__name__}, {a.__args__[1].__name__}]''') 
+        elif isinstance(a, GenericMeta) and a.__extra__ == list and a.__args__:
+          p_strs.append(f'''{p}: {a.__name__}[{a.__args__[0].__name__}]''')
+        else:
+          p_strs.append(f'{p}: {a.__name__}')
+      if sign.return_annotation == Signature.empty:
+        ret_str = ''
+      else:
+        ret_str = ' -> ' + sign.return_annotation.__name__
+      sig_str = f'''{name}({', '.join(p_strs)}){ret_str}'''
+
+      param_names = [p for p in sign.parameters]
       for m in re.finditer('\`(\w)+\`', str(fn.__doc__)):
         param = str(m.group(0))[1:-1]
         assert param in param_names, f'{param} not in {param_names}'
       f.write(f'## {name}\n')
-      f.write(f'`{name}{sig_str}`\n')
+      f.write(f'`{name}{sig_str}`<br/>\n')
       if fn.__doc__:
         doc_str = re.sub('(\s)+', ' ', str(fn.__doc__)) 
         f.write(f'{doc_str}\n')

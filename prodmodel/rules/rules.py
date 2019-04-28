@@ -104,7 +104,7 @@ def encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget) -
 
 
 @checkargtypes
-def test(test_file: str, file_deps: List[str]):
+def test(test_file: str, file_deps: List[str]) -> TestTarget:
   '''Runs the tests in `test_file`. Any module imported in file has to be specified in `file_deps`.'''
 
   return TestTarget(
