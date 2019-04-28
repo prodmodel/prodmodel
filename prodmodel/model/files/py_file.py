@@ -18,7 +18,7 @@ class PyFile(InputFile):
     self.cached_build_time = None
 
 
-  def init_impl(self, args):
+  def init_impl(self, args) -> Path:
     self.cached_hash_id = self.hash_id()
     return build_file(args, self)
 
