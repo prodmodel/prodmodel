@@ -7,7 +7,7 @@ from model.target.data_target import DataTarget
 
 class ExternalDataTarget(DataTarget):
   def __init__(self, source: InputFile, fn: str, args: Dict[str, str]):
-    super().__init__(sources=[source], deps=[], file_deps=[], cache=False)
+    super().__init__(sources=[source], deps=[], file_deps=[])
     self.source = source
     self.fn = fn
     self.args = args

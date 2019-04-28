@@ -7,7 +7,7 @@ from model.target.target import Target
 
 class S3DataTarget(Target):
   def __init__(self, data: Target, s3_bucket: str, s3_key: str):
-    super().__init__(sources=[], deps=[data], file_deps=[], cache=False)
+    super().__init__(sources=[], deps=[data], file_deps=[])
     self.s3_key = s3_key
     self.s3_bucket = s3_bucket
     self.data = data

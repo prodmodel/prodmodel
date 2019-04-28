@@ -20,10 +20,9 @@ OUTPUT_FILE_NAME = 'output_1.pickle'
 
 class Target:
   # TODO List[Target]
-  def __init__(self, sources: List[InputFile], deps: List, file_deps: List[InputFile]=[], cache: bool=False):
+  def __init__(self, sources: List[InputFile], deps: List, file_deps: List[InputFile]=[]):
     self.sources = sources
     self.deps = deps
-    self.cache = cache
     self.cached_output = None
     self.cached_hash_id = None
     self.lineno = str(util.build_file().lineno)

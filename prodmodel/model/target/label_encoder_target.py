@@ -7,7 +7,7 @@ from model.target.data_target import DataTarget
 
 class LabelEncoderTarget(Target):
   def __init__(self, source: DataTarget, columns: List[str]):
-    super().__init__(sources=[], deps=[source], file_deps=[], cache=False)
+    super().__init__(sources=[], deps=[source], file_deps=[])
     self.source = source
     self.columns = columns
 

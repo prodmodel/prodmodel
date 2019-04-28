@@ -7,8 +7,13 @@ from model.target.iterable_data_target import IterableDataTarget
 
 
 class TransformStreamDataTarget(IterableDataTarget):
-  def __init__(self, source: InputFile, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget], file_deps: List[InputFile], cache: bool):
-    super().__init__(sources=[source], deps=[stream] + list(objects.values()), file_deps=file_deps, cache=cache)
+  def __init__(self,
+               source: InputFile,
+               fn: str,
+               stream: IterableDataTarget,
+               objects: Dict[str, DataTarget],
+               file_deps: List[InputFile]):
+    super().__init__(sources=[source], deps=[stream] + list(objects.values()), file_deps=file_deps)
     self.stream = stream
     self.source = source
     self.objects = objects
