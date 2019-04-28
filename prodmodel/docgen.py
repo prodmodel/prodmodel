@@ -9,13 +9,15 @@ from inspect import getmembers, isfunction, signature
 def gen_doc(module, f):
   for member in [member for member in getmembers(module) if isfunction(member[1])]:
     if member[1].__name__ == 'wrapper_fn':
+      name = member[0]
       fn = member[1].__closure__[0].cell_contents
       sig_str = str(signature(fn))
       param_names = [p for p in signature(fn).parameters]
       for m in re.finditer('\`(\w)+\`', str(fn.__doc__)):
         param = str(m.group(0))[1:-1]
         assert param in param_names, f'{param} not in {param_names}'
-      f.write(f'## {member[0]}{sig_str}\n')
+      f.write(f'## {name}\n')
+      f.write(f'`{name}{sig_str}`\n')
       if fn.__doc__:
         doc_str = re.sub('(\s)+', ' ', str(fn.__doc__)) 
         f.write(f'{doc_str}\n')

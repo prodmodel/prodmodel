@@ -31,7 +31,7 @@ In order to use Prodmodel your code has to be structured as functions which the 
 Prodmodel requires at least Python3.6. Use [pip](https://pip.pypa.io/en/stable/) to install prodmodel.
 
 ```bash
-pip3 install prodmodel --user
+pip install prodmodel --user
 ```
 
 ## Usage
@@ -41,7 +41,7 @@ Create a `build.py` file in your data science folder. The build file contains re
 ```python
 import rules
 
-csv_data = rules.data_source(file='data.csv', type='csv', dtypes = {...})
+csv_data = rules.data_source(file='data.csv', type='csv', dtypes={...})
 
 my_model = rules.transform(objects={'data': csv_data}, file='kmeans.py', fn='compute_kmeans')
 ```
