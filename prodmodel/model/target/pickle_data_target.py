@@ -6,7 +6,7 @@ from model.files.input_file import InputFile
 
 class PickleDataTarget(DataTarget):
   def __init__(self, source: InputFile):
-    super().__init__(sources=[source], deps=[], file_deps=[], cache=False)
+    super().__init__(sources=[source], deps=[], file_deps=[])
     self.source = source
 
 
