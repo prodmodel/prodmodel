@@ -88,6 +88,30 @@ class Target:
     return self.output_dir() / OUTPUT_FILE_NAME
 
 
+  def _get_metadata_from_dep(self, target, files, targets):
+    def _rel_path(input_file):
+      return str(input_file.dest_file_path.relative_to(TargetConfig.target_base_dir))
+
+    for source in target.sources:
+      files[_rel_path(source)] = source.hash_id()
+    for file_dep in target.file_deps:
+      files[_rel_path(file_dep)] = file_dep.hash_id()
+    for dep in target.deps:
+      dep_hash_id = dep.hash_id()
+      if dep_hash_id not in targets:
+        targets[str(dep._name())] = dep_hash_id
+        self._get_metadata_from_dep(dep, files, targets)
+
+
+  def _save_metadata(self, hash_id):
+    files = {}
+    targets = {}
+    self._get_metadata_from_dep(self, files, targets)
+
+    with open(self._output_dir(hash_id) / 'metadata.json', 'w') as f:
+      json.dump({'files': files, 'targets': targets}, f)
+
+
   def output(self, force=False):
     target_name = self._name()
     logging.info(f'Executing {target_name} defined at build.py:{self.lineno}.')
@@ -109,6 +133,7 @@ class Target:
         with util.IsolatedSysPath(mod_names):
           sys.path.append(str(lib_dir))
           output = self.execute()
+          self._save_metadata(hash_id)
         with open(file_path, 'wb') as f:
           pickle.dump(output, f)
       self.cached_output = output
