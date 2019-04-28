@@ -4,27 +4,34 @@ Prodmodel is a [build system](https://en.wikipedia.org/wiki/List_of_build_automa
 
 ## Concepts
 
-A build system is a [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph) of `rule`s (transformations), `input`s and `output`s.
-In Prodmodel your `input`s can be
+A build system is a [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph) of `rules` (transformations), `inputs` and `targets`.
+In Prodmodel `inputs` can be
  * data,
- * any Python code,
+ * Python code,
  * and configuration.
 
 A `rule` is transforming any of the above to an output (which can in turn be depended on by other rules). Therefore rules need to be
-re-executed (and their outputs re-created) if any of their dependencies change. Prodmodel keeps track of these dependencies instead of you.
+re-executed (and their outputs re-created) if any of their dependencies change. Prodmodel keeps track all of these dependencies.
+
+The outputs of the `rules` are `targets`. Every `target` corresponds to an output (e.g. a model or a dataset). These outputs
+are cached and version controlled.
 
 Prodmodel therefore ensures
- * correctness by executing every code (feature transformation, model building, tests) which can potentially be affected by a change,
- * performance by executing only the necessary code, saving time compared to rerunning the whole pipeline.
-
-Partial results are also version controlled and cached.
+ * correctness, by executing every code (e.g. feature transformation, model building, tests) which can potentially be affected by a change, and
+ * performance, by executing only the necessary code, saving time compared to rerunning the whole pipeline.
 
 ### Rules
 
-Every rule is a statically typed function, where the inputs are references to other rules, data, or configs. The execution of
+Every rule is a statically typed function, where the inputs are targets, data, or configs. The execution of
 a rule outputs some data (e.g. a different feature set or a model), which can be used in other rules.
 
 In order to use Prodmodel your code has to be structured as functions which the rules can call into.
+
+### Targets
+
+Targets are created by rule functions. Targets can be executed to generate output files. `IterableDataTarget` is a special target
+which can be used as an iterable of `dicts` to make iterating over datasets easier. Regular `DataTargets` can represent any
+Python object.
 
 ## Installation
 
@@ -46,10 +53,10 @@ csv_data = rules.data_source(file='data.csv', type='csv', dtypes={...})
 my_model = rules.transform(objects={'data': csv_data}, file='kmeans.py', fn='compute_kmeans')
 ```
 
-Now you can build your model by running `prodmodel my_model` from the directory of your code,
+Now you can build your model by running `prodmodel my_model` from the directory of `build.py`,
 or `prodmodel <path_to_my_directory>:my_model` from any directory.
 
-Check out a complete [example project](https://github.com/prodmodel/prodmodel/tree/master/example) for more clarification.
+Check out a complete [example project](https://github.com/prodmodel/prodmodel/tree/master/example) for more examples.
 
 The complete list of build rules can be found [here](https://github.com/prodmodel/prodmodel/blob/master/doc/api_doc.md).
 
