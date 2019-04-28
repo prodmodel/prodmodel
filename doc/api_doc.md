@@ -1,42 +1,42 @@
 # Build rules
 
 ## create_label_encoder
-`create_label_encodercreate_label_encoder(data: IterableDataTarget, columns: List[str]) -> LabelEncoderTarget`<br/>
+`create_label_encoder(data: IterableDataTarget, columns: List[str]) -> LabelEncoderTarget`<br/>
 Creates a label encoder from the input `data` stream for the specified `columns`.
 
 ## data_source
-`data_sourcedata_source(file: str, type: str, dtypes: dict) -> IterableDataTarget`<br/>
+`data_source(file: str, type: str, dtypes: dict) -> IterableDataTarget`<br/>
 Local data source file. Type has to be one of [csv], dtypes is a type specification for the columns in the file.
 
 ## encode_labels
-`encode_labelsencode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget) -> IterableDataTarget`<br/>
+`encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget) -> IterableDataTarget`<br/>
 Encodes the label values in `data` with `label_encoder`.
 
 ## external_data
-`external_dataexternal_data(file: str, fn: str, args: Dict[str, str]) -> DataTarget`<br/>
+`external_data(file: str, fn: str, args: Dict[str, str]) -> DataTarget`<br/>
 Loads an external dataset by calling `fn` in `file` called with `args`.
 
 ## requirements
-`requirementsrequirements(packages: List[str])`<br/>
+`requirements(packages: List[str])`<br/>
 List of Python packages used by the project.
 
 ## split
-`splitsplit(data: IterableDataTarget, test_ratio: float, target_column: str, seed: int) -> Tuple`<br/>
+`split(data: IterableDataTarget, test_ratio: float, target_column: str, seed: int) -> Tuple`<br/>
 Splits the source data into train X, train y, test X and test y data, respectively.
 
 ## test
-`testtest(test_file: str, file_deps: List[str]) -> TestTarget`<br/>
+`test(test_file: str, file_deps: List[str]) -> TestTarget`<br/>
 Runs the tests in `test_file`. Any module imported in file has to be specified in `file_deps`.
 
 ## transform
-`transformtransform(file: str, fn: str, streams: Dict[str, IterableDataTarget], objects: Dict[str, DataTarget], file_deps: List[str]) -> DataTarget`<br/>
+`transform(file: str, fn: str, streams: Dict[str, IterableDataTarget], objects: Dict[str, DataTarget], file_deps: List[str]) -> DataTarget`<br/>
 Transforms the input data sets into another one. The function `fn` defined in `file` has to have an argument for every key defined in `streams` (list of dicts) and `objects` (the outputs of the dict value targets). Any module imported in file has to be specified in `file_deps`.
 
 ## transform_stream
-`transform_streamtransform_stream(file: str, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget], file_deps: List[str]) -> IterableDataTarget`<br/>
+`transform_stream(file: str, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget], file_deps: List[str]) -> IterableDataTarget`<br/>
 Maps the input data stream into another one. The function `fn` defined in `file` has to accept a dict as a first argument and return a dict. The rest of its arguments have to be the keys of `objects` - the outputs of the dict value targets will be substituted at runtime. Any module imported in file has to be specified in `file_deps`.
 
 ## copy_to_s3
-`copy_to_s3copy_to_s3(data: Target, s3_bucket: str, s3_key: str) -> S3DataTarget`<br/>
+`copy_to_s3(data: Target, s3_bucket: str, s3_key: str) -> S3DataTarget`<br/>
 Copies the result of `data` target to `s3_bucket`/`s3_key`. The S3 credentials come from the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY env vars.
 

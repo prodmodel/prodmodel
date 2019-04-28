@@ -33,7 +33,7 @@ def gen_doc(module, f):
         param = str(m.group(0))[1:-1]
         assert param in param_names, f'{param} not in {param_names}'
       f.write(f'## {name}\n')
-      f.write(f'`{name}{sig_str}`<br/>\n')
+      f.write(f'`{sig_str}`<br/>\n')
       if fn.__doc__:
         doc_str = re.sub('(\s)+', ' ', str(fn.__doc__)) 
         f.write(f'{doc_str}\n')
