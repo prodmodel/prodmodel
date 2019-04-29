@@ -2,6 +2,24 @@
 
 Prodmodel is a [build system](https://en.wikipedia.org/wiki/List_of_build_automation_software) for data science pipelines. Users, testers, contributors are welcome! Please don't forget to **hit a star** if you like the project.
 
+<h3 align="center">
+  <a href="#motivation">Motivation</a>
+  <span> · </span>
+  <a href="#concepts">Concepts</a>
+  <span> · </span>
+  <a href="#installation">Installation</a>
+  <span> · </span>
+  <a href="#usage">Usage</a>
+  <span> · </span>
+  <a href="#contributing">Contributing</a>
+  <span> · </span>
+  <a href="#licence">Licence</a>
+</h3>
+
+## Motivation
+
+
+
 ## Concepts
 
 A build system is a [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph) of `rules` (transformations), `inputs` and `targets`.
