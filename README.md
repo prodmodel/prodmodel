@@ -19,10 +19,10 @@ Users, testers, contributors are welcome! Please don't forget to **hit a star** 
 
 ## Why
 
- * Performance: no need to rerun things, everything is cached. It also makes it super easy to switch and compare between multiple versions.
+ * Performance. No need to rerun things, everything is cached. It also makes it super easy to switch and compare between multiple versions.
  * Easy debugging. Ever lost track of which piece of code or data was used for some part of the pipeline? Prodmodel tracks and version controls
    all dependencies for you.
- * Deploy easily to production. Models are more than just a file. Prodmodel makes sure that the correct version of models, label encoders,
+ * Deploy to production. Models are more than just a file. Prodmodel makes sure that the correct version of models, label encoders,
    feature transformation code and data files are all packaged together.
 
 ## Concepts
