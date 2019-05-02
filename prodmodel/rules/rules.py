@@ -11,6 +11,8 @@ from model.target.target import Target
 from model.target.data_target import DataTarget
 from model.target.iterable_data_target import IterableDataTarget
 from model.target.csv_data_target import CSVDataTarget
+from model.target.json_data_target import JSONDataTarget
+from model.target.binary_data_target import BinaryDataTarget
 from model.target.transform_data_target import TransformDataTarget
 from model.target.transform_stream_data_target import TransformStreamDataTarget
 from model.target.select_data_target import SelectDataTarget
@@ -42,11 +44,24 @@ def requirements(packages: List[str]):
 
 
 @checkargtypes
-def data_source(file: str, type: str, dtypes: dict) -> IterableDataTarget:
-  '''Local data source file. Type has to be one of [csv], dtypes is a type specification for the columns in the file.'''
+def data_stream(file: str, type: str, dtypes: dict=None) -> IterableDataTarget:
+  '''Local data source file. Type has to be one of [csv, json], dtypes is a type specification for the columns in the file.'''
 
-  assert type == 'csv'
-  return CSVDataTarget(DataFile(file), dtypes)
+  accepted_types = ('csv', 'json')
+  if type not in accepted_types:
+    raise RuleException(f'Type must be one of {accepted_types}.')
+  if dtypes is not None and type != 'csv':
+    raise RuleException(f'Dtypes should only be defined if type is csv.')
+
+  if type == 'csv':
+    return CSVDataTarget(DataFile(file), dtypes)
+  else: # type == 'json':
+    return JSONDataTarget(DataFile(file))
+
+
+@checkargtypes
+def data_file(file: str) -> DataTarget:
+  return BinaryDataTarget(DataFile(file))
 
 
 @checkargtypes
