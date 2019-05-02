@@ -4,9 +4,13 @@
 `create_label_encoder(data: IterableDataTarget, columns: List[str]) -> LabelEncoderTarget`<br/>
 Creates a label encoder from the input `data` stream for the specified `columns`.
 
-## data_source
-`data_source(file: str, type: str, dtypes: dict) -> IterableDataTarget`<br/>
-Local data source file. Type has to be one of [csv], dtypes is a type specification for the columns in the file.
+## data_file
+`data_file(file: str) -> DataTarget`<br/>
+Local binary data source file.
+
+## data_stream
+`data_stream(file: str, type: str, dtypes: dict) -> IterableDataTarget`<br/>
+Local data source file. Type has to be one of [csv, json], dtypes is a type specification for the columns in the file.
 
 ## encode_labels
 `encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget) -> IterableDataTarget`<br/>
