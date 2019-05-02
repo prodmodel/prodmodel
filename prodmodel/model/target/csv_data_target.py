@@ -12,11 +12,15 @@ class CSVDataTarget(IterableDataTarget):
 
 
   def __iter__(self):
+    with open(self.source.dest_file_path, newline='') as f:
+      reader = csv.DictReader(f, delimiter=',')
+      l = [row for row in reader]
+
     def convert(record):
       for feature_name, feature_type in self.dtypes.items():
         record[feature_name] = feature_type(record[feature_name])
       return record
-    return map(convert, self.source.__iter__())
+    return map(convert, l.__iter__())
 
 
   def params(self) -> dict:

@@ -21,7 +21,7 @@ education_scores = rules.transform(
   fn='transform'
 )
 
-csv_data = rules.data_source(
+csv_data = rules.data_stream(
   file='data.csv',
   type='csv',
   dtypes = {
@@ -137,4 +137,9 @@ model_in_s3 = aws_rules.copy_to_s3(
   data=model,
   s3_bucket='prodmodel-test',
   s3_key='models/model1.pickle'
+)
+
+json_data = rules.data_stream(
+  file='data.json',
+  type='json'
 )
