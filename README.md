@@ -1,10 +1,10 @@
 # Prodmodel
 
 Prodmodel is a [build system](https://en.wikipedia.org/wiki/List_of_build_automation_software) for data science pipelines.
-Users, testers, contributors are welcome! Please don't forget to **hit a star** if you like the project.
+Users, testers, contributors are welcome!
 
 <h3 align="center">
-  <a href="#why">Why</a>
+  <a href="#motivation">Motivation</a>
   <span> · </span>
   <a href="#concepts">Concepts</a>
   <span> · </span>
@@ -17,13 +17,13 @@ Users, testers, contributors are welcome! Please don't forget to **hit a star** 
   <a href="#licence">Licence</a>
 </h3>
 
-## Why
+## Motivation
 
- * Performance. No need to rerun things, everything is cached. It also makes it super easy to switch and compare between multiple versions.
- * Easy debugging. Ever lost track of which piece of code or data was used for some part of the pipeline? Prodmodel tracks and version controls
-   all dependencies for you.
- * Deploy to production. Models are more than just a file. Prodmodel makes sure that the correct version of models, label encoders,
-   feature transformation code and data files are all packaged together.
+ * Performance. No need to rerun things, everything is cached, switching between multiple versions is super easy. **Prodmodel can figure out if
+   a particular partial code path has already been executed using a particular piece of data** and just use the cached output.
+ * Easy debugging. Every single dependency - code or data - is version controlled and tracked.
+ * Deploy to production. Models are more than just a file. Prodmodel makes sure that the correct version of label encoders,
+   feature transformation code and data and model files are all packaged together.
 
 ## Concepts
 
