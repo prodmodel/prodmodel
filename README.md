@@ -3,7 +3,9 @@
 Prodmodel is a [build system](https://en.wikipedia.org/wiki/List_of_build_automation_software) for data science pipelines.
 Users, testers, contributors are welcome!
 
-![start with why](https://img.shields.io/github/issues/badges/shields.svg)
+[![licence](https://img.shields.io/hexpm/l/plug.svg)]()
+[![GitHub issues open](https://img.shields.io/github/issues/Manu343726/siplasplas.svg?maxAge=2592000)]() 
+[![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/Manu343726/siplasplas.svg?maxAge=2592000)]()
 
 <h3 align="center">
   <a href="#motivation">Motivation</a>
