@@ -19,8 +19,8 @@ Users, testers, contributors are welcome!
 
 ## Motivation
 
- * Performance. No need to rerun things, everything is cached, switching between multiple versions is super easy. **Prodmodel can figure out if
-   a particular partial code path has already been executed using a particular piece of data** and just use the cached output.
+ * Performance. No need to rerun things, everything is cached, switching between multiple versions is super easy. Prodmodel can
+   **figure out if a particular partial code path has already been executed using a particular piece of data** and just use the cached output.
  * Easy debugging. Every single dependency - code or data - is version controlled and tracked.
  * Deploy to production. Models are more than just a file. Prodmodel makes sure that the correct version of label encoders,
    feature transformation code and data and model files are all packaged together.
