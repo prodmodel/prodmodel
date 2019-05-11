@@ -4,11 +4,21 @@ Prodmodel is a [build system](https://en.wikipedia.org/wiki/List_of_build_automa
 Users, testers, contributors are welcome!
 
 <a href="https://github.com/prodmodel/prodmodel/graphs/contributors" alt="Contributors">
-  <img src="https://img.shields.io/github/contributors/badges/shields.svg"/>
+  <img src="https://img.shields.io/github/contributors/prodmodel/prodmodel.svg"/>
 </a>
 <a href="https://github.com/prodmodel/prodmodel/pulse" alt="Activity">
-  <img src="https://img.shields.io/github/commit-activity/m/badges/shields.svg" />
+  <img src="https://img.shields.io/github/commit-activity/m/prodmodel/prodmodel.svg" />
 </a>
+<a href="https://github.com/prodmodel/prodmodel/issues" alt="Issues">
+  <img src="https://img.shields.io/github/issues/prodmodel/prodmodel.svg" />
+</a>
+<a href="https://github.com/prodmodel/prodmodel/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aclosed" alt="Closed issues">
+  <img src="https://img.shields.io/github/issues-closed/prodmodel/prodmodel.svg" />
+</a>
+<a href="https://github.com/prodmodel/prodmodel/pulls" alt="Pulls">
+  <img src="https://img.shields.io/github/issues-pr/prodmodel/prodmodel.svg" />
+</a>
+
 
 <h3 align="center">
   <a href="#motivation">Motivation</a>
