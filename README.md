@@ -3,8 +3,9 @@
 Prodmodel is a [build system](https://en.wikipedia.org/wiki/List_of_build_automation_software) for data science pipelines.
 Users, testers, contributors are welcome!
 
+<p>
 <a href="https://github.com/prodmodel/prodmodel/graphs/contributors" alt="Contributors">
-  <img src="https://img.shields.io/github/contributors/prodmodel/prodmodel.svg"/>
+  <img src="https://img.shields.io/github/contributors/prodmodel/prodmodel.svg" />
 </a>
 <a href="https://github.com/prodmodel/prodmodel/pulse" alt="Activity">
   <img src="https://img.shields.io/github/commit-activity/m/prodmodel/prodmodel.svg" />
@@ -18,7 +19,7 @@ Users, testers, contributors are welcome!
 <a href="https://github.com/prodmodel/prodmodel/pulls" alt="Pulls">
   <img src="https://img.shields.io/github/issues-pr/prodmodel/prodmodel.svg" />
 </a>
-
+</p>
 
 <h3 align="center">
   <a href="#motivation">Motivation</a>
