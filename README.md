@@ -3,7 +3,9 @@
 Prodmodel is a [build system](https://en.wikipedia.org/wiki/List_of_build_automation_software) for data science pipelines.
 Users, testers, contributors are welcome!
 
-<p>
+<p align="center">
+  <a href="https://pypi.org/project/prodmodel">
+    <img src="https://img.shields.io/pypi/v/prodmodel.svg"></img></a>
   <a href="https://pypi.org/project/prodmodel" alt="Downloads">
     <img src="https://img.shields.io/pypi/dd/prodmodel.svg" /></a>
   <a href="https://github.com/prodmodel/prodmodel/graphs/contributors" alt="Contributors">
