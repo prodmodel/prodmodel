@@ -31,6 +31,8 @@ Users, testers, contributors are welcome!
   <span> · </span>
   <a href="#contributing">Contributing</a>
   <span> · </span>
+  <a href="#contact">Contact</a>
+  <span> · </span>
   <a href="#licence">Licence</a>
 </h3>
 
@@ -109,6 +111,9 @@ The complete list of build rules can be found [here](https://github.com/prodmode
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## Contact
+Feel free to email me at gergely.svigruha@prodmodel.com if you have any question, need help or would like to contribute to the code.
 
 ## License
 [Apache 2.0](https://github.com/prodmodel/prodmodel/blob/master/LICENCE)
