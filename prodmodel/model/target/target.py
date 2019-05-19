@@ -29,6 +29,7 @@ class Target:
       self.lineno = str(util.build_file().lineno)
     except Exception as e:
       logging.warning(e)
+      self.lineno = -1
     self.name = None
     self.file_deps = file_deps
     transitive_file_deps = set(file_deps)
