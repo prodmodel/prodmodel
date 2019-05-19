@@ -1,4 +1,7 @@
 [DEFAULT]
 
+# Logging level in the log file.
 FILE_LOG_LEVEL=DEBUG
+
+# Logging level on the console.
 CONSOLE_LOG_LEVEL=INFO
