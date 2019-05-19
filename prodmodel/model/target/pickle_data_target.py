@@ -1,7 +1,7 @@
 import pickle
 
-from model.target.data_target import DataTarget
-from model.files.input_file import InputFile
+from prodmodel.model.target.data_target import DataTarget
+from prodmodel.model.files.input_file import InputFile
 
 
 class PickleDataTarget(DataTarget):

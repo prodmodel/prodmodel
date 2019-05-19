@@ -1,7 +1,7 @@
-from model.files.input_file import InputFile
-from model.target.external_data_target import ExternalDataTarget
-
 from pathlib import Path
+
+from prodmodel.model.files.input_file import InputFile
+from prodmodel.model.target.external_data_target import ExternalDataTarget
 
 
 class ExternalDataFile(InputFile):

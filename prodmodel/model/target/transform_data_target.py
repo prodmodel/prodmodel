@@ -1,8 +1,8 @@
 from typing import Dict, List
 
-from model.files.input_file import InputFile
-from model.target.data_target import DataTarget
-from model.target.iterable_data_target import IterableDataTarget
+from prodmodel.model.files.input_file import InputFile
+from prodmodel.model.target.data_target import DataTarget
+from prodmodel.model.target.iterable_data_target import IterableDataTarget
 
 
 class TransformDataTarget(DataTarget):

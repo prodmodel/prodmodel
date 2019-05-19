@@ -1,6 +1,6 @@
 from typing import List
 
-from model.target.iterable_data_target import IterableDataTarget
+from prodmodel.model.target.iterable_data_target import IterableDataTarget
 
 
 class SelectDataTarget(IterableDataTarget):

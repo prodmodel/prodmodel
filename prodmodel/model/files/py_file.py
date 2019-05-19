@@ -4,9 +4,9 @@ import shutil
 import os
 from pathlib import Path
 
-from model.files.input_file import InputFile
-from model.files.file_util import build_file
-from util import RuleException
+from prodmodel.model.files.input_file import InputFile
+from prodmodel.model.files.file_util import build_file
+from prodmodel.util import RuleException
 
 
 class PyFile(InputFile):

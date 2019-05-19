@@ -6,13 +6,13 @@ from os.path import abspath
 import os
 import logging
 import json
-import util
 import sys
 import shutil
 from typing import List
 
-from model.files.input_file import InputFile
-from globals import TargetConfig
+from prodmodel import util
+from prodmodel.model.files.input_file import InputFile
+from prodmodel.globals import TargetConfig
 
 
 OUTPUT_FILE_NAME = 'output_1.pickle'
@@ -25,7 +25,11 @@ class Target:
     self.deps = deps
     self.cached_output = None
     self.cached_hash_id = None
-    self.lineno = str(util.build_file().lineno)
+    try:
+      self.lineno = str(util.build_file().lineno)
+    except Exception as e:
+      logging.warning(e)
+      self.lineno = -1
     self.name = None
     self.file_deps = file_deps
     transitive_file_deps = set(file_deps)
