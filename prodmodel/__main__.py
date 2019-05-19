@@ -26,7 +26,7 @@ parser.add_argument('--build_time', type=int, default=int(time.time()))
 
 
 def main():
-  executor.config()
+  executor.setup()
   args = parser.parse_args()
   start_time = time.time()
   success = executor.run_target(args)
