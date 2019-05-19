@@ -1,8 +1,8 @@
 import json
 
-from model.files.data_file import DataFile
-from model.target.iterable_data_target import IterableDataTarget
-from util import RuleException
+from prodmodel.model.files.data_file import DataFile
+from prodmodel.model.target.iterable_data_target import IterableDataTarget
+from prodmodel.util import RuleException
 
 
 class JSONDataTarget(IterableDataTarget):

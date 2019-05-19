@@ -2,7 +2,7 @@ import boto3
 import os
 
 
-from model.target.target import Target
+from prodmodel.model.target.target import Target
 
 
 class S3DataTarget(Target):

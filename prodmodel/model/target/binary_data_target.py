@@ -1,5 +1,5 @@
-from model.files.data_file import DataFile
-from model.target.data_target import DataTarget
+from prodmodel.model.files.data_file import DataFile
+from prodmodel.model.target.data_target import DataTarget
 
 
 class BinaryDataTarget(DataTarget):

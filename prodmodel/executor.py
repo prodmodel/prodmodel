@@ -3,10 +3,10 @@ from pathlib import Path
 import logging
 import importlib
 
-from rules import rules
-from model.target.target import Target
-from globals import TargetConfig, config
-from util import red_color
+from prodmodel.rules import rules
+from prodmodel.model.target.target import Target
+from prodmodel.globals import TargetConfig, config
+from prodmodel.util import red_color
 
 
 def _parse_target(target_arg):

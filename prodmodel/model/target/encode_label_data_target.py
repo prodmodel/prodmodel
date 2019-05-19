@@ -1,7 +1,7 @@
 import csv
 
-from model.target.label_encoder_target import LabelEncoderTarget
-from model.target.iterable_data_target import IterableDataTarget
+from prodmodel.model.target.label_encoder_target import LabelEncoderTarget
+from prodmodel.model.target.iterable_data_target import IterableDataTarget
 
 
 class EncodeLabelDataTarget(IterableDataTarget):

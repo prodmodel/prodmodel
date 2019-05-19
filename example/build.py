@@ -1,5 +1,5 @@
-from rules import rules
-from rules import aws_rules
+from prodmodel.rules import rules
+from prodmodel.rules import aws_rules
 
 
 rules.requirements(

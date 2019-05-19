@@ -3,7 +3,8 @@ from datetime import datetime
 import os
 import hashlib
 from pathlib import Path
-import util
+
+from prodmodel import util
 
 
 BLOCKSIZE = 65536

@@ -88,7 +88,7 @@ pip install prodmodel --user
 Create a `build.py` file in your data science folder. The build file contains references to your inputs and the build rules you can execute.
 
 ```python
-import rules
+from prodmodel.rules import rules
 
 csv_data = rules.data_source(file='data.csv', type='csv', dtypes={...})
 

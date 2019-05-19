@@ -3,13 +3,15 @@ import sys
 from pathlib import Path
 from inspect import signature
 from typing import List, Dict, GenericMeta
-from globals import TargetConfig
+
+from prodmodel.globals import TargetConfig
 
 
 def build_file():
   for stack_frame in traceback.extract_stack():
     if stack_frame.filename.endswith('build.py'):
       return stack_frame
+  raise Exception('Could not determine the location of build.py.')
 
 
 def lib_hash_id():

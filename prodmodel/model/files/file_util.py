@@ -1,7 +1,7 @@
 import shutil
 import os
 
-from globals import TargetConfig
+from prodmodel.globals import TargetConfig
 
 
 def build_file(args, input_file):

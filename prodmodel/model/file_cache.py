@@ -1,4 +1,4 @@
-from model.files.py_file import PyFile
+from prodmodel.model.files.py_file import PyFile
 
 
 class PyFileCache:
