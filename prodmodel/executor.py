@@ -1,6 +1,4 @@
-from os.path import abspath, expanduser
 import os
-import configparser
 from pathlib import Path
 import logging
 import importlib
@@ -46,7 +44,7 @@ def _target_dir(args, build_file) -> Path:
 
 
 def config():
-  home_path = Path(expanduser('~')) / '.prodmodel'
+  home_path = Path(os.path.expanduser('~')) / '.prodmodel'
   os.makedirs(home_path, exist_ok=True)
 
   config_file = home_path / 'config'
