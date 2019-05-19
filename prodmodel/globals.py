@@ -6,8 +6,12 @@ class TargetConfig:
   target_base_dir: Path
 
 
-config = configparser.ConfigParser()
+_config = configparser.ConfigParser()
+
 
 def load_config(path):
-  config.read(config_file)
-  
+  _config.read(path)
+
+
+def get_config():
+  return _config

@@ -114,21 +114,21 @@ class Target:
 
   def output(self, force=False):
     target_name = self._name()
-    logging.info(f'Executing {target_name} defined at build.py:{self.lineno}.')
+    logging.debug(f'Executing {target_name} defined at build.py:{self.lineno}.')
     hash_id = self.hash_id()
     if hash_id == self.cached_hash_id and self.cached_output is not None:
-      logging.info(f'  Re-using cached version {hash_id}.')
+      logging.debug(f'  Re-using cached version {hash_id}.')
       return self.cached_output
     else:
       root_dir = self._output_dir(hash_id)
       os.makedirs(root_dir, exist_ok=True)
       file_path = root_dir / OUTPUT_FILE_NAME
       if not force and file_path.is_file():
-        logging.info(f'  Loading cached version {hash_id}.')
+        logging.debug(f'  Loading cached version {hash_id}.')
         with open(file_path, 'rb') as f:
           output = pickle.load(f)
       else:
-        logging.info(f'  Creating version {hash_id}.')
+        logging.debug(f'  Creating version {hash_id}.')
         lib_dir, mod_names = self._setup_modules()
         with util.IsolatedSysPath(mod_names):
           sys.path.append(str(lib_dir))
