@@ -1,11 +1,13 @@
-from os.path import abspath
+from os.path import abspath, expanduser
+import os
+import configparser
 from pathlib import Path
 import logging
 import importlib
 
 from rules import rules
 from model.target.target import Target
-from globals import TargetConfig
+from globals import TargetConfig, load_config
 from util import red_color
 
 
@@ -41,6 +43,21 @@ def _target_dir(args, build_file) -> Path:
     return target_dir
   else:
     return build_file.parent / target_dir
+
+
+def config():
+  home_path = Path(expanduser('~')) / '.prodmodel'
+  os.makedirs(home_path, exist_ok=True)
+
+  config_file = home_path / 'config'
+  if os.path.isfile(config_file):
+    load_config(config_file)
+
+  logging.basicConfig(level=logging.INFO)
+  rootLogger = logging.getLogger()
+  fileHandler = logging.FileHandler(home_path / 'app.log')
+  fileHandler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+  rootLogger.addHandler(fileHandler)
 
 
 def run_target(args):
