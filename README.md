@@ -98,7 +98,7 @@ my_model = rules.transform(objects={'data': csv_data}, file='kmeans.py', fn='com
 Now you can build your model by running `prodmodel my_model` from the directory of `build.py`,
 or `prodmodel <path_to_my_directory>:my_model` from any directory.
 
-Prodmodel creates a directory `.prodmodel` under the home directory of the user to store log and config files.
+Prodmodel creates a `.prodmodel` directory under the home directory of the user to store log and config files.
 
 ### Documentation
 
