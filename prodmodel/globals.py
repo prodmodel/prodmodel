@@ -7,7 +7,3 @@ class TargetConfig:
 
 
 config = configparser.ConfigParser()
-
-def load_config(path):
-  config.read(config_file)
-  

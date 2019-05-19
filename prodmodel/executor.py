@@ -5,7 +5,7 @@ import importlib
 
 from rules import rules
 from model.target.target import Target
-from globals import TargetConfig, load_config
+from globals import TargetConfig, config
 from util import red_color
 
 
@@ -43,19 +43,25 @@ def _target_dir(args, build_file) -> Path:
     return build_file.parent / target_dir
 
 
-def config():
+def setup():
   home_path = Path(os.path.expanduser('~')) / '.prodmodel'
   os.makedirs(home_path, exist_ok=True)
 
   config_file = home_path / 'config'
   if os.path.isfile(config_file):
-    load_config(config_file)
+    config.read(config_file)
 
-  logging.basicConfig(level=logging.INFO)
   rootLogger = logging.getLogger()
+  rootLogger.setLevel(logging.DEBUG)
+
   fileHandler = logging.FileHandler(home_path / 'app.log')
+  fileHandler.setLevel(config['DEFAULT'].get('FILE_LOG_LEVEL', logging.DEBUG))
   fileHandler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
   rootLogger.addHandler(fileHandler)
+
+  consoleHandler = logging.StreamHandler()
+  consoleHandler.setLevel(config['DEFAULT'].get('CONSOLE_LOG_LEVEL', logging.INFO))
+  rootLogger.addHandler(consoleHandler)
 
 
 def run_target(args):
