@@ -1,11 +1,15 @@
 import setuptools
+import os
+
+
+version = os.environ['PRODMODEL_RELEASE_VERSION']
 
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name='prodmodel',
-    version='0.1.5',
+    version=version,
     author='Gergely Svigruha',
     author_email='gergely.svigruha@prodmodel.com',
     description='Build data science pipelines and models',
