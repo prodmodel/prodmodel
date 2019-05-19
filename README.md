@@ -115,5 +115,5 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 ## Contact
 Feel free to email me at gergely.svigruha@prodmodel.com if you have any question, need help or would like to contribute to the code.
 
-## License
+## Licence
 [Apache 2.0](https://github.com/prodmodel/prodmodel/blob/master/LICENCE)
