@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='prodmodel',
-    version='0.1.4',
+    version='0.1.5',
     author='Gergely Svigruha',
     author_email='gergely.svigruha@prodmodel.com',
     description='Build data science pipelines and models',
