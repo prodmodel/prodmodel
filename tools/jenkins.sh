@@ -1,1 +1,1 @@
-sudo docker run -p 8088:8080 -p 50000:50000 -v /home/gsvigruha/jenkins:/var/jenkins_home jenkinsci/blueocean:latest 
+sudo docker run -p 8088:8080 -p 50000:50000 -v /home/gsvigruha/jenkins:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock --group-add $(stat -c '%g' /var/run/docker.sock) jenkinsci/blueocean:latest 
