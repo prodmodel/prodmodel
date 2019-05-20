@@ -1,10 +1,10 @@
 pipeline {
-    agent any
+    agent { docker { image 'python:3.6.7' } }
 
     stages {
         stage('Test') {
             steps {
-                echo 'Testing..'
+                sh 'python -m pytest tests'
             }
         }
     }
