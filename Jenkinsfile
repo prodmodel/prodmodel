@@ -14,7 +14,9 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'python -m pytest tests'
+                withEnv(["HOME=${env.WORKSPACE}"]) {
+                    sh 'python -m pytest tests'
+                }
             }
         }
     }
