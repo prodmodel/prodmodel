@@ -8,3 +8,6 @@ class TestRules(unittest.TestCase):
     target = undertest.data_stream(file='/home/abc/x.json', type='json')
     self.assertEqual('JSONDataTarget', target.__class__.__name__)
 
+  def test_data_file(self):
+    target = undertest.data_file(file='/home/abc/x.dat')
+    self.assertEqual('BinaryDataTarget', target.__class__.__name__)
