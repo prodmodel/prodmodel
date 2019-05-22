@@ -25,3 +25,7 @@ class TestRules(unittest.TestCase):
   def test_transform_stream(self):
     target = undertest.transform_stream(file='/home/abc/x.py', fn='tf', stream=self._data_stream())
     self.assertEqual('TransformStreamDataTarget', target.__class__.__name__)
+
+  def test_transform(self):
+    target = undertest.transform(file='/home/abc/x.py', fn='tf', streams={'s': self._data_stream()})
+    self.assertEqual('TransformDataTarget', target.__class__.__name__)
