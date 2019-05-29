@@ -1,4 +1,5 @@
 import traceback
+import logging
 import sys
 from pathlib import Path
 from inspect import signature
@@ -68,8 +69,12 @@ def checkargtypes(fn):
   def wrapper_fn(**kwargs):
     def __check(param, arg_type, expected_type):
       if not issubclass(arg_type, expected_type):
-        bf = build_file()
-        loc = f'{fn.__name__} at {bf.filename}:{bf.lineno}'
+        try:
+          bf = build_file()
+          loc = f'{fn.__name__} at {bf.filename}:{bf.lineno}'
+        except Exception as e:
+          logging.warning(e)
+          loc = ''
         raise RuleException(f'Argument "{param}" has type "{arg_type.__name__}" instead of "{expected_type.__name__}" ({loc}).')
     for param, definition in sign.parameters.items():
       if param in kwargs:
