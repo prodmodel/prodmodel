@@ -15,6 +15,7 @@ class InputFile:
   def __init__(self, file_name: str):
     if Path(file_name).is_absolute():
       self.file_name = Path(file_name)
+      self.relative_name = Path(file_name).relative_to('/')
     else:
       root = Path(util.build_file().filename).parent
       self.file_name = root / file_name
