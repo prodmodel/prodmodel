@@ -14,5 +14,5 @@ class TargetTestUtil(unittest.TestCase):
     root = Path(os.getcwd())
     TargetConfig.target_base_dir = root / '.target'
     args = executor.create_arg_parser().parse_args()
-    self.data_file = DataFile(root / 'tests' / 'prodmodel' / 'data' / 'test.json')
-    self.data_file.init(args)
+    self.json_data_file = DataFile(root / 'tests' / 'prodmodel' / 'data' / 'test.json')
+    self.json_data_file.init(args)
