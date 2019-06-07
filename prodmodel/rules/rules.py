@@ -41,6 +41,7 @@ def requirements(packages: List[str]):
     if return_value > 0:
       raise RuleException('Error happened while installing requirements.')
   sys.path.insert(0, lib_dir)
+  TargetConfig.lib_dir = lib_dir
 
 
 @checkargtypes
