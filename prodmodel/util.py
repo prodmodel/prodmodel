@@ -15,10 +15,13 @@ def build_file():
   raise Exception('Could not determine the location of build.py.')
 
 
-def lib_hash_id():
-  lib_dir = sys.path[0]
-  assert str(TargetConfig.target_base_dir) in lib_dir and 'lib' in lib_dir
-  return str(Path(lib_dir).name)
+def lib_hash_id() -> str:
+  lib_dir = TargetConfig.lib_dir
+  if lib_dir is not None:
+    assert str(TargetConfig.target_base_dir) in lib_dir and 'lib' in lib_dir, f'Bad lib dir: {lib_dir}'
+    return str(Path(lib_dir).name)
+  else:
+    return ''
 
 
 class RuleException(Exception):
