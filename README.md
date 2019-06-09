@@ -1,4 +1,4 @@
-# Prodmodel
+![Prodmodel](logo.png)
 
 Prodmodel is a [build system](https://en.wikipedia.org/wiki/List_of_build_automation_software) for data science pipelines.
 Users, testers, contributors are welcome!
