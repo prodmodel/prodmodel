@@ -71,7 +71,7 @@ def data_stream(file: str, type: str, dtypes: dict=None) -> IterableDataTarget:
 @checkargtypes
 def data_file(file: str) -> DataTarget:
   '''Local binary data source file.'''
-  return BinaryDataTarget(DataFile(file))
+  return BinaryDataTarget(_decode_data_file(file))
 
 
 @checkargtypes
