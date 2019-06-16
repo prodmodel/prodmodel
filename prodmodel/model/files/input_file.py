@@ -6,6 +6,8 @@ from pathlib import Path
 
 from prodmodel import util
 
+import logging
+
 
 BLOCKSIZE = 65536
 
