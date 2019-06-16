@@ -6,6 +6,7 @@ import os
 import hashlib
 
 from prodmodel.model.files.data_file import DataFile
+from prodmodel.model.files.s3_data_file import S3DataFile
 from prodmodel.model.files.external_data_file import ExternalDataFile
 from prodmodel.model.target.target import Target
 from prodmodel.model.target.data_target import DataTarget
@@ -44,6 +45,13 @@ def requirements(packages: List[str]):
   TargetConfig.lib_dir = lib_dir
 
 
+def _decode_data_file(file_name):
+  if file_name.startswith('s3://'):
+    return S3DataFile(file_name)
+  else:
+    return DataFile(file_name)
+
+
 @checkargtypes
 def data_stream(file: str, type: str, dtypes: dict=None) -> IterableDataTarget:
   '''Local data source file. Type has to be one of [csv, json], dtypes is a type specification for the columns in the file.'''
@@ -55,9 +63,9 @@ def data_stream(file: str, type: str, dtypes: dict=None) -> IterableDataTarget:
     raise RuleException(f'Dtypes should only be defined if type is csv.')
 
   if type == 'csv':
-    return CSVDataTarget(DataFile(file), dtypes)
+    return CSVDataTarget(_decode_data_file(file), dtypes)
   else: # type == 'json':
-    return JSONDataTarget(DataFile(file))
+    return JSONDataTarget(_decode_data_file(file))
 
 
 @checkargtypes
