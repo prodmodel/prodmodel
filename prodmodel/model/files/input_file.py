@@ -53,7 +53,6 @@ class InputFile:
     last_modified = datetime.fromtimestamp(os.path.getmtime(self.file_name)).isoformat()
 
     if self.last_modified == last_modified and self.cached_hash_id:
-      logging.debug(f'Using memory cached hash id for {self.file_name}.')
       return self.cached_hash_id
 
     metadata_file = dest_dir(self) / 'metadata.json'
