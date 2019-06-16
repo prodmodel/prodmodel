@@ -4,7 +4,7 @@ import os
 from prodmodel.globals import TargetConfig
 
 
-def build_file(args, input_file):
+def create_dest_file(args, input_file):
   dest_path = TargetConfig.target_base_dir / 'data' / input_file.relative_name / input_file.cached_hash_id
   dest_path.parent.mkdir(parents=True, exist_ok=True)
   if args.cache_data:

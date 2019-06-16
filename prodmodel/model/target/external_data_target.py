@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 import hashlib
 
 from prodmodel.model.files.input_file import InputFile, BLOCKSIZE
@@ -6,8 +6,8 @@ from prodmodel.model.target.data_target import DataTarget
 
 
 class ExternalDataTarget(DataTarget):
-  def __init__(self, source: InputFile, fn: str, args: Dict[str, str]):
-    super().__init__(sources=[source], deps=[], file_deps=[])
+  def __init__(self, source: InputFile, fn: str, args: Dict[str, str], file_deps: List[InputFile]):
+    super().__init__(sources=[source], deps=[], file_deps=file_deps)
     self.source = source
     self.fn = fn
     self.args = args

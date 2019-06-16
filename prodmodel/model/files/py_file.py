@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 
 from prodmodel.model.files.input_file import InputFile
-from prodmodel.model.files.file_util import build_file
+from prodmodel.model.files.file_util import create_dest_file
 from prodmodel.util import RuleException
 
 
@@ -20,7 +20,7 @@ class PyFile(InputFile):
 
   def init_impl(self, args) -> Path:
     self.cached_hash_id = self.hash_id()
-    return build_file(args, self)
+    return create_dest_file(args, self)
 
 
   def mod_name(self):

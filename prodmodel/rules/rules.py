@@ -130,8 +130,12 @@ def test(test_file: str, file_deps: List[str]=[]) -> TestTarget:
 
 
 @checkargtypes
-def external_data(file: str, fn: str, args: Dict[str, str]) -> DataTarget:
+def external_data(file: str, fn: str, args: Dict[str, str], file_deps: List[str]=[]) -> DataTarget:
   '''Loads an external dataset by calling `fn` in `file` called with `args`.'''
 
-  external_data_target = ExternalDataTarget(source=PyFileCache.get(file), fn=fn, args=args)
+  external_data_target = ExternalDataTarget(
+    source=PyFileCache.get(file),
+    fn=fn,
+    args=args,
+    file_deps=[PyFileCache.get(f) for f in file_deps])
   return PickleDataTarget(ExternalDataFile(external_data_target))
