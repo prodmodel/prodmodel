@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 import hashlib
 
 from prodmodel.model.files.input_file import InputFile, BLOCKSIZE
