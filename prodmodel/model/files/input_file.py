@@ -2,9 +2,12 @@ from abc import abstractmethod
 from datetime import datetime
 import os
 import hashlib
+import json
+import logging
 from pathlib import Path
 
 from prodmodel import util
+from prodmodel.model.files.file_util import dest_dir
 
 
 BLOCKSIZE = 65536
@@ -36,6 +39,7 @@ class InputFile:
 
 
   def _compute_hash(self):
+    logging.debug(f'Computing hash id of {self.file_name}.')
     m = hashlib.md5()
     with open(self.file_name, 'rb') as f:
       buf = f.read(BLOCKSIZE)
@@ -46,10 +50,25 @@ class InputFile:
 
 
   def hash_id(self):
-    last_modified = os.path.getmtime(self.file_name)
+    last_modified = datetime.fromtimestamp(os.path.getmtime(self.file_name)).isoformat()
+
     if self.last_modified == last_modified and self.cached_hash_id:
       return self.cached_hash_id
 
+    metadata_file = dest_dir(self) / 'metadata.json'
+    if metadata_file.is_file():
+      with open(metadata_file, 'r') as f:
+        metadata = json.load(f)
+      saved_last_modified = metadata['last_modified']
+      if saved_last_modified == last_modified:
+        logging.debug(f'Using locally cached hash id for {self.file_name}.')
+        self.last_modified = last_modified
+        self.cached_hash_id = metadata['hash_id']
+        return self.cached_hash_id
+
     self.cached_hash_id = self._compute_hash()
     self.last_modified = last_modified
+    with open(metadata_file, 'w') as f:
+      json.dump({'last_modified': self.last_modified, 'hash_id': self.cached_hash_id}, f)
+
     return self.cached_hash_id
