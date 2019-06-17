@@ -1,11 +1,13 @@
 import traceback
 import logging
 import sys
+import boto3
+import os
 from pathlib import Path
 from inspect import signature
 from typing import List, Dict, GenericMeta
 
-from prodmodel.globals import TargetConfig
+from prodmodel.globals import TargetConfig, config
 
 
 def build_file():
@@ -98,3 +100,11 @@ def checkargtypes(fn):
           __check(param, arg_type, expected_type)
     return fn(**kwargs)
   return wrapper_fn
+
+
+def s3_client():
+  return boto3.client(
+    's3',
+    aws_access_key_id=config['DEFAULT'].get('AWS_ACCESS_KEY_ID', os.environ['AWS_ACCESS_KEY_ID']),
+    aws_secret_access_key=config['DEFAULT'].get('AWS_SECRET_ACCESS_KEY', os.environ['AWS_SECRET_ACCESS_KEY'])
+  )

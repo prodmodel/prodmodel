@@ -1,7 +1,4 @@
-import boto3
-import os
-
-
+from prodmodel import util
 from prodmodel.model.target.target import Target
 
 
@@ -16,11 +13,7 @@ class S3DataTarget(Target):
 
   def _s3(self):
     if self.s3 is None:
-      self.s3 = boto3.client(
-        's3',
-        aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
-        aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
-      )
+      self.s3 = util.s3_client()
     return self.s3
 
 
