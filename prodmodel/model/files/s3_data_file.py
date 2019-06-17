@@ -1,12 +1,11 @@
 import importlib
 import shutil
-import os
 from pathlib import Path
-import boto3
 import json
 import datetime
 import logging
 
+from prodmodel import util
 from prodmodel.model.files.input_file import InputFile
 from prodmodel.model.files.file_util import create_dest_file, dest_dir, s3_local_file_name
 
@@ -25,17 +24,13 @@ class S3DataFile(InputFile):
 
   def _s3(self):
     if self.s3 is None:
-      self.s3 = boto3.client(
-        's3',
-        aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
-        aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY']
-      )
+      self.s3 = util.s3_client()
     return self.s3
 
 
-  def init_impl(self, args) -> Path:
+  def _maybe_download_s3_file(self):
     metadata_file = self.file_name.parent / 'metadata.json'
-    if metadata_file.is_file():
+    if metadata_file.is_file() and self.file_name.is_file():
       with open(metadata_file, 'r') as f:
         metadata = json.load(f)
       local_last_modified = metadata['last_modified']
@@ -44,15 +39,18 @@ class S3DataFile(InputFile):
 
     response = self._s3().get_object(Bucket=self.s3_bucket, Key=self.s3_key)
     s3_last_modified = response['LastModified'].isoformat()
-    if local_last_modified != s3_last_modified:
-      self.file_name.parent.mkdir(parents=True, exist_ok=True)
+    if local_last_modified == s3_last_modified:
+      logging.debug(f'Using cached version of s3://{self.s3_bucket}/{self.s3_key}: {self.file_name}.')
+    else:
       logging.debug(f'Downloading s3://{self.s3_bucket}/{self.s3_key} to {self.file_name}.')
+      self.file_name.parent.mkdir(parents=True, exist_ok=True)
       with open(self.file_name, 'wb') as f:
         f.write(response['Body'].read())
       with open(metadata_file, 'w') as f:
         json.dump({'last_modified': s3_last_modified}, f)
-    else:
-      logging.debug(f'Using cached version of s3://{self.s3_bucket}/{self.s3_key}: {self.file_name}.')
 
+
+  def init_impl(self, args) -> Path:
+    self._maybe_download_s3_file()
     self.cached_hash_id = self.hash_id()
     return create_dest_file(args, self)
