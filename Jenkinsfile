@@ -22,14 +22,14 @@ pipeline {
         stage('Shell build tests') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
-                    sh 'integration-tests/test_cleaning.sh'
+                    sh 'integration-tests/test_clean_builds__keep_lib.sh'
                 }
             }
         }
         stage('Shell cleaning tests') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
-                    sh 'integration-tests/test_clean_builds__keep_lib.sh'
+                    sh 'integration-tests/test_cleaning.sh'
                 }
             }
         }
