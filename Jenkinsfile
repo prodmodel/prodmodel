@@ -21,7 +21,9 @@ pipeline {
         }
         stage('Shell tests') {
             steps {
-                sh 'integration-tests/test_cleaning.sh'
+                withEnv(["HOME=${env.WORKSPACE}"]) {
+                    sh 'integration-tests/test_cleaning.sh'
+                }
             }
         }
     }
