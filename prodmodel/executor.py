@@ -33,6 +33,13 @@ def _create_target_args(parser):
 
 __DATE_FORMAT = '%Y-%m-%dT%H:%M:%S'
 
+def _parse_datetime(s: str):
+  try:
+    return datetime.strptime(s, __DATE_FORMAT)
+  except Exception as e:
+    raise Exception(f'Datetime {s} has to be in {__DATE_FORMAT} format.')
+
+
 def create_arg_parser(command):
   parser = argparse.ArgumentParser(description='Build, deploy and test Python data science models.')
   if command is None or command == BUILD:
@@ -47,7 +54,7 @@ def create_arg_parser(command):
     _create_target_args(parser)
     parser.add_argument(
       '--cutoff_date',
-      type=lambda d: datetime.strptime(d, __DATE_FORMAT),
+      type=_parse_datetime,
       default=datetime.now(),
       help=f'Clean up files modified before this datetime ({__DATE_FORMAT}), default now.')
   else:
