@@ -16,6 +16,6 @@ def remove_old_cache_files(target: Target, cutoff_date: datetime):
         last_modified_datetime = datetime.fromtimestamp(os.path.getmtime(metadata_file))
         if last_modified_datetime < cutoff_date:
           logging.debug(f'Deleting cache dir {d}.')
-          shutil.rmtree(d)
+          #shutil.rmtree(d)
           deleted_cnt = deleted_cnt + 1
   logging.info(f'Deleted {deleted_cnt} cached target outputs.')
