@@ -2,7 +2,6 @@
 set -e
 
 BASEDIR=$(dirname "$0")/..
-source $BASEDIR/.env
 cd $BASEDIR
 
 # Make sure csv_data target output exists.
