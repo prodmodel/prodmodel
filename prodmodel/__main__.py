@@ -20,7 +20,7 @@ def main():
   if hasattr(prodmodel, '__version__'):
     logging.debug(f'Running Prodmodel version {prodmodel.__version__}.')
   args = parser.parse_args()
-  if command == executor.BUILD:
+  if command is None or command == executor.BUILD:
     start_time = time.time()
     success = executor.run_target(args)
     end_time = time.time()
