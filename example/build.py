@@ -134,12 +134,6 @@ test_transform = rules.test(
   file_deps=['transform_record.py'] + feature_definitions
 )
 
-model_in_s3 = aws_rules.copy_to_s3(
-  data=model,
-  s3_bucket='prodmodel-test',
-  s3_key='models/model1.pickle'
-)
-
 json_data = rules.data_stream(
   file='data.json',
   type='json'

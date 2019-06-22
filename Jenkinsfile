@@ -12,7 +12,7 @@ pipeline {
                 }
             }
         }
-        stage('Python tests') {
+        stage('Python unit tests') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'python -m pytest tests'
@@ -23,6 +23,7 @@ pipeline {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'integration-tests/test_cleaning.sh'
+                    sh 'integration-tests/test_build.sh'
                 }
             }
         }

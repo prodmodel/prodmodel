@@ -1,4 +1,4 @@
-from prodmodel.rules import rules
+from prodmodel.rules import rules, aws_rules
 
 
 csv_data = rules.data_stream(
@@ -23,4 +23,10 @@ csv_data = rules.data_stream(
     'poutcome':str,
     'y':str
   }
+)
+
+data_in_s3 = aws_rules.copy_to_s3(
+  data=csv_data,
+  s3_bucket='prodmodel-test',
+  s3_key='data/data.csv'
 )
