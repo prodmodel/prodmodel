@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e
 
-BASEDIR=$(dirname "$0")/..
-cd $BASEDIR
-
 # Make sure csv_data target output exists.
 python -m prodmodel example:csv_data
 FILES=$(ls example/.target/output/csv_data | wc -l)
