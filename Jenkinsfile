@@ -12,11 +12,16 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
+        stage('Python tests') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'python -m pytest tests'
                 }
+            }
+        }
+        stage('Shell tests') {
+            steps {
+                sh 'integration-tests/test_cleaning.sh'
             }
         }
     }
