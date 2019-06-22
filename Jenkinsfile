@@ -8,14 +8,21 @@ pipeline {
         stage('Setup') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
-                    sh 'pip install -r requirements.txt --user'
+                    sh 'pip install -r requirements.txt'
                 }
             }
         }
-        stage('Test') {
+        stage('Python tests') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'python -m pytest tests'
+                }
+            }
+        }
+        stage('Shell tests') {
+            steps {
+                withEnv(["HOME=${env.WORKSPACE}"]) {
+                    sh 'integration-tests/test_cleaning.sh'
                 }
             }
         }
