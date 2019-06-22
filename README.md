@@ -116,6 +116,11 @@ based on this [template](https://github.com/prodmodel/prodmodel/blob/master/doc/
  * `--cache_data`: Cache local data files if changed. This can be useful for debugging / reproducibility by making sure every
    data source used for a specific build is saved.
 
+### Cleaning old cache files
+
+ * Run `prodmodel clean <target> --cutoff_date=<cutoff datetime>` to delete output cache files of a target created before
+   the cutoff datetime, which has to be in `%Y-%m-%dT%H:%M%S` (`YYYY-mm-ddTHH:MM:SS`) format.
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
