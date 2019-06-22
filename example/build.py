@@ -97,7 +97,8 @@ enriched_test_data_x = rules.transform_stream(
   stream=test_data_x,
   objects={'education_scores': education_scores},
   file='transform_record.py',
-  fn='transform_record'
+  fn='transform_record',
+  file_deps=feature_definitions
 )
 
 final_test_data_x = rules.encode_labels(
