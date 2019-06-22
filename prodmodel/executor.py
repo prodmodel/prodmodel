@@ -125,15 +125,25 @@ def process_target(args, fn, command_name):
     TargetConfig.target_base_dir = _target_dir(args.target_dir, build_file)
     logging.info(f'{command_name} target {target_name} in {build_file}.')
     build_mod = _load_build_mod(build_file)
-    if target_name in dir(build_mod):
-      target = getattr(build_mod, target_name)
-      if isinstance(target, Target):
-        fn(target=target, target_name=target_name, args=args)
-        success = True
-      else:
-        raise rules.RuleException(f'Variable "{target_name}" is not a target but a "{type(target).__name__}".')
+
+    if target_name == '*':
+      targets = []
+      for target_name in dir(build_mod):
+        target = getattr(build_mod, target_name)
+        if isinstance(target, Target):
+          targets.append((target_name, target))
     else:
-      raise rules.RuleException(f'Target "{target_name}" not found in {build_mod.__file__}.')
+      if target_name in dir(build_mod):
+        target = getattr(build_mod, target_name)
+        if isinstance(target, Target):
+          targets = [(target_name, target)]
+        else:
+          raise rules.RuleException(f'Variable "{target_name}" is not a target but a "{type(target).__name__}".')
+      else:
+        raise rules.RuleException(f'Target "{target_name}" not found in {build_mod.__file__}.')
+    for target_name, target in targets:
+      fn(target=target, target_name=target_name, args=args)
+    success = True    
   except rules.RuleException as e:
     logging.error(red_color(str(e)))
     success = False
