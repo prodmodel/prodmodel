@@ -29,7 +29,7 @@ pipeline {
         stage('Shell cleaning tests') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
-                    sh 'integration-tests/test_builds.sh'
+                    sh 'integration-tests/test_clean_builds__keep_lib.sh'
                 }
             }
         }
