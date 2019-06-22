@@ -14,7 +14,7 @@ class TargetTestUtil(unittest.TestCase):
   def setUp(self):
     root = Path(os.getcwd())
     TargetConfig.target_base_dir = root / '.target'
-    args = executor.create_arg_parser().parse_args()
+    args = executor.create_arg_parser(command=None).parse_args()
 
     self.json_data_file = DataFile(root / 'tests' / 'prodmodel' / 'data' / 'test.json')
     self.json_data_file.init(args)

@@ -1,23 +1,57 @@
 import os
+import sys
 from pathlib import Path
 import logging
 import importlib
 import argparse
 import time
+from datetime import datetime
 
 from prodmodel.rules import rules
 from prodmodel.model.target.target import Target
 from prodmodel.globals import TargetConfig, config
 from prodmodel.util import red_color
+from prodmodel.tools import cleaner
 
 
-def create_arg_parser():
-  parser = argparse.ArgumentParser(description='Build, deploy and test Python data science models.')
+BUILD = 'BUILD'
+CLEAN = 'CLEAN'
+
+def get_command():
+  if len(sys.argv) > 1:
+    if sys.argv[1].upper() == CLEAN:
+      return CLEAN
+    elif sys.argv[1].upper() == BUILD:
+      return BUILD
+  return None
+
+
+def _create_target_args(parser):
   parser.add_argument('target', help='The target to execute in a <path_to_build_file>:<target> format, or <target> if the command is executed from the directory of the build file.')
-  parser.add_argument('--force_external', action='store_true', help='Force reloading external data sources instead of using the cached data.')
-  parser.add_argument('--cache_data', action='store_true', help='Cache local data files.')
   parser.add_argument('--target_dir', type=str, default='.target', help='The target directory to build in.')
-  parser.add_argument('--build_time', type=int, default=int(time.time()))
+
+
+__DATE_FORMAT = '%Y-%m-%dT%H:%M:%S'
+
+def create_arg_parser(command):
+  parser = argparse.ArgumentParser(description='Build, deploy and test Python data science models.')
+  if command is None or command == BUILD:
+    if command == BUILD:
+      parser.add_argument('command', help='The command to execute.')
+    _create_target_args(parser)
+    parser.add_argument('--force_external', action='store_true', help='Force reloading external data sources instead of using the cached data.')
+    parser.add_argument('--cache_data', action='store_true', help='Cache local data files.')
+    parser.add_argument('--build_time', type=int, default=int(time.time()))
+  elif command == CLEAN:
+    parser.add_argument('command', help='The command to execute.')
+    _create_target_args(parser)
+    parser.add_argument(
+      '--cutoff_date',
+      type=lambda d: datetime.strptime(d, __DATE_FORMAT),
+      default=datetime.now(),
+      help=f'Clean up files modified before this datetime ({__DATE_FORMAT}), default now.')
+  else:
+    raise rules.RuleException(f'Unknown command {command}.')
   return parser
 
 
@@ -47,8 +81,8 @@ def _load_build_mod(build_file):
   return build_mod
 
 
-def _target_dir(args, build_file) -> Path:
-  target_dir = Path(args.target_dir)
+def _target_dir(args_target_dir, build_file) -> Path:
+  target_dir = Path(args_target_dir)
   if target_dir.is_absolute():
     return target_dir
   else:
@@ -76,20 +110,18 @@ def setup():
   rootLogger.addHandler(consoleHandler)
 
 
-def run_target(args):
+def process_target(args, fn, command_name):
   try:
     build_file, target_name = _parse_target(args.target)
-    TargetConfig.target_base_dir = _target_dir(args, build_file)
-    logging.info(f'Executing target {target_name} in {build_file}.')
+    if not build_file.is_file():
+      raise rules.RuleException(f'Build file {build_file} does not exist or not a file.')
+    TargetConfig.target_base_dir = _target_dir(args.target_dir, build_file)
+    logging.info(f'{command_name} target {target_name} in {build_file}.')
     build_mod = _load_build_mod(build_file)
     if target_name in dir(build_mod):
       target = getattr(build_mod, target_name)
       if isinstance(target, Target):
-        logging.info(f'Initializing target {target_name}.')
-        target.init_with_deps(args)
-        logging.info(f'Target {target_name} initialized.')
-        result = target.output()
-        logging.info(f'Created {result}.')
+        fn(target=target, target_name=target_name, args=args)
         success = True
       else:
         raise rules.RuleException(f'Variable "{target_name}" is not a target but a "{type(target).__name__}".')
@@ -98,4 +130,16 @@ def run_target(args):
   except rules.RuleException as e:
     logging.error(red_color(str(e)))
     success = False
-  return success  
+  return success
+
+
+def clean_target(target, args, **kwargs):
+  cleaner.remove_old_cache_files(target, args.cutoff_date)
+
+
+def build_target(target, args, target_name, **kwargs):
+  logging.info(f'Initializing target {target_name}.')
+  target.init_with_deps(args)
+  logging.info(f'Target {target_name} initialized.')
+  result = target.output()
+  logging.info(f'Created {result}.')
