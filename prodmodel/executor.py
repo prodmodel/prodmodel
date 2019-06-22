@@ -31,6 +31,8 @@ def _create_target_args(parser):
   parser.add_argument('--target_dir', type=str, default='.target', help='The target directory to build in.')
 
 
+__DATE_FORMAT = '%Y-%m-%dT%H:%M:%S'
+
 def create_arg_parser(command):
   parser = argparse.ArgumentParser(description='Build, deploy and test Python data science models.')
   if command is None or command == BUILD:
@@ -43,7 +45,11 @@ def create_arg_parser(command):
   elif command == CLEAN:
     parser.add_argument('command', help='The command to execute.')
     _create_target_args(parser)
-    parser.add_argument('--date_from', type=str, default=datetime.now().isoformat(), help='Clean up files before this date, default now.')
+    parser.add_argument(
+      '--cutoff_date',
+      type=lambda d: datetime.strptime(d, __DATE_FORMAT),
+      default=datetime.now(),
+      help=f'Clean up files modified before this datetime ({__DATE_FORMAT}), default now.')
   else:
     raise rules.RuleException(f'Unknown command {command}.')
   return parser
@@ -111,10 +117,11 @@ def clean_target(args):
       raise rules.RuleException(f'Build file {build_file} does not exist or not a file.')
     TargetConfig.target_base_dir = _target_dir(args.target_dir, build_file)
     logging.info(f'Cleaning target {target_name} in {build_file}.')
+    build_mod = _load_build_mod(build_file)
     if target_name in dir(build_mod):
       target = getattr(build_mod, target_name)
       if isinstance(target, Target):
-        cleaner.remove_old_cache_files()
+        cleaner.remove_old_cache_files(target, args.cutoff_date)
         success = True
       else:
         raise rules.RuleException(f'Variable "{target_name}" is not a target but a "{type(target).__name__}".')
@@ -133,6 +140,7 @@ def run_target(args):
       raise rules.RuleException(f'Build file {build_file} does not exist or not a file.')
     TargetConfig.target_base_dir = _target_dir(args.target_dir, build_file)
     logging.info(f'Executing target {target_name} in {build_file}.')
+    build_mod = _load_build_mod(build_file)
     if target_name in dir(build_mod):
       target = getattr(build_mod, target_name)
       if isinstance(target, Target):

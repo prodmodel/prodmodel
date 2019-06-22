@@ -80,8 +80,12 @@ class Target:
     self.name = name
 
 
+  def output_root_dir(self) -> Path:
+    return TargetConfig.target_base_dir / 'output' / self._name()
+
+
   def _output_dir(self, hash_id) -> Path:
-    return TargetConfig.target_base_dir / 'output' / self._name() / hash_id
+    return self.output_root_dir() / hash_id
 
 
   def output_dir(self) -> Path:
