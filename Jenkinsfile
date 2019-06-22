@@ -19,10 +19,16 @@ pipeline {
                 }
             }
         }
-        stage('Shell tests') {
+        stage('Shell build tests') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'integration-tests/test_cleaning.sh'
+                }
+            }
+        }
+        stage('Shell cleaning tests') {
+            steps {
+                withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'integration-tests/test_build.sh'
                 }
             }
