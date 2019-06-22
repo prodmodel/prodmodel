@@ -13,33 +13,36 @@ from prodmodel.util import red_color, green_color
 
 
 def main():
+  executor.setup()
+
   command = executor.get_command()
   parser = executor.create_arg_parser(command)
+  args = parser.parse_args()
 
-  executor.setup()
   if hasattr(prodmodel, '__version__'):
     logging.debug(f'Running Prodmodel version {prodmodel.__version__}.')
-  args = parser.parse_args()
+
+  start_time = time.time()
   if command is None or command == executor.BUILD:
-    start_time = time.time()
-    success = executor.run_target(args)
-    end_time = time.time()
-    duration = round(end_time - start_time, 3)
-
-    if success:
-      logging.info(green_color(f'Build successfully finished in {duration} secs.'))
-      return 0
-    else:
-      logging.error(red_color(f'Build failed in {duration} secs.'))
-      return 1
+    command_name = 'Build'
+    command_fn = executor.build_target
   elif command == executor.CLEAN:
-    start_time = time.time()
-    executor.clean_target(args)
-    end_time = time.time()
-    duration = round(end_time - start_time, 3)
+    command_name = 'Cleaning'
+    command_fn = executor.clean_target
+  else:
+    logging.error(red_color(f'Unknown command {command}.'))
+    return 1
 
-    logging.info(green_color(f'Cleanup successfully finished in {duration} secs.'))
+  success = executor.process_target(args, command_fn, command_name)
+  end_time = time.time()
+  duration = round(end_time - start_time, 3)
+
+  if success:
+    logging.info(green_color(f'Build successfully finished in {duration} secs.'))
     return 0
+  else:
+    logging.error(red_color(f'Build failed in {duration} secs.'))
+    return 1
 
 
 if __name__ == "__main__":

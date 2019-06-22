@@ -110,45 +110,18 @@ def setup():
   rootLogger.addHandler(consoleHandler)
 
 
-def clean_target(args):
+def process_target(args, fn, command_name):
   try:
     build_file, target_name = _parse_target(args.target)
     if not build_file.is_file():
       raise rules.RuleException(f'Build file {build_file} does not exist or not a file.')
     TargetConfig.target_base_dir = _target_dir(args.target_dir, build_file)
-    logging.info(f'Cleaning target {target_name} in {build_file}.')
+    logging.info(f'{command_name} target {target_name} in {build_file}.')
     build_mod = _load_build_mod(build_file)
     if target_name in dir(build_mod):
       target = getattr(build_mod, target_name)
       if isinstance(target, Target):
-        cleaner.remove_old_cache_files(target, args.cutoff_date)
-        success = True
-      else:
-        raise rules.RuleException(f'Variable "{target_name}" is not a target but a "{type(target).__name__}".')
-    else:
-      raise rules.RuleException(f'Target "{target_name}" not found in {build_mod.__file__}.')
-  except rules.RuleException as e:
-    logging.error(red_color(str(e)))
-    success = False
-  return success  
-
-
-def run_target(args):
-  try:
-    build_file, target_name = _parse_target(args.target)
-    if not build_file.is_file():
-      raise rules.RuleException(f'Build file {build_file} does not exist or not a file.')
-    TargetConfig.target_base_dir = _target_dir(args.target_dir, build_file)
-    logging.info(f'Executing target {target_name} in {build_file}.')
-    build_mod = _load_build_mod(build_file)
-    if target_name in dir(build_mod):
-      target = getattr(build_mod, target_name)
-      if isinstance(target, Target):
-        logging.info(f'Initializing target {target_name}.')
-        target.init_with_deps(args)
-        logging.info(f'Target {target_name} initialized.')
-        result = target.output()
-        logging.info(f'Created {result}.')
+        fn(target=target, target_name=target_name, args=args)
         success = True
       else:
         raise rules.RuleException(f'Variable "{target_name}" is not a target but a "{type(target).__name__}".')
@@ -158,3 +131,15 @@ def run_target(args):
     logging.error(red_color(str(e)))
     success = False
   return success
+
+
+def clean_target(target, args, **kwargs):
+  cleaner.remove_old_cache_files(target, args.cutoff_date)
+
+
+def build_target(target, args, target_name, **kwargs):
+  logging.info(f'Initializing target {target_name}.')
+  target.init_with_deps(args)
+  logging.info(f'Target {target_name} initialized.')
+  result = target.output()
+  logging.info(f'Created {result}.')
