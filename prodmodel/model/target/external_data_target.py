@@ -13,8 +13,8 @@ class ExternalDataTarget(DataTarget):
 
 
   def execute(self):
-    load_fn = self.source.method(self.fn)
-    return load_fn(**self.args)
+      load_fn = self.source.method(self.fn)
+      return load_fn(**self.args)
 
 
   def params(self) -> dict:
