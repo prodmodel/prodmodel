@@ -1,8 +1,8 @@
 #!/usr/bin/env python3.6
 
-import sys
 import re
-from inspect import getmembers, isfunction, signature, Signature
+import sys
+from inspect import Signature, getmembers, isfunction, signature
 from typing import GenericMeta
 
 

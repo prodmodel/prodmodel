@@ -1,6 +1,6 @@
-import setuptools
 import os
 
+import setuptools
 
 version = os.environ['PRODMODEL_RELEASE_VERSION']
 

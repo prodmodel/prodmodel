@@ -1,5 +1,5 @@
-from prodmodel.model.target.target import Target
 from prodmodel.model.target.s3_data_target import S3DataTarget
+from prodmodel.model.target.target import Target
 from prodmodel.util import checkargtypes
 
 

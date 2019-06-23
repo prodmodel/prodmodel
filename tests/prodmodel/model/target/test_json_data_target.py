@@ -1,5 +1,5 @@
-from tests.prodmodel.model.target_test_util import TargetTestUtil
 from prodmodel.model.target import json_data_target as undertest
+from tests.prodmodel.model.target_test_util import TargetTestUtil
 
 
 class TestJSONDataTarget(TargetTestUtil):

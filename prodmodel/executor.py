@@ -1,18 +1,17 @@
+import argparse
+import importlib
+import logging
 import os
 import sys
-from pathlib import Path
-import logging
-import importlib
-import argparse
 import time
 from datetime import datetime
+from pathlib import Path
 
-from prodmodel.rules import rules
-from prodmodel.model.target.target import Target
 from prodmodel.globals import TargetConfig, config
-from prodmodel.util import red_color
+from prodmodel.model.target.target import Target
+from prodmodel.rules import rules
 from prodmodel.tools import cleaner
-
+from prodmodel.util import red_color
 
 BUILD = 'BUILD'
 CLEAN = 'CLEAN'

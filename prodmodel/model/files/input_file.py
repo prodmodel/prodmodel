@@ -1,14 +1,13 @@
-from abc import abstractmethod
-from datetime import datetime
-import os
 import hashlib
 import json
 import logging
+import os
+from abc import abstractmethod
+from datetime import datetime
 from pathlib import Path
 
 from prodmodel import util
 from prodmodel.model.files.file_util import dest_dir
-
 
 BLOCKSIZE = 65536
 

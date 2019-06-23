@@ -1,10 +1,10 @@
 from typing import List
+
 import pytest
 
-from prodmodel.util import RuleException
-from prodmodel.model.target.target import Target
 from prodmodel.model.files.input_file import InputFile
-
+from prodmodel.model.target.target import Target
+from prodmodel.util import RuleException
 
 
 class TestTarget(Target):

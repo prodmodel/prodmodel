@@ -1,29 +1,30 @@
-from typing import Tuple, List, Dict
-import pip._internal
-import sys
-import os
 import hashlib
+import os
+import sys
+from typing import Dict, List, Tuple
 
+import pip._internal
+
+from prodmodel.globals import TargetConfig
+from prodmodel.model.file_cache import PyFileCache
 from prodmodel.model.files.data_file import DataFile
-from prodmodel.model.files.s3_data_file import S3DataFile
 from prodmodel.model.files.external_data_file import ExternalDataFile
-from prodmodel.model.target.data_target import DataTarget
-from prodmodel.model.target.iterable_data_target import IterableDataTarget
-from prodmodel.model.target.csv_data_target import CSVDataTarget
-from prodmodel.model.target.json_data_target import JSONDataTarget
+from prodmodel.model.files.s3_data_file import S3DataFile
 from prodmodel.model.target.binary_data_target import BinaryDataTarget
+from prodmodel.model.target.csv_data_target import CSVDataTarget
+from prodmodel.model.target.data_target import DataTarget
+from prodmodel.model.target.encode_label_data_target import EncodeLabelDataTarget
+from prodmodel.model.target.external_data_target import ExternalDataTarget
+from prodmodel.model.target.iterable_data_target import IterableDataTarget
+from prodmodel.model.target.json_data_target import JSONDataTarget
+from prodmodel.model.target.label_encoder_target import LabelEncoderTarget
+from prodmodel.model.target.pickle_data_target import PickleDataTarget
+from prodmodel.model.target.sample_data_target import SampleDataTarget
+from prodmodel.model.target.select_data_target import SelectDataTarget
+from prodmodel.model.target.test_target import TestTarget
 from prodmodel.model.target.transform_data_target import TransformDataTarget
 from prodmodel.model.target.transform_stream_data_target import TransformStreamDataTarget
-from prodmodel.model.target.select_data_target import SelectDataTarget
-from prodmodel.model.target.sample_data_target import SampleDataTarget
-from prodmodel.model.target.label_encoder_target import LabelEncoderTarget
-from prodmodel.model.target.encode_label_data_target import EncodeLabelDataTarget
-from prodmodel.model.target.test_target import TestTarget
-from prodmodel.model.target.external_data_target import ExternalDataTarget
-from prodmodel.model.target.pickle_data_target import PickleDataTarget
-from prodmodel.model.file_cache import PyFileCache
 from prodmodel.util import RuleException, checkargtypes
-from prodmodel.globals import TargetConfig
 
 
 @checkargtypes

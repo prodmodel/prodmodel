@@ -1,5 +1,5 @@
-from prodmodel.model.target.label_encoder_target import LabelEncoderTarget
 from prodmodel.model.target.iterable_data_target import IterableDataTarget
+from prodmodel.model.target.label_encoder_target import LabelEncoderTarget
 
 
 class EncodeLabelDataTarget(IterableDataTarget):

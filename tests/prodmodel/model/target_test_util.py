@@ -3,9 +3,9 @@ import unittest
 from pathlib import Path
 
 from prodmodel import executor
+from prodmodel.globals import TargetConfig
 from prodmodel.model.files.data_file import DataFile
 from prodmodel.model.files.py_file import PyFile
-from prodmodel.globals import TargetConfig
 
 
 class TargetTestUtil(unittest.TestCase):

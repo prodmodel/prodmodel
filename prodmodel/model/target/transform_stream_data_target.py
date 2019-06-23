@@ -1,5 +1,5 @@
-from typing import Dict, List
 from functools import partial
+from typing import Dict, List
 
 from prodmodel.model.files.input_file import InputFile
 from prodmodel.model.target.data_target import DataTarget

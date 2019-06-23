@@ -20,4 +20,3 @@ class SampleDataTarget(IterableDataTarget):
 
   def params(self) -> dict:
     return {'ratio': self.ratio, 'seed': self.seed}
-
