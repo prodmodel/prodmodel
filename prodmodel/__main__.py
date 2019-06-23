@@ -38,7 +38,7 @@ def main():
     success = False
 
   end_time = time.time()
-  duration = round(end_time - start_time, 3)  
+  duration = round(end_time - start_time, 3)
 
   if success:
     logging.info(green_color(f'Build successfully finished in {duration} secs.'))
