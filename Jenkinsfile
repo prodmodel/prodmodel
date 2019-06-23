@@ -36,7 +36,7 @@ pipeline {
         stage('Pylint') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
-                    sh 'python -m pylint prodmodel --indent-string='  ''
+                    sh 'python -m pylint prodmodel --indent-string="  "'
                 }
             }
         }
