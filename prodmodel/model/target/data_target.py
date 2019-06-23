@@ -1,5 +1,3 @@
-from abc import abstractmethod
-import numpy as np
 from typing import List
 
 from prodmodel.model.files.input_file import InputFile

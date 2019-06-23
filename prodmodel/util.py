@@ -5,7 +5,7 @@ import boto3
 import os
 from pathlib import Path
 from inspect import signature
-from typing import List, Dict, GenericMeta
+from typing import List, GenericMeta
 
 from prodmodel.globals import TargetConfig, config
 
@@ -39,7 +39,7 @@ class IsolatedSysPath:
     self.original_sys_path = list(sys.path)
 
 
-  def __exit__(self, type, value, traceback):
+  def __exit__(self, pytype, value, traceback):
     for mod_name in self.mod_names:
       if mod_name in sys.modules:
         del sys.modules[mod_name]
@@ -56,7 +56,7 @@ class IsolatedModules:
       sys.modules[module.__name__] = module
 
 
-  def __exit__(self, type, value, traceback):
+  def __exit__(self, pytype, value, traceback):
     for module in self.modules:
       del sys.modules[module.__name__]
 

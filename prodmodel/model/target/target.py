@@ -2,7 +2,6 @@ from abc import abstractmethod
 import hashlib
 import pickle
 from pathlib import Path
-from os.path import abspath
 import os
 import logging
 import json

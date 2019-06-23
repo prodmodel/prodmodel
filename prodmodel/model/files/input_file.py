@@ -25,6 +25,7 @@ class InputFile:
       self.relative_name = Path(file_name)
     self.last_modified = None
     self.cached_hash_id = None
+    self.cached_build_time = None
 
 
   def init(self, args):

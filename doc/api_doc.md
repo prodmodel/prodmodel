@@ -17,7 +17,7 @@ Local data source file. Type has to be one of [csv, json], dtypes is a type spec
 Encodes the label values in `data` with `label_encoder`.
 
 ## external_data
-`external_data(file: str, fn: str, args: Dict[str, str]) -> DataTarget`<br/>
+`external_data(file: str, fn: str, args: Dict[str, str], file_deps: List[str]) -> DataTarget`<br/>
 Loads an external dataset by calling `fn` in `file` called with `args`.
 
 ## requirements

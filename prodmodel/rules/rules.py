@@ -1,5 +1,4 @@
 from typing import Tuple, List, Dict
-from pathlib import Path
 import pip._internal
 import sys
 import os
@@ -8,7 +7,6 @@ import hashlib
 from prodmodel.model.files.data_file import DataFile
 from prodmodel.model.files.s3_data_file import S3DataFile
 from prodmodel.model.files.external_data_file import ExternalDataFile
-from prodmodel.model.target.target import Target
 from prodmodel.model.target.data_target import DataTarget
 from prodmodel.model.target.iterable_data_target import IterableDataTarget
 from prodmodel.model.target.csv_data_target import CSVDataTarget
@@ -53,16 +51,16 @@ def _decode_data_file(file_name):
 
 
 @checkargtypes
-def data_stream(file: str, type: str, dtypes: dict=None) -> IterableDataTarget:
+def data_stream(file: str, data_type: str, dtypes: dict=None) -> IterableDataTarget:
   '''Local data source file. Type has to be one of [csv, json], dtypes is a type specification for the columns in the file.'''
 
   accepted_types = ('csv', 'json')
-  if type not in accepted_types:
+  if data_type not in accepted_types:
     raise RuleException(f'Type must be one of {accepted_types}.')
-  if dtypes is not None and type != 'csv':
+  if dtypes is not None and data_type != 'csv':
     raise RuleException(f'Dtypes should only be defined if type is csv.')
 
-  if type == 'csv':
+  if data_type == 'csv':
     return CSVDataTarget(_decode_data_file(file), dtypes)
   else: # type == 'json':
     return JSONDataTarget(_decode_data_file(file))

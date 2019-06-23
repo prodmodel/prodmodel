@@ -36,7 +36,7 @@ __DATE_FORMAT = '%Y-%m-%dT%H:%M:%S'
 def _parse_datetime(s: str):
   try:
     return datetime.strptime(s, __DATE_FORMAT)
-  except Exception as e:
+  except Exception:
     raise Exception(f'Datetime {s} has to be in {__DATE_FORMAT} format.')
 
 

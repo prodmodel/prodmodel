@@ -1,7 +1,4 @@
 import importlib
-import time
-import shutil
-import os
 from pathlib import Path
 
 from prodmodel.model.files.input_file import InputFile
@@ -24,7 +21,7 @@ class PyFile(InputFile):
 
 
   def mod_name(self):
-      return '.'.join(Path(str(self.relative_name)[:-3]).parts)
+    return '.'.join(Path(str(self.relative_name)[:-3]).parts)
 
 
   def output(self):

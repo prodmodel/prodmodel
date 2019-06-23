@@ -1,11 +1,7 @@
 #!/usr/bin/env python3.6
 
-import sys
-import importlib
 import logging
 import time
-import os
-import subprocess
 
 import prodmodel
 from prodmodel import executor
@@ -19,6 +15,7 @@ def main():
   parser = executor.create_arg_parser(command)
   args = parser.parse_args()
 
+  # pylint: disable=E1101
   if hasattr(prodmodel, '__version__'):
     logging.debug(f'Running Prodmodel version {prodmodel.__version__}.')
 

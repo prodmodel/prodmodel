@@ -1,0 +1,146 @@
+[MASTER]
+
+ignore=tests
+
+[MESSAGES CONTROL]
+
+disable=all
+
+enable=
+       # basic checker errors
+       not-in-loop,
+       function-redefined,
+       continue-in-finally,
+       abstract-class-instantiated,
+       duplicate-argument-name,
+       return-in-init,
+       too-many-star-expressions,
+       nonlocal-and-global,
+       used-prior-global-declaration,
+       return-outside-function,
+       nonexistant-operator,
+       misplaced-format-function,
+       nonlocal-without-binding,
+
+       # basic checker warnings
+       lost-exception,
+       unreachable,
+
+       # classes checker errors 
+       access-member-before-definition,
+       method-hidden,
+       assigning-non-slot,
+       duplicate-bases,
+       inconsistent-mro,
+       inherit-non-class,
+       invalid-slots,
+       invalid-slots-object,
+       no-method-argument,
+       no-self-argument,
+       unexpected-special-method-signature,
+       non-iterator-returned,
+       invalid-length-returned,
+
+       # exceptions checker errors
+       bad-except-order,
+       catching-non-exception,
+       bad-exception-context,
+       notimplemented-raised,
+       raising-bad-type,
+       raising-non-exception,
+       misplaced-bare-raise,
+
+       # format checker warnings
+       bad-indentation,
+       mixed-indentation,
+       unnecessary-semicolon,
+       multiple-statements,
+
+       # import checker errors
+       import-error,
+       import-self,
+
+       # imports checker warnings
+       reimported,
+       deprecated-module,
+       wildcard-import,
+       misplaced-future,
+
+       # logging checker errors
+       logging-format-truncated,
+       logging-too-few-args,
+       logging-too-many-args,
+       logging-unsupported-format,
+
+       # newstyle checker errors
+       bad-super-call,
+
+       # stdlib checker errors
+       invalid-envvar-value,
+
+       # stdlib checker warnings
+       bad-open-mode,
+       redundant-unittest-assert,
+       shallow-copy-environ,
+       boolean-datetime,
+       deprecated-method,
+
+       # string checker errors
+       bad-string-format-type,
+       format-needs-mapping,
+       truncated-format-string,
+       missing-format-string-key,
+       mixed-format-string,
+       too-few-format-args,
+       bad-str-strip-call,
+       too-many-format-args,
+       bad-format-character,
+
+       # string checker warnings,
+       duplicate-string-formatting-argument,
+       format-combined-specification,
+       bad-format-string-key,
+       missing-format-attribute,
+       missing-format-argument-key,
+       unused-format-string-argument,
+       unused-format-string-key,
+       invalid-format-index,
+
+       # typecheck checker errors
+       unsupported-assignment-operation,
+       unsupported-delete-operation,
+       invalid-unary-operand-type,
+       unsupported-binary-operation,
+       no-member,
+       not-callable,
+       redundant-keyword-arg,
+       assignment-from-no-return,
+       assignment-from-none,
+       not-context-manager,
+       unhashable-dict-key,
+       repeated-keyword,
+       invalid-metaclass,
+       missing-kwoa,
+       no-value-for-parameter,
+       invalid-sequence-index,
+       invalid-slice-index,
+       too-many-function-args,
+       unexpected-keyword-arg,
+
+       # variables checker errors
+       unpacking-non-sequence,
+       invalid-all-object,
+       undefined-all-variable,
+       used-before-assignment,
+
+       # variables checker warnings
+       cell-var-from-loop,
+       global-variable-undefined,
+       redefined-builtin,
+       redefine-in-handler,
+       unused-import,
+       unused-wildcard-import,
+       unused-variable,
+       global-variable-not-assigned,
+       undefined-loop-variable,
+       global-at-module-level

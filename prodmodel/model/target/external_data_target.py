@@ -1,7 +1,6 @@
 from typing import Dict, List
-import hashlib
 
-from prodmodel.model.files.input_file import InputFile, BLOCKSIZE
+from prodmodel.model.files.input_file import InputFile
 from prodmodel.model.target.data_target import DataTarget
 
 
