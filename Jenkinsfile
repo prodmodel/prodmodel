@@ -23,6 +23,7 @@ pipeline {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'integration-tests/test_clean_builds__keep_lib.sh'
+                    sh 'integration-tests/test_target_dir.sh'
                 }
             }
         }
