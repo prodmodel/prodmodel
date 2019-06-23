@@ -1,4 +1,5 @@
 .target
+.my_target
 build
 dist
 prodmodel.egg-info
