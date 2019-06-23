@@ -31,7 +31,7 @@ def main():
       logging.error(red_color(f'Unknown command {command}.'))
       return 1
 
-    success = executor.process_target(args, command_fn, command_name)
+    executor.process_target(args, command_fn, command_name)
     success = True
   except (executor.ExecutorException, RuleException) as e:
     logging.error(red_color(str(e)))

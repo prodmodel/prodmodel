@@ -10,7 +10,6 @@ from pathlib import Path
 from prodmodel.globals import TargetConfig, config
 from prodmodel.model.target.target import Target
 from prodmodel.tools import cleaner
-from prodmodel.util import red_color
 
 
 class ExecutorException(Exception):
