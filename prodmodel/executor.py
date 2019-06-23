@@ -9,9 +9,12 @@ from pathlib import Path
 
 from prodmodel.globals import TargetConfig, config
 from prodmodel.model.target.target import Target
-from prodmodel.rules import rules
 from prodmodel.tools import cleaner
 from prodmodel.util import red_color
+
+
+class ExecutorException(Exception):
+  pass
 
 BUILD = 'BUILD'
 CLEAN = 'CLEAN'
@@ -36,20 +39,19 @@ def _parse_datetime(s: str):
   try:
     return datetime.strptime(s, __DATE_FORMAT)
   except Exception:
-    raise Exception(f'Datetime {s} has to be in {__DATE_FORMAT} format.')
+    raise ExecutorException(f'Datetime {s} has to be in {__DATE_FORMAT} format.')
 
 
 def create_arg_parser(command):
   parser = argparse.ArgumentParser(description='Build, deploy and test Python data science models.')
+  if command is not None:
+    parser.add_argument('command', help='The command to execute.')
   if command is None or command == BUILD:
-    if command == BUILD:
-      parser.add_argument('command', help='The command to execute.')
     _create_target_args(parser)
     parser.add_argument('--force_external', action='store_true', help='Force reloading external data sources instead of using the cached data.')
     parser.add_argument('--cache_data', action='store_true', help='Cache local data files.')
     parser.add_argument('--build_time', type=int, default=int(time.time()))
   elif command == CLEAN:
-    parser.add_argument('command', help='The command to execute.')
     _create_target_args(parser)
     parser.add_argument(
       '--cutoff_date',
@@ -57,7 +59,7 @@ def create_arg_parser(command):
       default=datetime.now(),
       help=f'Clean up files modified before this datetime ({__DATE_FORMAT}), default now.')
   else:
-    raise rules.RuleException(f'Unknown command {command}.')
+    raise ExecutorException(f'Unknown command {command}.')
   return parser
 
 
@@ -117,36 +119,30 @@ def setup():
 
 
 def process_target(args, fn, command_name):
-  try:
-    build_file, target_name = _parse_target(args.target)
-    if not build_file.is_file():
-      raise rules.RuleException(f'Build file {build_file} does not exist or not a file.')
-    TargetConfig.target_base_dir = _target_dir(args.target_dir, build_file)
-    logging.info(f'{command_name} target {target_name} in {build_file}.')
-    build_mod = _load_build_mod(build_file)
+  build_file, target_name = _parse_target(args.target)
+  if not build_file.is_file():
+    raise ExecutorException(f'Build file {build_file} does not exist or not a file.')
+  TargetConfig.target_base_dir = _target_dir(args.target_dir, build_file)
+  logging.info(f'{command_name} target {target_name} in {build_file}.')
+  build_mod = _load_build_mod(build_file)
 
-    if target_name == '*':
-      targets = []
-      for target_name in dir(build_mod):
-        target = getattr(build_mod, target_name)
-        if isinstance(target, Target):
-          targets.append((target_name, target))
-    else:
-      if target_name in dir(build_mod):
-        target = getattr(build_mod, target_name)
-        if isinstance(target, Target):
-          targets = [(target_name, target)]
-        else:
-          raise rules.RuleException(f'Variable "{target_name}" is not a target but a "{type(target).__name__}".')
+  if target_name == '*':
+    targets = []
+    for target_name in dir(build_mod):
+      target = getattr(build_mod, target_name)
+      if isinstance(target, Target):
+        targets.append((target_name, target))
+  else:
+    if target_name in dir(build_mod):
+      target = getattr(build_mod, target_name)
+      if isinstance(target, Target):
+        targets = [(target_name, target)]
       else:
-        raise rules.RuleException(f'Target "{target_name}" not found in {build_mod.__file__}.')
-    for target_name, target in targets:
-      fn(target=target, target_name=target_name, args=args)
-    success = True    
-  except rules.RuleException as e:
-    logging.error(red_color(str(e)))
-    success = False
-  return success
+        raise ExecutorException(f'Variable "{target_name}" is not a target but a "{type(target).__name__}".')
+    else:
+      raise ExecutorException(f'Target "{target_name}" not found in {build_mod.__file__}.')
+  for target_name, target in targets:
+    fn(target=target, target_name=target_name, args=args)
 
 
 def clean_target(target, args, **kwargs):
