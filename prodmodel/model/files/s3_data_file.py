@@ -1,13 +1,10 @@
-import importlib
-import shutil
 from pathlib import Path
 import json
-import datetime
 import logging
 
 from prodmodel import util
 from prodmodel.model.files.input_file import InputFile
-from prodmodel.model.files.file_util import create_dest_file, dest_dir, s3_local_file_name
+from prodmodel.model.files.file_util import create_dest_file, s3_local_file_name
 
 
 class S3DataFile(InputFile):

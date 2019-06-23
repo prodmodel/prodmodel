@@ -6,7 +6,7 @@ from prodmodel.globals import TargetConfig
 
 
 def s3_local_file_name(s3_path) -> str:
-    return TargetConfig.target_base_dir / 's3' / s3_path[5:] / 'cache'
+  return TargetConfig.target_base_dir / 's3' / s3_path[5:] / 'cache'
 
 
 def dest_dir(input_file) -> Path:

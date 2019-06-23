@@ -23,7 +23,7 @@ education_scores = rules.transform(
 
 csv_data = rules.data_stream(
   file='data.csv',
-  type='csv',
+  data_type='csv',
   dtypes = {
     'age': int,
     'job': str,
@@ -136,5 +136,5 @@ test_transform = rules.test(
 
 json_data = rules.data_stream(
   file='data.json',
-  type='json'
+  data_type='json'
 )

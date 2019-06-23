@@ -1,5 +1,3 @@
-import csv
-
 from prodmodel.model.target.label_encoder_target import LabelEncoderTarget
 from prodmodel.model.target.iterable_data_target import IterableDataTarget
 

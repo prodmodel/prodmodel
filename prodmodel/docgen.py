@@ -1,6 +1,5 @@
 #!/usr/bin/env python3.6
 
-import os
 import sys
 import re
 from inspect import getmembers, isfunction, signature, Signature
@@ -49,7 +48,7 @@ def gen_doc(module, f):
 
 if __name__ == "__main__":
   output = sys.argv[1]
-  from rules import rules, aws_rules
+  from prodmodel.rules import rules, aws_rules
   with open(output, 'w') as f:
     f.write('# Build rules\n\n')
     gen_doc(rules, f)

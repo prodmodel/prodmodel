@@ -5,6 +5,7 @@ class PyFileCache:
 
   cache = {}
 
+  @staticmethod
   def get(file: str) -> PyFile:
     if file not in PyFileCache.cache:
       PyFileCache.cache[file] = PyFile(file)

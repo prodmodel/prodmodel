@@ -3,7 +3,7 @@ from prodmodel.rules import rules, aws_rules
 
 csv_data = rules.data_stream(
   file='s3://prodmodel-test/sources/data.csv',
-  type='csv',
+  data_type='csv',
   dtypes = {
     'age': int,
     'job': str,

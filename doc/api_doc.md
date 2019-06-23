@@ -9,15 +9,15 @@ Creates a label encoder from the input `data` stream for the specified `columns`
 Local binary data source file.
 
 ## data_stream
-`data_stream(file: str, type: str, dtypes: dict) -> IterableDataTarget`<br/>
-Local data source file. Type has to be one of [csv, json], dtypes is a type specification for the columns in the file.
+`data_stream(file: str, data_type: str, dtypes: dict) -> IterableDataTarget`<br/>
+Local data source file; `data_type` has to be one of [csv, json], `dtypes` is a type specification for the columns in the file.
 
 ## encode_labels
 `encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget) -> IterableDataTarget`<br/>
 Encodes the label values in `data` with `label_encoder`.
 
 ## external_data
-`external_data(file: str, fn: str, args: Dict[str, str]) -> DataTarget`<br/>
+`external_data(file: str, fn: str, args: Dict[str, str], file_deps: List[str]) -> DataTarget`<br/>
 Loads an external dataset by calling `fn` in `file` called with `args`.
 
 ## requirements
