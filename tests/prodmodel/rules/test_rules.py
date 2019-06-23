@@ -5,7 +5,7 @@ from prodmodel.rules import rules as undertest
 class TestRules(unittest.TestCase):
 
   def test_data_stream(self):
-    target = undertest.data_stream(file='/home/abc/x.json', type='json')
+    target = undertest.data_stream(file='/home/abc/x.json', data_type='json')
     self.assertEqual('JSONDataTarget', target.__class__.__name__)
 
   def test_data_file(self):
@@ -13,7 +13,7 @@ class TestRules(unittest.TestCase):
     self.assertEqual('BinaryDataTarget', target.__class__.__name__)
 
   def _data_stream(self):
-    return undertest.data_stream(file='/home/abc/x.json', type='json')
+    return undertest.data_stream(file='/home/abc/x.json', data_type='json')
 
   def test_split(self):
     train_x, train_y, test_x, test_y = undertest.split(data=self._data_stream(), test_ratio=0.5, target_column='x')
