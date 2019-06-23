@@ -52,7 +52,7 @@ def _decode_data_file(file_name):
 
 @checkargtypes
 def data_stream(file: str, data_type: str, dtypes: dict=None) -> IterableDataTarget:
-  '''Local data source file. Type has to be one of [csv, json], dtypes is a type specification for the columns in the file.'''
+  '''Local data source file. Data_type has to be one of [csv, json], dtypes is a type specification for the columns in the file.'''
 
   accepted_types = ('csv', 'json')
   if data_type not in accepted_types:
