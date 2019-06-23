@@ -3,8 +3,7 @@ import logging
 from pathlib import Path
 
 from prodmodel import util
-from prodmodel.model.files.file_util import (create_dest_file,
-                                             s3_local_file_name)
+from prodmodel.model.files.file_util import create_dest_file, s3_local_file_name
 from prodmodel.model.files.input_file import InputFile
 
 
