@@ -1,8 +1,9 @@
 from typing import List
+
 import numpy as np
 
-from prodmodel.model.target.target import Target
 from prodmodel.model.target.data_target import DataTarget
+from prodmodel.model.target.target import Target
 
 
 class LabelEncoderTarget(Target):
@@ -29,4 +30,3 @@ class LabelEncoderTarget(Target):
 
   def params(self) -> dict:
     return {'columns': self.columns}
-

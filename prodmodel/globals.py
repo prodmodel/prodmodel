@@ -1,5 +1,5 @@
-from pathlib import Path
 import configparser
+from pathlib import Path
 
 
 class TargetConfig:

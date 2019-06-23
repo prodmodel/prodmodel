@@ -27,4 +27,3 @@ class SelectDataTarget(IterableDataTarget):
 
   def params(self) -> dict:
     return {'columns': self.columns, 'keep': self.keep}
-

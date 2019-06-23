@@ -1,6 +1,7 @@
 from abc import abstractmethod
-import numpy as np
 from typing import List
+
+import numpy as np
 
 from prodmodel.model.files.input_file import InputFile
 from prodmodel.model.target.data_target import DataTarget

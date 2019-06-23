@@ -1,8 +1,8 @@
 import importlib
 from pathlib import Path
 
-from prodmodel.model.files.input_file import InputFile
 from prodmodel.model.files.file_util import create_dest_file
+from prodmodel.model.files.input_file import InputFile
 from prodmodel.util import RuleException
 
 

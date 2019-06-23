@@ -1,11 +1,12 @@
-import traceback
 import logging
-import sys
-import boto3
 import os
-from pathlib import Path
+import sys
+import traceback
 from inspect import signature
-from typing import List, GenericMeta
+from pathlib import Path
+from typing import GenericMeta, List
+
+import boto3
 
 from prodmodel.globals import TargetConfig, config
 

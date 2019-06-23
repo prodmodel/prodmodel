@@ -1,6 +1,6 @@
-from tests.prodmodel.model.target_test_util import TargetTestUtil
-from prodmodel.model.target.csv_data_target import CSVDataTarget
 from prodmodel.model.target import sample_data_target as undertest
+from prodmodel.model.target.csv_data_target import CSVDataTarget
+from tests.prodmodel.model.target_test_util import TargetTestUtil
 
 
 class TestSampleDataTarget(TargetTestUtil):

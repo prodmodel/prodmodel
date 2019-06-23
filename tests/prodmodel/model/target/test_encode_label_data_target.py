@@ -1,7 +1,7 @@
-from tests.prodmodel.model.target_test_util import TargetTestUtil
+from prodmodel.model.target import encode_label_data_target as undertest
 from prodmodel.model.target.csv_data_target import CSVDataTarget
 from prodmodel.model.target.label_encoder_target import LabelEncoderTarget
-from prodmodel.model.target import encode_label_data_target as undertest
+from tests.prodmodel.model.target_test_util import TargetTestUtil
 
 
 class TestEncodeLabelsDataTarget(TargetTestUtil):

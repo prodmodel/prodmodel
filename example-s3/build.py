@@ -1,5 +1,4 @@
-from prodmodel.rules import rules, aws_rules
-
+from prodmodel.rules import aws_rules, rules
 
 csv_data = rules.data_stream(
   file='s3://prodmodel-test/sources/data.csv',

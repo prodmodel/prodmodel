@@ -1,18 +1,17 @@
-from abc import abstractmethod
 import hashlib
-import pickle
-from pathlib import Path
-import os
-import logging
 import json
-import sys
+import logging
+import os
+import pickle
 import shutil
+import sys
+from abc import abstractmethod
+from pathlib import Path
 from typing import List
 
 from prodmodel import util
-from prodmodel.model.files.input_file import InputFile
 from prodmodel.globals import TargetConfig
-
+from prodmodel.model.files.input_file import InputFile
 
 OUTPUT_FILE_NAME = 'output_1.pickle'
 
@@ -157,4 +156,3 @@ class Target:
       os.symlink(f.file_name, lib_dir / f.file_name.name)
       mod_names.append(f.mod_name())
     return lib_dir, mod_names
-        

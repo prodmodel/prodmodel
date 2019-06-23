@@ -5,7 +5,7 @@ import time
 
 import prodmodel
 from prodmodel import executor
-from prodmodel.util import red_color, green_color
+from prodmodel.util import green_color, red_color
 
 
 def main():

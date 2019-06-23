@@ -1,6 +1,4 @@
-from prodmodel.rules import rules
-from prodmodel.rules import aws_rules
-
+from prodmodel.rules import aws_rules, rules
 
 rules.requirements(
   packages=['sklearn']
