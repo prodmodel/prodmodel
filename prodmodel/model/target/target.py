@@ -172,7 +172,7 @@ class Target:
             self._download_output_from_s3(file_path)
             with open(file_path, 'rb') as f:
               output = pickle.load(f)
-          except Exception as e:
+          except Exception:
             output = self._create_output(file_path, hash_id)
         else:
           output = self._create_output(file_path, hash_id)

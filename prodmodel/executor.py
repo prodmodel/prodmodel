@@ -7,7 +7,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 
-from prodmodel.globals import TargetConfig, config
+from prodmodel.globals import TargetConfig, config, default_config
 from prodmodel.model.target.target import Target
 from prodmodel.model.files import file_util
 from prodmodel.tools import cleaner
@@ -118,18 +118,24 @@ def setup():
   rootLogger.addHandler(consoleHandler)
 
 
+def _set_s3_target_dir(build_file):
+  s3_target_dir = config['DEFAULT'].get('S3_TARGET_DIR')
+  if s3_target_dir:
+    if not default_config('AWS_ACCESS_KEY_ID') or not default_config('AWS_SECRET_ACCESS_KEY'):
+      raise ExecutorException('Cannot use S3_TARGET_DIR without AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.')
+    pfx = s3_target_dir if s3_target_dir.endswith('/') else s3_target_dir + '/'
+    sfx = '/'.join(build_file.relative_to(build_file.anchor).parts[:-1])
+    s3_path = pfx + sfx
+    TargetConfig.target_base_dir_s3_bucket = file_util.s3_bucket(s3_path)
+    TargetConfig.target_base_dir_s3_key = file_util.s3_key(s3_path)
+
+
 def process_target(args, fn, command_name):
   build_file, target_name = _parse_target(args.target)
   if not build_file.is_file():
     raise ExecutorException(f'Build file {build_file} does not exist or not a file.')
   TargetConfig.target_base_dir = _target_dir(args.target_dir, build_file)
-  if config['DEFAULT'].get('S3_TARGET_DIR'):
-    pfx = '/'.join(build_file.relative_to(build_file.anchor).parts[:-1])
-    sfx = config['DEFAULT'].get('S3_TARGET_DIR')
-    sfx = sfx if sfx.endswith('/') else sfx + '/'
-    s3_path = sfx + pfx
-    TargetConfig.target_base_dir_s3_bucket = file_util.s3_bucket(s3_path)
-    TargetConfig.target_base_dir_s3_key = file_util.s3_key(s3_path)
+  _set_s3_target_dir(build_file)
 
   logging.info(f'{command_name} target {target_name} in {build_file}.')
   build_mod = _load_build_mod(build_file)
