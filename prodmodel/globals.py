@@ -8,7 +8,7 @@ config = configparser.ConfigParser()
 
 
 def default_config(name):
-  return config['DEFAULT'].get(name, os.environ[name])
+  return config['DEFAULT'].get(name, os.environ.get(name))
 
 
 class TargetConfig:

@@ -10,7 +10,6 @@ from prodmodel.model.files.input_file import InputFile
 class S3DataFile(InputFile):
 
   def __init__(self, s3_path: str):
-    assert s3_path.startswith('s3://')
     super().__init__(file_name=s3_local_file_name(s3_path))
     self.cached_build_time = None
     self.s3_path = s3_path

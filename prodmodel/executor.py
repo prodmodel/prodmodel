@@ -16,8 +16,10 @@ from prodmodel.tools import cleaner
 class ExecutorException(Exception):
   pass
 
+
 BUILD = 'BUILD'
 CLEAN = 'CLEAN'
+
 
 def get_command():
   if len(sys.argv) > 1:
