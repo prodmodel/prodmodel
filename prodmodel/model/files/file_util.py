@@ -9,6 +9,14 @@ def s3_local_file_name(s3_path) -> str:
   return TargetConfig.target_base_dir / 's3' / s3_path[5:] / 'cache'
 
 
+def s3_bucket(s3_path) -> str:
+  return s3_path[5:s3_path.index('/', 5)]
+
+
+def s3_key(s3_path) -> str:
+  return s3_path[s3_path.index('/', 5)  + 1:]
+
+
 def dest_dir(input_file) -> Path:
   d = TargetConfig.target_base_dir / 'data' / input_file.relative_name
   d.mkdir(parents=True, exist_ok=True)

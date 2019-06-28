@@ -9,6 +9,7 @@ from pathlib import Path
 
 from prodmodel.globals import TargetConfig, config
 from prodmodel.model.target.target import Target
+from prodmodel.model.files import file_util
 from prodmodel.tools import cleaner
 
 
@@ -122,6 +123,14 @@ def process_target(args, fn, command_name):
   if not build_file.is_file():
     raise ExecutorException(f'Build file {build_file} does not exist or not a file.')
   TargetConfig.target_base_dir = _target_dir(args.target_dir, build_file)
+  if config['DEFAULT'].get('S3_TARGET_DIR'):
+    pfx = '/'.join(build_file.relative_to(build_file.anchor).parts[:-1])
+    sfx = config['DEFAULT'].get('S3_TARGET_DIR')
+    sfx = sfx if sfx.endswith('/') else sfx + '/'
+    s3_path = sfx + pfx
+    TargetConfig.target_base_dir_s3_bucket = file_util.s3_bucket(s3_path)
+    TargetConfig.target_base_dir_s3_key = file_util.s3_key(s3_path)
+
   logging.info(f'{command_name} target {target_name} in {build_file}.')
   build_mod = _load_build_mod(build_file)
 

@@ -142,6 +142,12 @@ class Target:
           self._save_metadata(hash_id)
         with open(file_path, 'wb') as f:
           pickle.dump(output, f)
+        if TargetConfig.target_base_dir_s3_bucket is not None:
+          rel_path = '/'.join(file_path.relative_to(TargetConfig.target_base_dir).parts)
+          TargetConfig._s3().upload_file(
+            str(file_path),
+            str(TargetConfig.target_base_dir_s3_bucket),
+            str(TargetConfig.target_base_dir_s3_key + '/' + rel_path))
       self.cached_output = output
       self.cached_hash_id = hash_id
       return output

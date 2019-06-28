@@ -13,7 +13,8 @@ from prodmodel.model.files.s3_data_file import S3DataFile
 from prodmodel.model.target.binary_data_target import BinaryDataTarget
 from prodmodel.model.target.csv_data_target import CSVDataTarget
 from prodmodel.model.target.data_target import DataTarget
-from prodmodel.model.target.encode_label_data_target import EncodeLabelDataTarget
+from prodmodel.model.target.encode_label_data_target import \
+    EncodeLabelDataTarget
 from prodmodel.model.target.external_data_target import ExternalDataTarget
 from prodmodel.model.target.iterable_data_target import IterableDataTarget
 from prodmodel.model.target.json_data_target import JSONDataTarget
@@ -23,7 +24,8 @@ from prodmodel.model.target.sample_data_target import SampleDataTarget
 from prodmodel.model.target.select_data_target import SelectDataTarget
 from prodmodel.model.target.test_target import TestTarget
 from prodmodel.model.target.transform_data_target import TransformDataTarget
-from prodmodel.model.target.transform_stream_data_target import TransformStreamDataTarget
+from prodmodel.model.target.transform_stream_data_target import \
+    TransformStreamDataTarget
 from prodmodel.util import RuleException, checkargtypes
 
 
