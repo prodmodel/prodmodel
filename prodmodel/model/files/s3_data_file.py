@@ -3,19 +3,18 @@ import logging
 from pathlib import Path
 
 from prodmodel import util
-from prodmodel.model.files.file_util import create_dest_file, s3_local_file_name
+from prodmodel.model.files.file_util import create_dest_file, s3_local_file_name, s3_bucket, s3_key
 from prodmodel.model.files.input_file import InputFile
 
 
 class S3DataFile(InputFile):
 
   def __init__(self, s3_path: str):
-    assert s3_path.startswith('s3://')
     super().__init__(file_name=s3_local_file_name(s3_path))
     self.cached_build_time = None
     self.s3_path = s3_path
-    self.s3_bucket = s3_path[5:s3_path.index('/', 5)]
-    self.s3_key = s3_path[s3_path.index('/', 5)  + 1:]
+    self.s3_bucket = s3_bucket(s3_path)
+    self.s3_key = s3_key(s3_path)
     self.s3 = None
 
 

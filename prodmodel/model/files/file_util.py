@@ -6,7 +6,18 @@ from prodmodel.globals import TargetConfig
 
 
 def s3_local_file_name(s3_path) -> str:
+  assert s3_path.startswith('s3://')
   return TargetConfig.target_base_dir / 's3' / s3_path[5:] / 'cache'
+
+
+def s3_bucket(s3_path) -> str:
+  assert s3_path.startswith('s3://')
+  return s3_path[5:s3_path.index('/', 5)]
+
+
+def s3_key(s3_path) -> str:
+  assert s3_path.startswith('s3://')
+  return s3_path[s3_path.index('/', 5)  + 1:]
 
 
 def dest_dir(input_file) -> Path:

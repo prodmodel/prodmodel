@@ -118,6 +118,37 @@ class Target:
       json.dump({'files': files, 'targets': targets}, f)
 
 
+  def _s3_path(self, file_path):
+    rel_path = '/'.join(file_path.relative_to(TargetConfig.target_base_dir).parts)
+    s3_bucket = str(TargetConfig.target_base_dir_s3_bucket)
+    s3_key = str(TargetConfig.target_base_dir_s3_key + '/' + rel_path)
+    return s3_bucket, s3_key
+
+
+  def _create_output(self, file_path, hash_id):
+    logging.debug(f'  Creating version {hash_id}.')
+    lib_dir, mod_names = self._setup_modules()
+    with util.IsolatedSysPath(mod_names):
+      sys.path.append(str(lib_dir))
+      output = self.execute()
+      self._save_metadata(hash_id)
+    with open(file_path, 'wb') as f:
+      pickle.dump(output, f)
+    if TargetConfig.target_base_dir_s3_bucket is not None:
+      s3_bucket, s3_key = self._s3_path(file_path)
+      logging.debug(f'  Uploading output to s3://{s3_bucket}/{s3_key}.')
+      TargetConfig._s3().upload_file(str(file_path), s3_bucket, s3_key)
+    return output
+
+
+  def _download_output_from_s3(self, file_path):
+    s3_bucket, s3_key = self._s3_path(file_path)
+    response = TargetConfig._s3().get_object(Bucket=s3_bucket, Key=s3_key)
+    logging.debug(f'  Downloading cached version from s3://{s3_bucket}/{s3_key}.')
+    with open(file_path, 'wb') as f:
+      f.write(response['Body'].read())
+
+
   def output(self, force=False):
     target_name = self._name()
     logging.debug(f'Executing {target_name} defined at build.py:{self.lineno}.')
@@ -129,19 +160,22 @@ class Target:
       root_dir = self._output_dir(hash_id)
       os.makedirs(root_dir, exist_ok=True)
       file_path = root_dir / OUTPUT_FILE_NAME
-      if not force and file_path.is_file():
-        logging.debug(f'  Loading cached version {hash_id}.')
-        with open(file_path, 'rb') as f:
-          output = pickle.load(f)
+      if force:
+        output = self._create_output(file_path, hash_id)
       else:
-        logging.debug(f'  Creating version {hash_id}.')
-        lib_dir, mod_names = self._setup_modules()
-        with util.IsolatedSysPath(mod_names):
-          sys.path.append(str(lib_dir))
-          output = self.execute()
-          self._save_metadata(hash_id)
-        with open(file_path, 'wb') as f:
-          pickle.dump(output, f)
+        if file_path.is_file():
+          logging.debug(f'  Loading cached version {hash_id}.')
+          with open(file_path, 'rb') as f:
+            output = pickle.load(f)
+        elif TargetConfig.target_base_dir_s3_bucket is not None:
+          try:
+            self._download_output_from_s3(file_path)
+            with open(file_path, 'rb') as f:
+              output = pickle.load(f)
+          except Exception:
+            output = self._create_output(file_path, hash_id)
+        else:
+          output = self._create_output(file_path, hash_id)
       self.cached_output = output
       self.cached_hash_id = hash_id
       return output
