@@ -1,7 +1,6 @@
 import os
 import sqlite3
 from pathlib import Path
-import logging
 
 
 def dict_factory(cursor, row):

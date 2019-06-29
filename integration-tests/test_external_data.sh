@@ -17,7 +17,7 @@ if [ "$OUTPUT" != "[{'education': 'primary', 'score': 150}, {'education': 'secon
 fi
 
 echo "Updating external database."
-sqlite3 /tmp/example_1/remote.db < /tmp/example_1/update.sql
+python3.6 /tmp/example_1/update.py
 
 # Output is still the same because the previous result is cached.
 OUTPUT=$(python3.6 -m prodmodel /tmp/example_1:csv_data_scores --output_format=str)
