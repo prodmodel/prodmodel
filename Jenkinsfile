@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'python:3.6.7'
+            image 'python:3.6'
         }
     }
     environment {
@@ -27,6 +27,7 @@ pipeline {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'integration-tests/test_clean_builds__keep_lib.sh'
+                    sh 'integration-tests/test_external_data.sh'
                     sh 'integration-tests/test_s3_builds.sh'
                     sh 'integration-tests/test_target_dir.sh'
                 }

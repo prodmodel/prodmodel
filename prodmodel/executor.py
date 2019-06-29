@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 import time
+import pickle
 from datetime import datetime
 from pathlib import Path
 
@@ -44,6 +45,15 @@ def _parse_datetime(s: str):
     raise ExecutorException(f'Datetime {s} has to be in {__DATE_FORMAT} format.')
 
 
+__OUTPUT_FORMATS = ['none', 'str', 'bytes']
+
+def _parse_output_format(s: str):
+  if s not in __OUTPUT_FORMATS:
+    output_formats = ', '.join(__OUTPUT_FORMATS)
+    raise ExecutorException(f'Flag --output_type has to be one of {output_formats}.')
+  return s
+
+
 def create_arg_parser(command):
   parser = argparse.ArgumentParser(description='Build, deploy and test Python data science models.')
   if command is not None:
@@ -53,6 +63,7 @@ def create_arg_parser(command):
     parser.add_argument('--force_external', action='store_true', help='Force reloading external data sources instead of using the cached data.')
     parser.add_argument('--cache_data', action='store_true', help='Cache local data files.')
     parser.add_argument('--build_time', type=int, default=int(time.time()))
+    parser.add_argument('--output_format', type=_parse_output_format, default='none')
   elif command == CLEAN:
     _create_target_args(parser)
     parser.add_argument(
@@ -170,4 +181,11 @@ def build_target(target, args, target_name, **kwargs):
   target.init_with_deps(args)
   logging.info(f'Target {target_name} initialized.')
   result = target.output()
-  logging.info(f'Created {result}.')
+  if args.output_format == 'str':
+    os.write(1, str(result).encode('utf-8'))
+    logging.info('')
+  elif args.output_format == 'bytes':
+    os.write(1, pickle.dumps(result))
+    logging.info('')
+  else:
+    logging.info(f'Created {result}.')
