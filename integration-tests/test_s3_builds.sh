@@ -2,7 +2,6 @@
 set -e
 
 BASEDIR=$(dirname "$0")/..
-source $BASEDIR/.env
 cd $BASEDIR
 
 echo "Cleaning target directory example-s3/.target/output." 
