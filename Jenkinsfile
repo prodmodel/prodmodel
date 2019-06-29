@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'python:3.6.7'
+            image 'python:3.6-stretch'
         }
     }
     environment {
