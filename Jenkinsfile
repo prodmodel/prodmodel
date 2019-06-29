@@ -4,6 +4,10 @@ pipeline {
             image 'python:3.6.7'
         }
     }
+    environment {
+        AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+    }
     stages {
         stage('Setup') {
             steps {
@@ -23,6 +27,7 @@ pipeline {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'integration-tests/test_clean_builds__keep_lib.sh'
+                    sh 'integration-tests/test_s3_builds.sh'
                     sh 'integration-tests/test_target_dir.sh'
                 }
             }
