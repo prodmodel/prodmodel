@@ -45,7 +45,7 @@ def _parse_datetime(s: str):
     raise ExecutorException(f'Datetime {s} has to be in {__DATE_FORMAT} format.')
 
 
-__OUTPUT_FORMATS = ['none', 'str', 'bytes']
+__OUTPUT_FORMATS = ['none', 'str', 'bytes', 'log']
 
 def _parse_output_format(s: str):
   if s not in __OUTPUT_FORMATS:
@@ -60,10 +60,13 @@ def create_arg_parser(command):
     parser.add_argument('command', help='The command to execute.')
   if command is None or command == BUILD:
     _create_target_args(parser)
-    parser.add_argument('--force_external', action='store_true', help='Force reloading external data sources instead of using the cached data.')
-    parser.add_argument('--cache_data', action='store_true', help='Cache local data files.')
+    parser.add_argument('--force_external', action='store_true',
+      help='Force reloading external data sources instead of using the cached data.')
+    parser.add_argument('--cache_data', action='store_true',
+      help='Cache local data files.')
+    parser.add_argument('--output_format', type=_parse_output_format, default='log',
+      help='One of `none`, `str`, `bytes` and `log`. The output format of the data produced by the build target.')
     parser.add_argument('--build_time', type=int, default=int(time.time()))
-    parser.add_argument('--output_format', type=_parse_output_format, default='none')
   elif command == CLEAN:
     _create_target_args(parser)
     parser.add_argument(
@@ -187,5 +190,5 @@ def build_target(target, args, target_name, **kwargs):
   elif args.output_format == 'bytes':
     os.write(1, pickle.dumps(result))
     logging.info('')
-  else:
+  elif args.output_format == 'log':
     logging.info(f'Created {result}.')
