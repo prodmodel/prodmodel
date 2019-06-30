@@ -8,7 +8,7 @@ import pickle
 from datetime import datetime
 from pathlib import Path
 
-from prodmodel.globals import TargetConfig, config, default_config
+from prodmodel.globals import TargetConfig, default_config, read_config
 from prodmodel.model.target.target import Target
 from prodmodel.model.files import file_util
 from prodmodel.tools import cleaner
@@ -120,23 +120,23 @@ def setup():
 
   config_file = home_path / 'config'
   if os.path.isfile(config_file):
-    config.read(config_file)
+    read_config(config_file)
 
   rootLogger = logging.getLogger()
   rootLogger.setLevel(logging.DEBUG)
 
   fileHandler = logging.FileHandler(home_path / 'app.log')
-  fileHandler.setLevel(config['DEFAULT'].get('FILE_LOG_LEVEL', logging.DEBUG))
+  fileHandler.setLevel(default_config('FILE_LOG_LEVEL', logging.DEBUG))
   fileHandler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
   rootLogger.addHandler(fileHandler)
 
   consoleHandler = logging.StreamHandler()
-  consoleHandler.setLevel(config['DEFAULT'].get('CONSOLE_LOG_LEVEL', logging.INFO))
+  consoleHandler.setLevel(default_config('CONSOLE_LOG_LEVEL', logging.INFO))
   rootLogger.addHandler(consoleHandler)
 
 
 def _set_s3_target_dir(build_file):
-  s3_target_dir = config['DEFAULT'].get('S3_TARGET_DIR')
+  s3_target_dir = default_config('S3_TARGET_DIR')
   if s3_target_dir:
     if not default_config('AWS_ACCESS_KEY_ID') or not default_config('AWS_SECRET_ACCESS_KEY'):
       raise ExecutorException('Cannot use S3_TARGET_DIR without AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.')

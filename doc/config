@@ -5,3 +5,10 @@ FILE_LOG_LEVEL=DEBUG
 
 # Logging level on the console.
 CONSOLE_LOG_LEVEL=INFO
+
+# S3 backup directory to copy target outputs.
+# S3_TARGET_DIR=
+
+# AWS credentials.
+# AWS_ACCESS_KEY_ID=
+# AWS_SECRET_ACCESS_KEY=
