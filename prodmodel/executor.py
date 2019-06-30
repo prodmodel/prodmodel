@@ -65,7 +65,8 @@ def create_arg_parser(command):
     parser.add_argument('--cache_data', action='store_true',
       help='Cache local data files.')
     parser.add_argument('--output_format', type=_parse_output_format, default='log',
-      help='One of `none`, `str`, `bytes` and `log`. The output format of the data produced by the build target.')
+      help='One of `none`, `str`, `bytes` and `log`. The output format of the data ' +
+           'produced by the build target written to stdout.')
     parser.add_argument('--build_time', type=int, default=int(time.time()))
   elif command == CLEAN:
     _create_target_args(parser)

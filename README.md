@@ -115,7 +115,8 @@ based on this [template](https://github.com/prodmodel/prodmodel/blob/master/doc/
    This argument gives the user manual control over when to reload these data sources.
  * `--cache_data`: Cache local data files if changed. This can be useful for debugging / reproducibility by making sure every
    data source used for a specific build is saved.
- * `--output_format`: One of `none`, `str`, `bytes` and `log`. The output format of the data produced by the build target.
+ * `--output_format`: One of `none`, `str`, `bytes` and `log`. The output format of the data produced by the build target
+   written to stdout.
 
 ### Cleaning old cache files
 
