@@ -8,7 +8,7 @@ from typing import GenericMeta, List
 
 import boto3
 
-from prodmodel.globals import TargetConfig, config
+from prodmodel.globals import TargetConfig, default_config
 
 
 def build_file():
@@ -106,6 +106,6 @@ def checkargtypes(fn):
 def s3_client():
   return boto3.client(
     's3',
-    aws_access_key_id=config['DEFAULT'].get('AWS_ACCESS_KEY_ID', os.environ['AWS_ACCESS_KEY_ID']),
-    aws_secret_access_key=config['DEFAULT'].get('AWS_SECRET_ACCESS_KEY', os.environ['AWS_SECRET_ACCESS_KEY'])
+    aws_access_key_id=default_config('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=default_config('AWS_SECRET_ACCESS_KEY')
   )

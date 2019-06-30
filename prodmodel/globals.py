@@ -4,11 +4,15 @@ import os
 from pathlib import Path
 
 
-config = configparser.ConfigParser()
+__config = configparser.ConfigParser()
 
 
-def default_config(name):
-  return config['DEFAULT'].get(name, os.environ.get(name))
+def read_config(config_file):
+  __config.read(config_file)
+
+
+def default_config(name, default=None):
+  return __config['DEFAULT'].get(name, os.environ.get(name, default))
 
 
 class TargetConfig:
