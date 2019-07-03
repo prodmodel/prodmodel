@@ -30,6 +30,7 @@ pipeline {
                     sh 'integration-tests/test_external_data.sh'
                     sh 'integration-tests/test_s3_builds.sh'
                     sh 'integration-tests/test_target_dir.sh'
+                    sh 'integration-tests/test_ls.sh'
                 }
             }
         }

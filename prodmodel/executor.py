@@ -20,6 +20,7 @@ class ExecutorException(Exception):
 
 BUILD = 'BUILD'
 CLEAN = 'CLEAN'
+LS    = 'LS'
 
 
 def get_command():
@@ -28,11 +29,14 @@ def get_command():
       return CLEAN
     elif sys.argv[1].upper() == BUILD:
       return BUILD
+    elif sys.argv[1].upper() == LS:
+      return LS
   return None
 
 
-def _create_target_args(parser):
-  parser.add_argument('target', help='The target to execute in a <path_to_build_file>:<target> format, or <target> if the command is executed from the directory of the build file.')
+def _create_target_args(parser, with_command=True):
+  if with_command:
+    parser.add_argument('target', help='The target to execute in a <path_to_build_file>:<target> format, or <target> if the command is executed from the directory of the build file.')
   parser.add_argument('--target_dir', type=str, default='.target', help='The target directory to build in.')
 
 
@@ -54,6 +58,12 @@ def _parse_output_format(s: str):
   return s
 
 
+def _create_output_format_args(parser):
+  parser.add_argument('--output_format', type=_parse_output_format, default='log',
+    help='One of `none`, `str`, `bytes` and `log`. The output format of the data ' +
+         'produced by the build target written to stdout.')
+
+
 def create_arg_parser(command):
   parser = argparse.ArgumentParser(description='Build, deploy and test Python data science models.')
   if command is not None:
@@ -64,9 +74,7 @@ def create_arg_parser(command):
       help='Force reloading external data sources instead of using the cached data.')
     parser.add_argument('--cache_data', action='store_true',
       help='Cache local data files.')
-    parser.add_argument('--output_format', type=_parse_output_format, default='log',
-      help='One of `none`, `str`, `bytes` and `log`. The output format of the data ' +
-           'produced by the build target written to stdout.')
+    _create_output_format_args(parser)
     parser.add_argument('--build_time', type=int, default=int(time.time()))
   elif command == CLEAN:
     _create_target_args(parser)
@@ -75,9 +83,20 @@ def create_arg_parser(command):
       type=_parse_datetime,
       default=datetime.now(),
       help=f'Clean up files modified before this datetime ({__DATE_FORMAT}), default now.')
+  elif command == LS:
+    parser.add_argument('build_file', type=str, help='The build file or the directory of the build file to list.')
+    _create_target_args(parser, with_command=False)
+    _create_output_format_args(parser)
   else:
     raise ExecutorException(f'Unknown command {command}.')
   return parser
+
+
+def _resolve_build_file(f):
+  if f.endswith('build.py'):
+    return Path(f).resolve()
+  else:
+    return (Path(f) / 'build.py').resolve()
 
 
 def _parse_target(target_arg):
@@ -85,10 +104,7 @@ def _parse_target(target_arg):
     target_parts = target_arg.split(':')
     f = target_parts[0]
     target = target_parts[1]
-    if f.endswith('build.py'):
-      return Path(f).resolve(), target
-    else:
-      return (Path(f) / 'build.py').resolve(), target
+    return _resolve_build_file(f), target
   else:
     return Path('build.py').resolve(), target_arg
 
@@ -149,10 +165,7 @@ def _set_s3_target_dir(build_file):
 
 def process_target(args, fn, command_name):
   build_file, target_name = _parse_target(args.target)
-  if not build_file.is_file():
-    raise ExecutorException(f'Build file {build_file} does not exist or not a file.')
-  TargetConfig.target_base_dir = _target_dir(args.target_dir, build_file)
-  _set_s3_target_dir(build_file)
+  _setup_target_dirs(build_file, args.target_dir)
 
   logging.info(f'{command_name} target {target_name} in {build_file}.')
   build_mod = _load_build_mod(build_file)
@@ -176,6 +189,37 @@ def process_target(args, fn, command_name):
     fn(target=target, target_name=target_name, args=args)
 
 
+def _output(args, result):
+  if args.output_format == 'str':
+    os.write(1, str(result).encode('utf-8'))
+    logging.info('')
+  elif args.output_format == 'bytes':
+    os.write(1, pickle.dumps(result))
+    logging.info('')
+  elif args.output_format == 'log':
+    logging.info(f'Created {result}.')
+
+
+def _setup_target_dirs(build_file, target_dir):
+  if not build_file.is_file():
+    raise ExecutorException(f'Build file {build_file} does not exist or not a file.')
+  TargetConfig.target_base_dir = _target_dir(target_dir, build_file)
+  _set_s3_target_dir(build_file)
+
+
+def list_targets(args):
+  build_file = _resolve_build_file(args.build_file)
+  _setup_target_dirs(build_file, args.target_dir)
+
+  targets = []
+  build_mod = _load_build_mod(build_file)
+  for target_name in dir(build_mod):
+    target = getattr(build_mod, target_name)
+    if isinstance(target, Target):
+      targets.append(target_name)
+  _output(args, targets)
+
+
 def clean_target(target, args, **kwargs):
   cleaner.remove_old_cache_files(target, args.cutoff_date)
 
@@ -185,11 +229,4 @@ def build_target(target, args, target_name, **kwargs):
   target.init_with_deps(args)
   logging.info(f'Target {target_name} initialized.')
   result = target.output()
-  if args.output_format == 'str':
-    os.write(1, str(result).encode('utf-8'))
-    logging.info('')
-  elif args.output_format == 'bytes':
-    os.write(1, pickle.dumps(result))
-    logging.info('')
-  elif args.output_format == 'log':
-    logging.info(f'Created {result}.')
+  _output(args, result)

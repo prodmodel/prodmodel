@@ -22,16 +22,15 @@ def main():
       logging.debug(f'Running Prodmodel version {prodmodel.__version__}.')
 
     if command is None or command == executor.BUILD:
-      command_name = 'Build'
-      command_fn = executor.build_target
+      executor.process_target(args, executor.build_target, 'Build')
     elif command == executor.CLEAN:
-      command_name = 'Cleaning'
-      command_fn = executor.clean_target
+      executor.process_target(args, executor.clean_target, 'Cleaning')
+    elif command == executor.LS:
+      executor.list_targets(args)
     else:
       logging.error(red_color(f'Unknown command {command}.'))
       return 1
 
-    executor.process_target(args, command_fn, command_name)
     success = True
   except (executor.ExecutorException, RuleException) as e:
     logging.error(red_color(str(e)))
