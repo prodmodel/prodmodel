@@ -88,6 +88,8 @@ def create_arg_parser(command):
     parser.add_argument('build_file', type=str, help='The build file or the directory of the build file to list.')
     _create_target_args(parser, with_command=False)
     _create_output_format_args(parser)
+  elif command == HELP:
+    pass
   else:
     raise ExecutorException(f'Unknown command {command}.')
   return parser
