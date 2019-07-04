@@ -21,22 +21,23 @@ class ExecutorException(Exception):
 BUILD = 'BUILD'
 CLEAN = 'CLEAN'
 LS    = 'LS'
+HELP  = 'HELP'
+
+__COMMANDS = [BUILD, CLEAN, LS, HELP]
 
 
 def get_command():
   if len(sys.argv) > 1:
-    if sys.argv[1].upper() == CLEAN:
-      return CLEAN
-    elif sys.argv[1].upper() == BUILD:
-      return BUILD
-    elif sys.argv[1].upper() == LS:
-      return LS
+    command = sys.argv[1].upper()
+    if command in __COMMANDS:
+      return command
   return None
 
 
 def _create_target_args(parser, with_command=True):
   if with_command:
-    parser.add_argument('target', help='The target to execute in a <path_to_build_file>:<target> format, or <target> if the command is executed from the directory of the build file.')
+    parser.add_argument('target', help='The target to execute in a <path_to_build_file>:<target> format, or ' +
+                                       '<target> if the command is executed from the directory of the build file.')
   parser.add_argument('--target_dir', type=str, default='.target', help='The target directory to build in.')
 
 
@@ -198,6 +199,11 @@ def _output(args, result):
     logging.info('')
   elif args.output_format == 'log':
     logging.info(f'Created {result}.')
+
+
+def list_commands():
+  commands = ', '.join([command.lower() for command in __COMMANDS])
+  logging.info(f'Supported commands: {commands}.')
 
 
 def _setup_target_dirs(build_file, target_dir):
