@@ -27,6 +27,8 @@ def main():
       executor.process_target(args, executor.clean_target, 'Cleaning')
     elif command == executor.LS:
       executor.list_targets(args)
+    elif command == executor.HELP:
+      executor.list_commands()
     else:
       logging.error(red_color(f'Unknown command {command}.'))
       return 1
