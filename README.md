@@ -118,6 +118,10 @@ based on this [template](https://github.com/prodmodel/prodmodel/blob/master/doc/
  * `--output_format`: One of `none`, `str`, `bytes` and `log`. The output format of the data produced by the build target
    written to stdout.
 
+### List targets in build file
+
+ * Run `prodmodel ls <path_to_build>` to list targets in a build file where `<path_to_build>` to the build file or its directory.
+
 ### Cleaning old cache files
 
  * Run `prodmodel clean <target> --cutoff_date=<cutoff datetime>` to delete output cache files of a target created before
