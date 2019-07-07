@@ -34,9 +34,18 @@ def __check_output_format(output_format):
     raise RuleException('Invalid output_format, has to be one of {", ".join(OUTPUT_FORMAT_TYPES)}.')
 
 
+
+EXTRA_DOC_PARAMS = {
+  'output_format': '''The output of the target is specified by `output_format`:
+ * `pickle` (default): a numpy array of arrays (serialized with pickle),
+ * `json`: a list of dicts (serialzed as JSON).''',
+  'file_deps': 'Any local imported module has to be specified in `file_deps`, except for the packages coming from requirements.'
+}
+
+
 @checkargtypes
 def requirements(packages: List[str]):
-  '''List of Python packages used by the project.'''
+  '''List of Python `packages` used by the project.'''
 
   m = hashlib.sha256()
   for package in packages:
@@ -60,7 +69,7 @@ def _decode_data_file(file_name):
 
 @checkargtypes
 def data_stream(file: str, data_type: str, dtypes: dict=None, output_format: str='pickle') -> IterableDataTarget:
-  '''Local data source file; `data_type` has to be one of [csv, json], `dtypes` is a type specification for the columns in the file.'''
+  '''Local data source `file`; `data_type` has to be one of [csv, json], `dtypes` is a type specification for the columns in the file.'''
 
   __check_output_format(output_format)
   accepted_types = ('csv', 'json')
@@ -77,7 +86,7 @@ def data_stream(file: str, data_type: str, dtypes: dict=None, output_format: str
 
 @checkargtypes
 def data_file(file: str) -> DataTarget:
-  '''Local binary data source file.'''
+  '''Local binary data source `file`.'''
   return BinaryDataTarget(_decode_data_file(file))
 
 
@@ -88,7 +97,10 @@ def split(
   target_column: str,
   seed: int=0,
   output_format: str='pickle') -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]:
-  '''Splits the source data into train X, train y, test X and test y data, respectively.'''
+  '''Splits the source `data` into train X, train y, test X and test y data, respectively. Params:
+ * `test_ratio`: [0, 1], the ratio of the test dataset (1 - test_ratio for the train dataset),
+ * `target_column`: the name of the target variable included only in the test set,
+ * `seed`: random seed for the sampling.'''
 
   __check_output_format(output_format)
   train_data = SampleDataTarget(data, 1.0 - test_ratio, seed, output_format)
@@ -108,9 +120,8 @@ def transform_stream(
   objects: Dict[str, DataTarget]={},
   file_deps: List[str]=[],
   output_format: str='pickle') -> IterableDataTarget:
-  '''Maps the input data stream into another one. The function `fn` defined in `file` has to accept a dict as a first argument and return a dict.
-     The rest of its arguments have to be the keys of `objects` - the outputs of the dict value targets will be substituted at runtime.
-     Any module imported in file has to be specified in `file_deps`.'''
+  '''Maps the input data `stream` into another one. The function `fn` defined in `file` has to accept a dict as a first argument and return a dict.
+     The rest of its arguments have to be the keys of `objects` - the outputs of the dict value targets will be substituted at runtime.'''
 
   __check_output_format(output_format)
   return TransformStreamDataTarget(
@@ -125,7 +136,7 @@ def transform_stream(
 @checkargtypes
 def transform(file: str, fn: str, streams: Dict[str, IterableDataTarget]={}, objects: Dict[str, DataTarget]={}, file_deps: List[str]=[]) -> DataTarget:
   '''Transforms the input data sets into another one. The function `fn` defined in `file` has to have an argument for every key defined in `streams`
-     (list of dicts) and `objects` (the outputs of the dict value targets). Any module imported in file has to be specified in `file_deps`.'''
+     (list of dicts) and `objects` (the outputs of the dict value targets).'''
 
   return TransformDataTarget(
     source=PyFileCache.get(file),
@@ -152,7 +163,7 @@ def encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget, o
 
 @checkargtypes
 def test(test_file: str, file_deps: List[str]=[]) -> TestTarget:
-  '''Runs the tests in `test_file`. Any module imported in file has to be specified in `file_deps`.'''
+  '''Runs the tests in `test_file`.'''
 
   return TestTarget(
     test_file=PyFileCache.get(test_file),
@@ -173,6 +184,6 @@ def external_data(file: str, fn: str, args: Dict[str, str], file_deps: List[str]
 
 @checkargtypes
 def deploy_target(data: Target, deploy_path: str) -> DeployTarget:
-  '''Deploys the output of `data` to `deploy_path.`'''
+  '''Deploys the output of `data` to `deploy_path`.'''
 
   return DeployTarget(data, deploy_path)

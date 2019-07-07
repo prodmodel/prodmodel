@@ -5,6 +5,8 @@ import sys
 from inspect import Signature, getmembers, isfunction, signature
 from typing import GenericMeta
 
+from prodmodel.rules.rules import EXTRA_DOC_PARAMS
+
 
 def _annotation_str(a):
   if isinstance(a, GenericMeta) and a.__extra__ == dict and a.__args__:
@@ -35,14 +37,23 @@ def gen_doc(module, f):
       sig_str = f'''{name}({', '.join(p_strs)}){ret_str}'''
 
       param_names = [p for p in sign.parameters]
+      params_in_doc = set()
       for m in re.finditer('\`(\w)+\`', str(fn.__doc__)):
-        param = str(m.group(0))[1:-1]
-        assert param in param_names, f'{param} not in {param_names}'
+        params_in_doc.add(str(m.group(0))[1:-1])
+
+      for param in params_in_doc:
+        assert param in param_names, f'Param {param} is not in the signature of {name} ({param_names}).'
+      for param in param_names:
+        assert param in params_in_doc or param in EXTRA_DOC_PARAMS, f'Param {param} of {name} is undocumented ({params_in_doc}).'
+
       f.write(f'## {name}\n')
       f.write(f'`{sig_str}`<br/>\n')
       if fn.__doc__:
         doc_str = re.sub('(\s)+', ' ', str(fn.__doc__)) 
         f.write(f'{doc_str}\n')
+        for param in param_names:
+          if param not in params_in_doc:
+            f.write(EXTRA_DOC_PARAMS[param] + '\n')
       f.write('\n')
 
 
