@@ -9,11 +9,11 @@ Creates a label encoder from the input `data` stream for the specified `columns`
 Local binary data source file.
 
 ## data_stream
-`data_stream(file: str, data_type: str, dtypes: dict) -> IterableDataTarget`<br/>
+`data_stream(file: str, data_type: str, dtypes: dict, output_format: str) -> IterableDataTarget`<br/>
 Local data source file; `data_type` has to be one of [csv, json], `dtypes` is a type specification for the columns in the file.
 
 ## encode_labels
-`encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget) -> IterableDataTarget`<br/>
+`encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget, output_format: str) -> IterableDataTarget`<br/>
 Encodes the label values in `data` with `label_encoder`.
 
 ## external_data
@@ -25,7 +25,7 @@ Loads an external dataset by calling `fn` in `file` called with `args`.
 List of Python packages used by the project.
 
 ## split
-`split(data: IterableDataTarget, test_ratio: float, target_column: str, seed: int) -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]`<br/>
+`split(data: IterableDataTarget, test_ratio: float, target_column: str, seed: int, output_format: str) -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]`<br/>
 Splits the source data into train X, train y, test X and test y data, respectively.
 
 ## test
@@ -37,7 +37,7 @@ Runs the tests in `test_file`. Any module imported in file has to be specified i
 Transforms the input data sets into another one. The function `fn` defined in `file` has to have an argument for every key defined in `streams` (list of dicts) and `objects` (the outputs of the dict value targets). Any module imported in file has to be specified in `file_deps`.
 
 ## transform_stream
-`transform_stream(file: str, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget], file_deps: List[str]) -> IterableDataTarget`<br/>
+`transform_stream(file: str, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget], file_deps: List[str], output_format: str) -> IterableDataTarget`<br/>
 Maps the input data stream into another one. The function `fn` defined in `file` has to accept a dict as a first argument and return a dict. The rest of its arguments have to be the keys of `objects` - the outputs of the dict value targets will be substituted at runtime. Any module imported in file has to be specified in `file_deps`.
 
 ## copy_to_s3
