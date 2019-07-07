@@ -98,10 +98,9 @@ def split(
   seed: int=0,
   output_format: str='pickle') -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]:
   '''Splits the source `data` into train X, train y, test X and test y data, respectively. Params:
- * `test_ratio`: [0, 1], the ratio of the test dataset (the train dataset is 1 - test_ratio),
+ * `test_ratio`: [0, 1], the ratio of the test dataset (1 - test_ratio for the train dataset),
  * `target_column`: the name of the target variable included only in the test set,
- * `seed`: the random seed of the sampling.
-  '''
+ * `seed`: random seed for the sampling.'''
 
   __check_output_format(output_format)
   train_data = SampleDataTarget(data, 1.0 - test_ratio, seed, output_format)
