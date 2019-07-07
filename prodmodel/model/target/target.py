@@ -2,7 +2,6 @@ import hashlib
 import json
 import logging
 import os
-import pickle
 import shutil
 import sys
 from abc import abstractmethod
@@ -12,8 +11,7 @@ from typing import List
 from prodmodel import util
 from prodmodel.globals import TargetConfig
 from prodmodel.model.files.input_file import InputFile
-
-OUTPUT_FILE_NAME = 'output_1.pickle'
+from prodmodel.model.target import target_serializer
 
 
 class Target:
@@ -34,6 +32,7 @@ class Target:
     for dep in deps:
       transitive_file_deps.update(dep.transitive_file_deps)
     self.transitive_file_deps = transitive_file_deps
+    self.output_format = 'pickle'
 
 
   @abstractmethod
@@ -60,6 +59,7 @@ class Target:
     m = hashlib.sha256()
     m.update(util.lib_hash_id().encode('utf-8'))
     m.update(self.__class__.__name__.encode('utf-8'))
+    m.update(self.output_format.encode('utf-8'))
     m.update(json.dumps(self.params()).encode('utf-8'))
     for source in self.sources:
       m.update(source.hash_id().encode('utf-8'))
@@ -91,7 +91,7 @@ class Target:
 
 
   def output_path(self) -> Path:
-    return self.output_dir() / OUTPUT_FILE_NAME
+    return self.output_dir() / target_serializer.output_file_name(self.output_format)
 
 
   def _get_metadata_from_dep(self, target, files, targets):
@@ -132,8 +132,7 @@ class Target:
       sys.path.append(str(lib_dir))
       output = self.execute()
       self._save_metadata(hash_id)
-    with open(file_path, 'wb') as f:
-      pickle.dump(output, f)
+    target_serializer.save_output(file_path, output, self.output_format)
     if TargetConfig.target_base_dir_s3_bucket is not None:
       s3_bucket, s3_key = self._s3_path(file_path)
       logging.debug(f'  Uploading output to s3://{s3_bucket}/{s3_key}.')
@@ -159,19 +158,17 @@ class Target:
     else:
       root_dir = self._output_dir(hash_id)
       os.makedirs(root_dir, exist_ok=True)
-      file_path = root_dir / OUTPUT_FILE_NAME
+      file_path = root_dir / target_serializer.output_file_name(self.output_format)
       if force:
         output = self._create_output(file_path, hash_id)
       else:
         if file_path.is_file():
           logging.debug(f'  Loading cached version {hash_id}.')
-          with open(file_path, 'rb') as f:
-            output = pickle.load(f)
+          output = target_serializer.load_output(file_path, self.output_format)
         elif TargetConfig.target_base_dir_s3_bucket is not None:
           try:
             self._download_output_from_s3(file_path)
-            with open(file_path, 'rb') as f:
-              output = pickle.load(f)
+            output = target_serializer.load_output(file_path, self.output_format)
           except Exception:
             output = self._create_output(file_path, hash_id)
         else:

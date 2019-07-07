@@ -27,6 +27,7 @@ pipeline {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'integration-tests/test_clean_builds__keep_lib.sh'
+                    sh 'integration-tests/test_output_format.sh'
                     sh 'integration-tests/test_external_data.sh'
                     sh 'integration-tests/test_s3_builds.sh'
                     sh 'integration-tests/test_target_dir.sh'

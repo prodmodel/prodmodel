@@ -12,8 +12,9 @@ class TransformStreamDataTarget(IterableDataTarget):
                fn: str,
                stream: IterableDataTarget,
                objects: Dict[str, DataTarget],
-               file_deps: List[InputFile]):
-    super().__init__(sources=[source], deps=[stream] + list(objects.values()), file_deps=file_deps)
+               file_deps: List[InputFile],
+               output_format: str):
+    super().__init__(sources=[source], deps=[stream] + list(objects.values()), file_deps=file_deps, output_format=output_format)
     self.stream = stream
     self.source = source
     self.objects = objects

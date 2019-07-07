@@ -4,8 +4,8 @@ from prodmodel.model.target.iterable_data_target import IterableDataTarget
 
 
 class SampleDataTarget(IterableDataTarget):
-  def __init__(self, data: IterableDataTarget, ratio: float, seed: int):
-    super().__init__(sources=[], deps=[data], file_deps=[])
+  def __init__(self, data: IterableDataTarget, ratio: float, seed: int, output_format: str):
+    super().__init__(sources=[], deps=[data], file_deps=[], output_format=output_format)
     self.data = data
     self.ratio = ratio
     self.seed = seed

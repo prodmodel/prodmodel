@@ -3,8 +3,8 @@ from prodmodel.model.target.label_encoder_target import LabelEncoderTarget
 
 
 class EncodeLabelDataTarget(IterableDataTarget):
-  def __init__(self, data: IterableDataTarget, label_encoder: LabelEncoderTarget):
-    super().__init__(sources=[], deps=[data, label_encoder], file_deps=[])
+  def __init__(self, data: IterableDataTarget, label_encoder: LabelEncoderTarget, output_format: str):
+    super().__init__(sources=[], deps=[data, label_encoder], file_deps=[], output_format=output_format)
     self.data = data
     self.label_encoder = label_encoder
 

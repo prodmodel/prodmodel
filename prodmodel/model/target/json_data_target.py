@@ -6,8 +6,8 @@ from prodmodel.util import RuleException
 
 
 class JSONDataTarget(IterableDataTarget):
-  def __init__(self, source: DataFile):
-    super().__init__(sources=[source], deps=[], file_deps=[])
+  def __init__(self, source: DataFile, output_format: str):
+    super().__init__(sources=[source], deps=[], file_deps=[], output_format=output_format)
     self.source = source
 
 

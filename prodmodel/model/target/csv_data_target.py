@@ -5,8 +5,8 @@ from prodmodel.model.target.iterable_data_target import IterableDataTarget
 
 
 class CSVDataTarget(IterableDataTarget):
-  def __init__(self, source: DataFile, dtypes: dict):
-    super().__init__(sources=[source], deps=[], file_deps=[])
+  def __init__(self, source: DataFile, dtypes: dict, output_format: str):
+    super().__init__(sources=[source], deps=[], file_deps=[], output_format=output_format)
     self.source = source
     self.dtypes = dtypes
 
