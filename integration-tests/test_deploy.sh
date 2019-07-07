@@ -4,7 +4,6 @@ set -e
 BASEDIR=$(dirname "$0")/..
 cd $BASEDIR
 
-# Test default target dir.
 echo "Testing deploy target."
 python3.6 -m prodmodel build integration-tests/example:deploy_json --output_format='none'
 DEPLOYED_FILES=$(ls $HOME/deployed.json | wc -l)
