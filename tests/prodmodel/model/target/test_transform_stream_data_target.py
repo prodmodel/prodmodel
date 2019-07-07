@@ -6,8 +6,8 @@ from tests.prodmodel.model.target_test_util import TargetTestUtil
 class TestTransformStreamDataTarget(TargetTestUtil):
 
   def test_select_data_target__keep(self):
-    csv_target = CSVDataTarget(source=self.csv_data_file, dtypes={'a': int, 'b': str})
-    target = undertest.TransformStreamDataTarget(self.py_file, 'a_plus_1', csv_target, objects={}, file_deps=[])
+    csv_target = CSVDataTarget(source=self.csv_data_file, dtypes={'a': int, 'b': str}, output_format='pickle')
+    target = undertest.TransformStreamDataTarget(self.py_file, 'a_plus_1', csv_target, objects={}, file_deps=[], output_format='pickle')
     items = [item for item in target]
     self.assertEqual(2, len(items))
     self.assertEqual([{'a': 2}, {'a': 3}], items)

@@ -24,7 +24,12 @@ from prodmodel.model.target.select_data_target import SelectDataTarget
 from prodmodel.model.target.test_target import TestTarget
 from prodmodel.model.target.transform_data_target import TransformDataTarget
 from prodmodel.model.target.transform_stream_data_target import TransformStreamDataTarget
-from prodmodel.util import RuleException, checkargtypes
+from prodmodel.util import RuleException, checkargtypes, OUTPUT_FORMAT_TYPES
+
+
+def __check_output_format(output_format):
+  if output_format not in OUTPUT_FORMAT_TYPES:
+    raise RuleException('Invalid output_format, has to be one of {", ".join(OUTPUT_FORMAT_TYPES)}.')
 
 
 @checkargtypes
@@ -52,9 +57,10 @@ def _decode_data_file(file_name):
 
 
 @checkargtypes
-def data_stream(file: str, data_type: str, dtypes: dict=None) -> IterableDataTarget:
+def data_stream(file: str, data_type: str, dtypes: dict=None, output_format: str='pickle') -> IterableDataTarget:
   '''Local data source file; `data_type` has to be one of [csv, json], `dtypes` is a type specification for the columns in the file.'''
 
+  __check_output_format(output_format)
   accepted_types = ('csv', 'json')
   if data_type not in accepted_types:
     raise RuleException(f'Type must be one of {accepted_types}.')
@@ -62,9 +68,9 @@ def data_stream(file: str, data_type: str, dtypes: dict=None) -> IterableDataTar
     raise RuleException(f'Dtypes should only be defined if type is csv.')
 
   if data_type == 'csv':
-    return CSVDataTarget(_decode_data_file(file), dtypes)
+    return CSVDataTarget(_decode_data_file(file), dtypes, output_format)
   else: # type == 'json':
-    return JSONDataTarget(_decode_data_file(file))
+    return JSONDataTarget(_decode_data_file(file), output_format)
 
 
 @checkargtypes
@@ -74,30 +80,44 @@ def data_file(file: str) -> DataTarget:
 
 
 @checkargtypes
-def split(data: IterableDataTarget, test_ratio: float, target_column: str, seed: int=0) -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]:
+def split(
+  data: IterableDataTarget,
+  test_ratio: float,
+  target_column: str,
+  seed: int=0,
+  output_format: str='pickle') -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]:
   '''Splits the source data into train X, train y, test X and test y data, respectively.'''
 
-  train_data = SampleDataTarget(data, 1.0 - test_ratio, seed)
-  test_data = SampleDataTarget(data, test_ratio, seed)
-  train_x = SelectDataTarget(train_data, [target_column], keep=False)
-  train_y = SelectDataTarget(train_data, [target_column], keep=True)
-  test_x  = SelectDataTarget(test_data,  [target_column], keep=False)
-  test_y  = SelectDataTarget(test_data,  [target_column], keep=True)
+  __check_output_format(output_format)
+  train_data = SampleDataTarget(data, 1.0 - test_ratio, seed, output_format)
+  test_data = SampleDataTarget(data, test_ratio, seed, output_format)
+  train_x = SelectDataTarget(train_data, [target_column], keep=False, output_format=output_format)
+  train_y = SelectDataTarget(train_data, [target_column], keep=True,  output_format=output_format)
+  test_x  = SelectDataTarget(test_data,  [target_column], keep=False, output_format=output_format)
+  test_y  = SelectDataTarget(test_data,  [target_column], keep=True,  output_format=output_format)
   return train_x, train_y, test_x, test_y
 
 
 @checkargtypes
-def transform_stream(file: str, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget]={}, file_deps: List[str]=[]) -> IterableDataTarget:
+def transform_stream(
+  file: str,
+  fn: str,
+  stream: IterableDataTarget,
+  objects: Dict[str, DataTarget]={},
+  file_deps: List[str]=[],
+  output_format: str='pickle') -> IterableDataTarget:
   '''Maps the input data stream into another one. The function `fn` defined in `file` has to accept a dict as a first argument and return a dict.
      The rest of its arguments have to be the keys of `objects` - the outputs of the dict value targets will be substituted at runtime.
      Any module imported in file has to be specified in `file_deps`.'''
 
+  __check_output_format(output_format)
   return TransformStreamDataTarget(
     source=PyFileCache.get(file),
     fn=fn,
     stream=stream,
     objects=objects,
-    file_deps=[PyFileCache.get(f) for f in file_deps])
+    file_deps=[PyFileCache.get(f) for f in file_deps],
+    output_format=output_format)
 
 
 @checkargtypes
@@ -121,10 +141,11 @@ def create_label_encoder(data: IterableDataTarget, columns: List[str]) -> LabelE
 
 
 @checkargtypes
-def encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget) -> IterableDataTarget:
+def encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget, output_format: str='pickle') -> IterableDataTarget:
   '''Encodes the label values in `data` with `label_encoder`.'''
 
-  return EncodeLabelDataTarget(data, label_encoder)
+  __check_output_format(output_format)
+  return EncodeLabelDataTarget(data, label_encoder, output_format)
 
 
 @checkargtypes
