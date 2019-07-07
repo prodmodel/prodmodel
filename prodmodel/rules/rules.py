@@ -171,6 +171,7 @@ def external_data(file: str, fn: str, args: Dict[str, str], file_deps: List[str]
   return PickleDataTarget(ExternalDataFile(external_data_target))
 
 
+@checkargtypes
 def deploy_target(data: Target, deploy_path: str) -> DeployTarget:
   '''Deploys the output of `data` to `deploy_path.`'''
 
