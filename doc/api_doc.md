@@ -37,7 +37,7 @@ List of Python `packages` used by the project.
 
 ## split
 `split(data: IterableDataTarget, test_ratio: float, target_column: str, seed: int, output_format: str) -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]`<br/>
-Splits the source `data` into train X, train y, test X and test y data, respectively. Params: * `test_ratio`: [0, 1], the ratio of the test dataset (1 - test_ratio for the train dataset), * `target_column`: the name of the target variable included only in the test set, * `seed`: random seed for the sampling. 
+Splits the source `data` into train X, train y, test X and test y data, respectively. Params: * `test_ratio`: [0, 1], the ratio of the test dataset (1 - test_ratio for the train dataset)<br>, * `target_column`: the name of the target variable included only in the test set<br>, * `seed`: random seed for the sampling.
 The output of the target is specified by `output_format`:
  * `pickle` (default): a numpy array of arrays (serialized with pickle),
  * `json`: a list of dicts (serialzed as JSON).
