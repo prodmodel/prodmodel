@@ -53,7 +53,8 @@ def gen_doc(module, f):
         f.write(f'{doc_str}\n')
         for param in param_names:
           if param not in params_in_doc:
-            f.write(EXTRA_DOC_PARAMS[param] + '\n')
+            extra_doc_str = re.sub('(\s)+', ' ', EXTRA_DOC_PARAMS[param]) 
+            f.write(extra_doc_str)
       f.write('\n')
 
 
