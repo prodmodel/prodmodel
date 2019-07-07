@@ -49,12 +49,12 @@ def gen_doc(module, f):
       f.write(f'## {name}\n')
       f.write(f'`{sig_str}`<br/>\n')
       if fn.__doc__:
-        doc_str = re.sub('(\s)+', ' ', str(fn.__doc__)) 
+        doc_str = re.sub('(\s)+', ' ', str(fn.__doc__)).replace('<br>', '<br>\n')
         f.write(f'{doc_str}\n')
         for param in param_names:
           if param not in params_in_doc:
-            extra_doc_str = re.sub('(\s)+', ' ', EXTRA_DOC_PARAMS[param]) 
-            f.write(extra_doc_str)
+            extra_doc_str = re.sub('(\s)+', ' ', EXTRA_DOC_PARAMS[param]).replace('<br>', '<br>\n')
+            f.write(extra_doc_str + '\n')
       f.write('\n')
 
 
