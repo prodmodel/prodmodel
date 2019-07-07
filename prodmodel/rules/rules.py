@@ -36,7 +36,7 @@ def __check_output_format(output_format):
 
 
 EXTRA_DOC_PARAMS = {
-  'output_format': '''\nThe output of the target is specified by `output_format`.
+  'output_format': '''The output of the target is specified by `output_format`:
  * `pickle` (default): a numpy array of arrays (serialized with pickle),
  * `json`: a list of dicts (serialzed as JSON).''',
   'file_deps': 'Any local imported module has to be specified in `file_deps`, except for the packages coming from requirements.'

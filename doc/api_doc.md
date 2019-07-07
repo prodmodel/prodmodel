@@ -11,8 +11,7 @@ Local binary data source `file`.
 ## data_stream
 `data_stream(file: str, data_type: str, dtypes: dict, output_format: str) -> IterableDataTarget`<br/>
 Local data source `file`; `data_type` has to be one of [csv, json], `dtypes` is a type specification for the columns in the file.
-
-The output of the target is specified by `output_format`.
+The output of the target is specified by `output_format`:
  * `pickle` (default): a numpy array of arrays (serialized with pickle),
  * `json`: a list of dicts (serialzed as JSON).
 
@@ -23,8 +22,7 @@ Deploys the output of `data` to `deploy_path`.
 ## encode_labels
 `encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget, output_format: str) -> IterableDataTarget`<br/>
 Encodes the label values in `data` with `label_encoder`.
-
-The output of the target is specified by `output_format`.
+The output of the target is specified by `output_format`:
  * `pickle` (default): a numpy array of arrays (serialized with pickle),
  * `json`: a list of dicts (serialzed as JSON).
 
@@ -40,8 +38,7 @@ List of Python `packages` used by the project.
 ## split
 `split(data: IterableDataTarget, test_ratio: float, target_column: str, seed: int, output_format: str) -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]`<br/>
 Splits the source `data` into train X, train y, test X and test y data, respectively. Params: * `test_ratio`: [0, 1], the ratio of the test dataset (the train dataset is 1 - test_ratio), * `target_column`: the name of the target variable included only in the test set, * `seed`: the random seed of the sampling. 
-
-The output of the target is specified by `output_format`.
+The output of the target is specified by `output_format`:
  * `pickle` (default): a numpy array of arrays (serialized with pickle),
  * `json`: a list of dicts (serialzed as JSON).
 
@@ -59,8 +56,7 @@ Any local imported module has to be specified in `file_deps`, except for the pac
 `transform_stream(file: str, fn: str, stream: IterableDataTarget, objects: Dict[str, DataTarget], file_deps: List[str], output_format: str) -> IterableDataTarget`<br/>
 Maps the input data `stream` into another one. The function `fn` defined in `file` has to accept a dict as a first argument and return a dict. The rest of its arguments have to be the keys of `objects` - the outputs of the dict value targets will be substituted at runtime.
 Any local imported module has to be specified in `file_deps`, except for the packages coming from requirements.
-
-The output of the target is specified by `output_format`.
+The output of the target is specified by `output_format`:
  * `pickle` (default): a numpy array of arrays (serialized with pickle),
  * `json`: a list of dicts (serialzed as JSON).
 
