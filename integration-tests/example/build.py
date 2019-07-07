@@ -1,4 +1,7 @@
+from pathlib import Path
+
 from prodmodel.rules import rules
+
 
 csv_data = rules.data_stream(
   file='data.csv',
@@ -47,4 +50,9 @@ csv_data_to_json = rules.data_stream(
     'y':str
   },
   output_format='json'
+)
+
+deploy_json = rules.deploy_target(
+  data=csv_data_to_json,
+  deploy_path=str(Path.home() / 'deployed.json')
 )

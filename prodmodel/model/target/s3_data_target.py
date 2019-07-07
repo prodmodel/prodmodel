@@ -23,6 +23,6 @@ class S3DataTarget(Target):
 
   def execute(self):
     self.data.output()
-    path = str(self.data.output_path())
+    source_path = str(self.data.output_path())
     self._s3().upload_file(path, self.s3_bucket, self.s3_key)
     return self.params()
