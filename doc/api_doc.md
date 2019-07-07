@@ -21,9 +21,7 @@ Local binary data source `file`.<br>
 Local data source `file`; `data_type` has to be one of [csv, json], `dtypes` is a type specification for the columns in the file.<br>
 
 The output of the target is specified by `output_format`:<br>
-
  * `pickle` (default): a numpy array of arrays (serialized with pickle),<br>
-
  * `json`: a list of dicts (serialzed as JSON).<br>
 
 
@@ -41,9 +39,7 @@ Deploys the output of `data` to `deploy_path`.<br>
 Encodes the label values in `data` with `label_encoder`.<br>
 
 The output of the target is specified by `output_format`:<br>
-
  * `pickle` (default): a numpy array of arrays (serialized with pickle),<br>
-
  * `json`: a list of dicts (serialzed as JSON).<br>
 
 
@@ -68,17 +64,12 @@ List of Python `packages` used by the project.<br>
 `split(data: IterableDataTarget, test_ratio: float, target_column: str, seed: int, output_format: str) -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]`<br/>
 
 Splits the source `data` into train X, train y, test X and test y data, respectively. Params:<br>
-
  * `test_ratio`: [0, 1], the ratio of the test dataset (1 - test_ratio for the train dataset),<br>
-
  * `target_column`: the name of the target variable included only in the test set,<br>
-
  * `seed`: random seed for the sampling.<br>
 
 The output of the target is specified by `output_format`:<br>
-
  * `pickle` (default): a numpy array of arrays (serialized with pickle),<br>
-
  * `json`: a list of dicts (serialzed as JSON).<br>
 
 
@@ -109,9 +100,7 @@ Maps the input data `stream` into another one. The function `fn` defined in `fil
 Any local imported module has to be specified in `file_deps`, except for the packages coming from requirements.<br>
 
 The output of the target is specified by `output_format`:<br>
-
  * `pickle` (default): a numpy array of arrays (serialized with pickle),<br>
-
  * `json`: a list of dicts (serialzed as JSON).<br>
 
 
