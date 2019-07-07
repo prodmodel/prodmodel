@@ -36,8 +36,8 @@ def __check_output_format(output_format):
 
 
 EXTRA_DOC_PARAMS = {
-  'output_format': '''The output of the target is specified by `output_format`:
- * `pickle` (default): a numpy array of arrays (serialized with pickle),
+  'output_format': '''The output of the target is specified by `output_format`:<br>
+ * `pickle` (default): a numpy array of arrays (serialized with pickle),<br>
  * `json`: a list of dicts (serialzed as JSON).''',
   'file_deps': 'Any local imported module has to be specified in `file_deps`, except for the packages coming from requirements.'
 }
@@ -97,9 +97,9 @@ def split(
   target_column: str,
   seed: int=0,
   output_format: str='pickle') -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]:
-  '''Splits the source `data` into train X, train y, test X and test y data, respectively. Params:
- * `test_ratio`: [0, 1], the ratio of the test dataset (1 - test_ratio for the train dataset),
- * `target_column`: the name of the target variable included only in the test set,
+  '''Splits the source `data` into train X, train y, test X and test y data, respectively. Params:<br>
+ * `test_ratio`: [0, 1], the ratio of the test dataset (1 - test_ratio for the train dataset),<br>
+ * `target_column`: the name of the target variable included only in the test set,<br>
  * `seed`: random seed for the sampling.'''
 
   __check_output_format(output_format)

@@ -46,14 +46,15 @@ def gen_doc(module, f):
       for param in param_names:
         assert param in params_in_doc or param in EXTRA_DOC_PARAMS, f'Param {param} of {name} is undocumented ({params_in_doc}).'
 
-      f.write(f'## {name}\n')
-      f.write(f'`{sig_str}`<br/>\n')
+      f.write(f'## {name}\n\n')
+      f.write(f'`{sig_str}`<br/>\n\n')
       if fn.__doc__:
-        doc_str = re.sub('(\s)+', ' ', str(fn.__doc__)) 
-        f.write(f'{doc_str}\n')
+        doc_str = re.sub('(\s)+', ' ', str(fn.__doc__)).replace('<br>', '<br>\n')
+        f.write(f'{doc_str}<br>\n\n')
         for param in param_names:
           if param not in params_in_doc:
-            f.write(EXTRA_DOC_PARAMS[param] + '\n')
+            extra_doc_str = re.sub('(\s)+', ' ', EXTRA_DOC_PARAMS[param]).replace('<br>', '<br>\n')
+            f.write(extra_doc_str + '<br>\n\n')
       f.write('\n')
 
 
