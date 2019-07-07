@@ -1,6 +1,5 @@
 import shutil
 
-from prodmodel import util
 from prodmodel.model.target.target import Target
 
 
