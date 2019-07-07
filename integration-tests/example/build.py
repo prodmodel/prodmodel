@@ -52,6 +52,12 @@ csv_data_to_json = rules.data_stream(
   output_format='json'
 )
 
+average_age = rules.transform(
+  file='util_functions.py',
+  fn='average_age',
+  objects={'data': csv_data_to_json},
+)
+
 deploy_json = rules.deploy_target(
   data=csv_data_to_json,
   deploy_path=str(Path.home() / 'deployed.json')
