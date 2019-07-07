@@ -13,6 +13,7 @@ from prodmodel.model.files.s3_data_file import S3DataFile
 from prodmodel.model.target.binary_data_target import BinaryDataTarget
 from prodmodel.model.target.csv_data_target import CSVDataTarget
 from prodmodel.model.target.data_target import DataTarget
+from prodmodel.model.target.deploy_target import DeployTarget
 from prodmodel.model.target.encode_label_data_target import EncodeLabelDataTarget
 from prodmodel.model.target.external_data_target import ExternalDataTarget
 from prodmodel.model.target.iterable_data_target import IterableDataTarget
@@ -21,6 +22,7 @@ from prodmodel.model.target.label_encoder_target import LabelEncoderTarget
 from prodmodel.model.target.pickle_data_target import PickleDataTarget
 from prodmodel.model.target.sample_data_target import SampleDataTarget
 from prodmodel.model.target.select_data_target import SelectDataTarget
+from prodmodel.model.target.target import Target
 from prodmodel.model.target.test_target import TestTarget
 from prodmodel.model.target.transform_data_target import TransformDataTarget
 from prodmodel.model.target.transform_stream_data_target import TransformStreamDataTarget
@@ -167,3 +169,10 @@ def external_data(file: str, fn: str, args: Dict[str, str], file_deps: List[str]
     args=args,
     file_deps=[PyFileCache.get(f) for f in file_deps])
   return PickleDataTarget(ExternalDataFile(external_data_target))
+
+
+@checkargtypes
+def deploy_target(data: Target, deploy_path: str) -> DeployTarget:
+  '''Deploys the output of `data` to `deploy_path.`'''
+
+  return DeployTarget(data, deploy_path)

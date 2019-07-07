@@ -12,6 +12,10 @@ Local binary data source file.
 `data_stream(file: str, data_type: str, dtypes: dict, output_format: str) -> IterableDataTarget`<br/>
 Local data source file; `data_type` has to be one of [csv, json], `dtypes` is a type specification for the columns in the file.
 
+## deploy_target
+`deploy_target(data: Target, deploy_path: str) -> DeployTarget`<br/>
+Deploys the output of `data` to `deploy_path.`
+
 ## encode_labels
 `encode_labels(data: IterableDataTarget, label_encoder: LabelEncoderTarget, output_format: str) -> IterableDataTarget`<br/>
 Encodes the label values in `data` with `label_encoder`.
