@@ -24,7 +24,7 @@ from prodmodel.model.target.select_data_target import SelectDataTarget
 from prodmodel.model.target.test_target import TestTarget
 from prodmodel.model.target.transform_data_target import TransformDataTarget
 from prodmodel.model.target.transform_stream_data_target import TransformStreamDataTarget
-from prodmodel.util import RuleException, checkargtypes, OUTPUT_FORMAT_TYPES
+from prodmodel.util import OUTPUT_FORMAT_TYPES, RuleException, checkargtypes
 
 
 def __check_output_format(output_format):
