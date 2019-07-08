@@ -144,7 +144,7 @@ def setup():
   rootLogger = logging.getLogger()
   rootLogger.setLevel(logging.DEBUG)
 
-  fileHandler = logging.FileHandler(home_path / 'app.log')
+  fileHandler = logging.FileHandler(str(home_path / 'app.log'))
   fileHandler.setLevel(default_config('FILE_LOG_LEVEL', logging.DEBUG))
   fileHandler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
   rootLogger.addHandler(fileHandler)
