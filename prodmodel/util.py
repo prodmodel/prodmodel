@@ -15,7 +15,7 @@ OUTPUT_FORMAT_TYPES = ('pickle', 'json')
 
 def build_file():
   for stack_frame in traceback.extract_stack():
-    if stack_frame.filename.endswith('build.py'):
+    if str(stack_frame.filename).endswith('build.py'):
       return stack_frame
   raise Exception('Could not determine the location of build.py.')
 

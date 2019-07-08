@@ -26,7 +26,7 @@ class PyFile(InputFile):
 
   def output(self):
     if self.mod is None or self.cached_hash_id != self.hash_id():
-      spec = importlib.util.spec_from_file_location(self.mod_name(), self.file_name)
+      spec = importlib.util.spec_from_file_location(self.mod_name(), str(self.file_name))
       mod = importlib.util.module_from_spec(spec)
       spec.loader.exec_module(mod)
       self.mod = mod
