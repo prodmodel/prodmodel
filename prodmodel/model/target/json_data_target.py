@@ -12,7 +12,7 @@ class JSONDataTarget(IterableDataTarget):
 
 
   def __iter__(self):
-    with open(self.source.dest_file_path) as f:
+    with open(str(self.source.dest_file_path)) as f:
       data = json.load(f)
 
     if type(data) != list:

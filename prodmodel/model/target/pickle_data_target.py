@@ -11,7 +11,7 @@ class PickleDataTarget(DataTarget):
 
 
   def execute(self):
-    with open(self.source.file_name, 'rb') as f:
+    with open(str(self.source.file_name), 'rb') as f:
       return pickle.load(f)
 
 

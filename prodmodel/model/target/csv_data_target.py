@@ -12,7 +12,7 @@ class CSVDataTarget(IterableDataTarget):
 
 
   def __iter__(self):
-    with open(self.source.dest_file_path, newline='') as f:
+    with open(str(self.source.dest_file_path), newline='') as f:
       reader = csv.DictReader(f, delimiter=',')
       l = [row for row in reader]
 

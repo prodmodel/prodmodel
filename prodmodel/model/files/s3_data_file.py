@@ -27,7 +27,7 @@ class S3DataFile(InputFile):
   def _maybe_download_s3_file(self):
     metadata_file = self.file_name.parent / 'metadata.json'
     if metadata_file.is_file() and self.file_name.is_file():
-      with open(metadata_file, 'r') as f:
+      with open(str(metadata_file), 'r') as f:
         metadata = json.load(f)
       local_last_modified = metadata['last_modified']
     else:
@@ -42,9 +42,9 @@ class S3DataFile(InputFile):
       logging.debug('Downloading s3://{s3_bucket}/{s3_key} to {file_name}.'.format(
         s3_bucket=self.s3_bucket, s3_key=self.s3_key, file_name=self.file_name))
       self.file_name.parent.mkdir(parents=True, exist_ok=True)
-      with open(self.file_name, 'wb') as f:
+      with open(str(self.file_name), 'wb') as f:
         f.write(response['Body'].read())
-      with open(metadata_file, 'w') as f:
+      with open(str(metadata_file), 'w') as f:
         json.dump({'last_modified': s3_last_modified}, f)
 
 

@@ -7,20 +7,20 @@ from prodmodel.util import OUTPUT_FORMAT_TYPES
 def save_output(file_path, output, output_format):
   assert output_format in OUTPUT_FORMAT_TYPES
   if output_format == 'pickle':
-    with open(file_path, 'wb') as f:
+    with open(str(file_path), 'wb') as f:
       pickle.dump(output, f)
   else:
-    with open(file_path, 'w') as f:
+    with open(str(file_path), 'w') as f:
       json.dump(output, f)
 
 
 def load_output(file_path, output_format):
   assert output_format in OUTPUT_FORMAT_TYPES
   if output_format == 'pickle':
-    with open(file_path, 'rb') as f:
+    with open(str(file_path), 'rb') as f:
       return pickle.load(f)
   else:
-    with open(file_path, 'r') as f:
+    with open(str(file_path), 'r') as f:
       return json.load(f)
 
 

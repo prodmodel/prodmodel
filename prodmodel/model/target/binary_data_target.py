@@ -9,5 +9,5 @@ class BinaryDataTarget(DataTarget):
 
 
   def execute(self):
-    with open(self.source.dest_file_path) as f:
+    with open(str(self.source.dest_file_path)) as f:
       return f.read()

@@ -114,7 +114,7 @@ class Target:
     targets = {}
     self._get_metadata_from_dep(self, files, targets)
 
-    with open(self._output_dir(hash_id) / 'metadata.json', 'w') as f:
+    with open(str(self._output_dir(hash_id) / 'metadata.json'), 'w') as f:
       json.dump({'files': files, 'targets': targets}, f)
 
 
@@ -144,7 +144,7 @@ class Target:
     s3_bucket, s3_key = self._s3_path(file_path)
     response = TargetConfig._s3().get_object(Bucket=s3_bucket, Key=s3_key)
     logging.debug('  Downloading cached version from s3://{s3_bucket}/{s3_key}.'.format(s3_bucket=s3_bucket, s3_key=s3_key))
-    with open(file_path, 'wb') as f:
+    with open(str(file_path), 'wb') as f:
       f.write(response['Body'].read())
 
 

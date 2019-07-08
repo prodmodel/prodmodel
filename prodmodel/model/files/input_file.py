@@ -41,7 +41,7 @@ class InputFile:
   def _compute_hash(self):
     logging.debug('Computing hash id of {file_name}.'.format(file_name=self.file_name))
     m = hashlib.md5()
-    with open(self.file_name, 'rb') as f:
+    with open(str(self.file_name), 'rb') as f:
       buf = f.read(BLOCKSIZE)
       while len(buf) > 0:
         m.update(buf)
@@ -57,7 +57,7 @@ class InputFile:
 
     metadata_file = dest_dir(self) / 'metadata.json'
     if metadata_file.is_file():
-      with open(metadata_file, 'r') as f:
+      with open(str(metadata_file), 'r') as f:
         metadata = json.load(f)
       saved_last_modified = metadata['last_modified']
       if saved_last_modified == last_modified:
@@ -68,7 +68,7 @@ class InputFile:
 
     self.cached_hash_id = self._compute_hash()
     self.last_modified = last_modified
-    with open(metadata_file, 'w') as f:
+    with open(str(metadata_file), 'w') as f:
       json.dump({'last_modified': self.last_modified, 'hash_id': self.cached_hash_id}, f)
 
     return self.cached_hash_id
