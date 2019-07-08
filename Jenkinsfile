@@ -19,6 +19,7 @@ pipeline {
         stage('Python unit tests') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
+                    sh 'rm -rf .target'
                     sh 'python -m pytest tests'
                 }
             }
