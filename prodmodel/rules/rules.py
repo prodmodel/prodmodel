@@ -53,7 +53,7 @@ def requirements(packages: List[str]):
   hash_id = m.hexdigest()
   lib_dir = str((TargetConfig.target_base_dir / 'lib' / hash_id).resolve())
   if not os.path.isdir(lib_dir):
-    return_value = pip._internal.main(['install', f'--target={lib_dir}', '--ignore-installed'] + packages)
+    return_value = pip._internal.main(['install', '--target={lib_dir}'.format(lib_dir=lib_dir), '--ignore-installed'] + packages)
     if return_value > 0:
       raise RuleException('Error happened while installing requirements.')
   sys.path.insert(0, lib_dir)
@@ -74,9 +74,9 @@ def data_stream(file: str, data_type: str, dtypes: dict=None, output_format: str
   __check_output_format(output_format)
   accepted_types = ('csv', 'json')
   if data_type not in accepted_types:
-    raise RuleException(f'Type must be one of {accepted_types}.')
+    raise RuleException('Type must be one of {accepted_types}.'.format(accepted_types=accepted_types))
   if dtypes is not None and data_type != 'csv':
-    raise RuleException(f'Dtypes should only be defined if type is csv.')
+    raise RuleException('Dtypes should only be defined if type is csv.')
 
   if data_type == 'csv':
     return CSVDataTarget(_decode_data_file(file), dtypes, output_format)

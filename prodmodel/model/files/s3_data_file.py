@@ -36,9 +36,11 @@ class S3DataFile(InputFile):
     response = self._s3().get_object(Bucket=self.s3_bucket, Key=self.s3_key)
     s3_last_modified = response['LastModified'].isoformat()
     if local_last_modified == s3_last_modified:
-      logging.debug(f'Using cached version of s3://{self.s3_bucket}/{self.s3_key}: {self.file_name}.')
+      logging.debug('Using cached version of s3://{s3_bucket}/{s3_key}: {file_name}.'.format(
+        s3_bucket=self.s3_bucket, s3_key=self.s3_key, file_name=self.file_name))
     else:
-      logging.debug(f'Downloading s3://{self.s3_bucket}/{self.s3_key} to {self.file_name}.')
+      logging.debug('Downloading s3://{s3_bucket}/{s3_key} to {file_name}.'.format(
+        s3_bucket=self.s3_bucket, s3_key=self.s3_key, file_name=self.file_name))
       self.file_name.parent.mkdir(parents=True, exist_ok=True)
       with open(self.file_name, 'wb') as f:
         f.write(response['Body'].read())

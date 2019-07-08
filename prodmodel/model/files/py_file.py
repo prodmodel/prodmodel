@@ -36,5 +36,5 @@ class PyFile(InputFile):
   def method(self, name):
     mod = self.output()
     if name not in dir(mod):
-      raise RuleException(f'Method {name} is not found in {self.file_name}.')
+      raise RuleException('Method {name} is not found in {file_name}.'.format(name=name, file_name=self.file_name))
     return getattr(mod, name)

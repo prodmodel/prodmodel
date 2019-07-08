@@ -23,7 +23,7 @@ def build_file():
 def lib_hash_id() -> str:
   lib_dir = TargetConfig.lib_dir
   if lib_dir is not None:
-    assert str(TargetConfig.target_base_dir) in lib_dir and 'lib' in lib_dir, f'Bad lib dir: {lib_dir}'
+    assert str(TargetConfig.target_base_dir) in lib_dir and 'lib' in lib_dir, 'Bad lib dir: {lib_dir}'.format(lib_dir=lib_dir)
     return str(Path(lib_dir).name)
   else:
     return ''
@@ -79,11 +79,13 @@ def checkargtypes(fn):
       if not issubclass(arg_type, expected_type):
         try:
           bf = build_file()
-          loc = f'{fn.__name__} at {bf.filename}:{bf.lineno}'
+          loc = '{fn_name} at {file_name}:{lineno}'.format(
+            fn_name=fn.__name__, file_name=bf.filename, lineno=bf.lineno)
         except Exception as e:
           logging.warning(e)
           loc = ''
-        raise RuleException(f'Argument "{param}" has type "{arg_type.__name__}" instead of "{expected_type.__name__}" ({loc}).')
+        raise RuleException('Argument "{param}" has type "{arg_type_name}" instead of "{expected_type_name}" ({loc}).'.format(
+          param=param, arg_type_name=arg_type.__name__, expected_type_name=expected_type.__name__, loc=loc))
     for param, definition in sign.parameters.items():
       if param in kwargs:
         expected_type = definition.annotation
