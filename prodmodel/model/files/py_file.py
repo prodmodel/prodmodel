@@ -10,7 +10,7 @@ class PyFile(InputFile):
 
   def __init__(self, file_name: str):
     super().__init__(file_name=file_name)
-    assert file_name.endswith('.py')
+    assert str(file_name).endswith('.py')
     self.mod = None
     self.cached_build_time = None
 
