@@ -180,7 +180,7 @@ class Target:
 
   def _setup_modules(self):
     lib_dir = self.output_dir() / 'lib'
-    shutil.rmtree(lib_dir, ignore_errors=True)
+    shutil.rmtree(str(lib_dir), ignore_errors=True)
     lib_dir.mkdir(parents=True, exist_ok=True)
     mod_names = []
     for f in self.transitive_file_deps:

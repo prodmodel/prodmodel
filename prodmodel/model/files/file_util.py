@@ -32,8 +32,8 @@ def create_dest_file(args, input_file) -> Path:
     if dest_path.is_symlink():
       os.remove(dest_path)
     if not dest_path.is_file():
-      shutil.copy(input_file.file_name, dest_path)
+      shutil.copy(str(input_file.file_name), dest_path)
   else:
     if not dest_path.is_file(): # Works with symlinks too.
-      os.symlink(input_file.file_name, dest_path)
+      os.symlink(str(input_file.file_name), dest_path)
   return dest_path
