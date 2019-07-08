@@ -16,7 +16,7 @@ def default_config(name, default=None):
 
 
 class TargetConfig:
-  target_base_dir
+  target_base_dir = None
   lib_dir = None
   target_base_dir_s3_bucket = None
   target_base_dir_s3_key_prefix = None
