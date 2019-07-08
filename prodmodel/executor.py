@@ -113,7 +113,7 @@ def _parse_target(target_arg):
 
 
 def _load_build_mod(build_file):
-  spec = importlib.util.spec_from_file_location('build', build_file)
+  spec = importlib.util.spec_from_file_location('build', str(build_file))
   build_mod = importlib.util.module_from_spec(spec)
   spec.loader.exec_module(build_mod)
 
