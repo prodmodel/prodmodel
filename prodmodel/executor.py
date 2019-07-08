@@ -216,7 +216,6 @@ def _setup_target_dirs(build_file, target_dir):
     raise ExecutorException('Build file {build_file} does not exist or not a file.'.format(build_file=build_file))
   TargetConfig.target_base_dir = _target_dir(target_dir, build_file)
   os.makedirs(str(TargetConfig.target_base_dir), exist_ok=True)
-  os.makedirs(str(TargetConfig.target_base_dir / 'lib'), exist_ok=True)
   _set_s3_target_dir(build_file)
 
 

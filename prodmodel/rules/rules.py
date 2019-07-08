@@ -51,7 +51,9 @@ def requirements(packages: List[str]):
   for package in packages:
     m.update(package.encode('utf-8'))
   hash_id = m.hexdigest()
-  lib_dir = str((TargetConfig.target_base_dir / 'lib' / hash_id).resolve())
+  lib_root = TargetConfig.target_base_dir / 'lib'
+  os.makedirs(str(lib_root), exist_ok=True)
+  lib_dir = str(lib_root.resolve() / hash_id)
   if not os.path.isdir(lib_dir):
     return_value = pip._internal.main(['install', '--target={lib_dir}'.format(lib_dir=lib_dir), '--ignore-installed'] + packages)
     if return_value > 0:
