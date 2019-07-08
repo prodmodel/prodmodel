@@ -138,7 +138,7 @@ def setup():
   os.makedirs(str(home_path), exist_ok=True)
 
   config_file = home_path / 'config'
-  if os.path.isfile(config_file):
+  if os.path.isfile(str(config_file)):
     read_config(config_file)
 
   rootLogger = logging.getLogger()

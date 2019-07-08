@@ -8,7 +8,7 @@ __config = configparser.ConfigParser()
 
 
 def read_config(config_file):
-  __config.read(config_file)
+  __config.read(str(config_file))
 
 
 def default_config(name, default=None):
