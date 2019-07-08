@@ -157,7 +157,7 @@ class Target:
       return self.cached_output
     else:
       root_dir = self._output_dir(hash_id)
-      os.makedirs(root_dir, exist_ok=True)
+      os.makedirs(str(root_dir), exist_ok=True)
       file_path = root_dir / target_serializer.output_file_name(self.output_format)
       if force:
         output = self._create_output(file_path, hash_id)
@@ -184,6 +184,6 @@ class Target:
     lib_dir.mkdir(parents=True, exist_ok=True)
     mod_names = []
     for f in self.transitive_file_deps:
-      os.symlink(f.file_name, lib_dir / f.file_name.name)
+      os.symlink(str(f.file_name), str(lib_dir / f.file_name.name))
       mod_names.append(f.mod_name())
     return lib_dir, mod_names

@@ -15,7 +15,7 @@ def remove_old_cache_files(target: Target, cutoff_date: datetime):
       if d.is_dir():
         metadata_file = Path(d / 'metadata.json')
         if metadata_file.is_file():
-          last_modified_datetime = datetime.fromtimestamp(os.path.getmtime(metadata_file))
+          last_modified_datetime = datetime.fromtimestamp(os.path.getmtime(str(metadata_file)))
           if last_modified_datetime < cutoff_date:
             logging.debug('Deleting cache dir {d}.'.format(d=d))
             shutil.rmtree(str(d))
