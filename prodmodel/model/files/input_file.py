@@ -50,7 +50,7 @@ class InputFile:
 
 
   def hash_id(self):
-    last_modified = datetime.fromtimestamp(os.path.getmtime(self.file_name)).isoformat()
+    last_modified = datetime.fromtimestamp(os.path.getmtime(str(self.file_name))).isoformat()
 
     if self.last_modified == last_modified and self.cached_hash_id:
       return self.cached_hash_id
