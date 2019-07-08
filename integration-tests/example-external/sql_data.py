@@ -17,7 +17,7 @@ def load_table(table):
   try:
     conn.row_factory = dict_factory
     cursor = conn.cursor()
-    cursor.execute(f'SELECT * FROM {table}')
+    cursor.execute('SELECT * FROM {table}'.format(table=table))
     for row in cursor.fetchall():
       result.append(row)
   finally:
