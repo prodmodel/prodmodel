@@ -135,7 +135,7 @@ def _target_dir(args_target_dir, build_file) -> Path:
 
 def setup():
   home_path = Path(os.path.expanduser('~')) / '.prodmodel'
-  os.makedirs(home_path, exist_ok=True)
+  os.makedirs(str(home_path), exist_ok=True)
 
   config_file = home_path / 'config'
   if os.path.isfile(config_file):
