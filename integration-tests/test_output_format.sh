@@ -5,7 +5,7 @@ BASEDIR=$(dirname "$0")/..
 cd $BASEDIR
 
 echo "Testing json output format."
-python3.6 -m prodmodel build integration-tests/example:csv_data_to_json --output_format='none'
+python3.5 -m prodmodel build integration-tests/example:csv_data_to_json --output_format='none'
 CACHE_FILES=$(ls integration-tests/example/.target/output/csv_data_to_json/*/output_1.json | wc -l)
 if [ "$CACHE_FILES" -eq 0 ]
   then
@@ -13,7 +13,7 @@ if [ "$CACHE_FILES" -eq 0 ]
     exit 1
 fi
 
-OUTPUT=$(python3.6 -m prodmodel build integration-tests/example:average_age --output_format='str')
+OUTPUT=$(python3.5 -m prodmodel build integration-tests/example:average_age --output_format='str')
 if [ "$OUTPUT" != "4.567573545675735" ]
   then
     echo "Output mismatch: $OUTPUT."
