@@ -3,7 +3,7 @@
 import re
 import sys
 from inspect import Signature, getmembers, isfunction, signature
-from typing import GenericMeta
+from typing import GenericMeta, Tuple
 
 from prodmodel.rules.rules import EXTRA_DOC_PARAMS
 
@@ -15,6 +15,9 @@ def _annotation_str(a):
     return '{t}[{a}]'.format(t=a.__name__, a=a.__args__[0].__name__)
   elif isinstance(a, GenericMeta) and a.__extra__ == tuple and a.__args__:
     args_str = ', '.join([arg.__name__ for arg in a.__args__])
+    return '{t}[{args_str}]'.format(t=a.__name__, args_str=args_str)
+  elif a.__name__ == 'Tuple':
+    args_str = ', '.join([arg.__name__ for arg in a.__tuple_params__])
     return '{t}[{args_str}]'.format(t=a.__name__, args_str=args_str)
   else:
     return '{t}'.format(t=a.__name__)

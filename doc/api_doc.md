@@ -61,7 +61,7 @@ List of Python `packages` used by the project.<br>
 
 ## split
 
-`split(data: IterableDataTarget, test_ratio: float, target_column: str, seed: int, output_format: str) -> Tuple`<br/>
+`split(data: IterableDataTarget, test_ratio: float, target_column: str, seed: int, output_format: str) -> Tuple[IterableDataTarget, IterableDataTarget, IterableDataTarget, IterableDataTarget]`<br/>
 
 Splits the source `data` into train X, train y, test X and test y data, respectively. Params:<br>
  * `test_ratio`: [0, 1], the ratio of the test dataset (1 - test_ratio for the train dataset),<br>
