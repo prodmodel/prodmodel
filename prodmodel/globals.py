@@ -1,7 +1,6 @@
 import boto3
 import configparser
 import os
-from pathlib import Path
 
 
 __config = configparser.ConfigParser()
