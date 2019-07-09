@@ -20,7 +20,7 @@ pipeline {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
                     sh 'rm -rf .target'
-                    sh 'rm -rf prodmodel/.target'
+                    sh 'rm -rf integration-tests/example/.target'
                     sh 'python -m pytest tests'
                 }
             }
