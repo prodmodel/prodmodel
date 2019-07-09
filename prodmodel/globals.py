@@ -1,14 +1,13 @@
 import boto3
 import configparser
 import os
-from pathlib import Path
 
 
 __config = configparser.ConfigParser()
 
 
 def read_config(config_file):
-  __config.read(config_file)
+  __config.read(str(config_file))
 
 
 def default_config(name, default=None):
@@ -16,10 +15,10 @@ def default_config(name, default=None):
 
 
 class TargetConfig:
-  target_base_dir: Path
-  lib_dir: Path = None
-  target_base_dir_s3_bucket: str = None
-  target_base_dir_s3_key_prefix: str = None
+  target_base_dir = None
+  lib_dir = None
+  target_base_dir_s3_bucket = None
+  target_base_dir_s3_key_prefix = None
   s3 = None
 
   @staticmethod

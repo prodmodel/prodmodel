@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'python:3.6'
+            image 'python:3.5'
         }
     }
     environment {
@@ -19,6 +19,7 @@ pipeline {
         stage('Python unit tests') {
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]) {
+                    sh 'rm -rf .target'
                     sh 'python -m pytest tests'
                 }
             }

@@ -114,7 +114,7 @@ class Target:
     targets = {}
     self._get_metadata_from_dep(self, files, targets)
 
-    with open(self._output_dir(hash_id) / 'metadata.json', 'w') as f:
+    with open(str(self._output_dir(hash_id) / 'metadata.json'), 'w') as f:
       json.dump({'files': files, 'targets': targets}, f)
 
 
@@ -126,7 +126,7 @@ class Target:
 
 
   def _create_output(self, file_path, hash_id):
-    logging.debug(f'  Creating version {hash_id}.')
+    logging.debug('  Creating version {hash_id}.'.format(hash_id=hash_id))
     lib_dir, mod_names = self._setup_modules()
     with util.IsolatedSysPath(mod_names):
       sys.path.append(str(lib_dir))
@@ -135,7 +135,7 @@ class Target:
     target_serializer.save_output(file_path, output, self.output_format)
     if TargetConfig.target_base_dir_s3_bucket is not None:
       s3_bucket, s3_key = self._s3_path(file_path)
-      logging.debug(f'  Uploading output to s3://{s3_bucket}/{s3_key}.')
+      logging.debug('  Uploading output to s3://{s3_bucket}/{s3_key}.'.format(s3_bucket=s3_bucket, s3_key=s3_key))
       TargetConfig._s3().upload_file(str(file_path), s3_bucket, s3_key)
     return output
 
@@ -143,27 +143,27 @@ class Target:
   def _download_output_from_s3(self, file_path):
     s3_bucket, s3_key = self._s3_path(file_path)
     response = TargetConfig._s3().get_object(Bucket=s3_bucket, Key=s3_key)
-    logging.debug(f'  Downloading cached version from s3://{s3_bucket}/{s3_key}.')
-    with open(file_path, 'wb') as f:
+    logging.debug('  Downloading cached version from s3://{s3_bucket}/{s3_key}.'.format(s3_bucket=s3_bucket, s3_key=s3_key))
+    with open(str(file_path), 'wb') as f:
       f.write(response['Body'].read())
 
 
   def output(self, force=False):
     target_name = self._name()
-    logging.debug(f'Executing {target_name} defined at build.py:{self.lineno}.')
+    logging.debug('Executing {target_name} defined at build.py:{lineno}.'.format(target_name=target_name, lineno=self.lineno))
     hash_id = self.hash_id()
     if hash_id == self.cached_hash_id and self.cached_output is not None:
-      logging.debug(f'  Re-using cached version {hash_id}.')
+      logging.debug('  Re-using cached version {hash_id}.'.format(hash_id=hash_id))
       return self.cached_output
     else:
       root_dir = self._output_dir(hash_id)
-      os.makedirs(root_dir, exist_ok=True)
+      os.makedirs(str(root_dir), exist_ok=True)
       file_path = root_dir / target_serializer.output_file_name(self.output_format)
       if force:
         output = self._create_output(file_path, hash_id)
       else:
         if file_path.is_file():
-          logging.debug(f'  Loading cached version {hash_id}.')
+          logging.debug('  Loading cached version {hash_id}.'.format(hash_id=hash_id))
           output = target_serializer.load_output(file_path, self.output_format)
         elif TargetConfig.target_base_dir_s3_bucket is not None:
           try:
@@ -180,10 +180,10 @@ class Target:
 
   def _setup_modules(self):
     lib_dir = self.output_dir() / 'lib'
-    shutil.rmtree(lib_dir, ignore_errors=True)
+    shutil.rmtree(str(lib_dir), ignore_errors=True)
     lib_dir.mkdir(parents=True, exist_ok=True)
     mod_names = []
     for f in self.transitive_file_deps:
-      os.symlink(f.file_name, lib_dir / f.file_name.name)
+      os.symlink(str(f.file_name), str(lib_dir / f.file_name.name))
       mod_names.append(f.mod_name())
     return lib_dir, mod_names

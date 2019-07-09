@@ -18,10 +18,12 @@ setuptools.setup(
   url='https://github.com/prodmodel/prodmodel',
   packages=setuptools.find_packages(),
   classifiers=[
+    'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
     'License :: OSI Approved :: Apache Software License',
     'Operating System :: OS Independent',
-    'Development Status :: 3 - Alpha'
+    'Development Status :: 4 - Beta'
   ],
   entry_points={'console_scripts': ['prodmodel = prodmodel.__main__:main']}
 )

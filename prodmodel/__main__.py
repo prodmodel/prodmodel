@@ -19,7 +19,7 @@ def main():
 
     # pylint: disable=E1101
     if hasattr(prodmodel, '__version__'):
-      logging.debug(f'Running Prodmodel version {prodmodel.__version__}.')
+      logging.debug('Running Prodmodel version {version}.'.format(version=prodmodel.__version__))
 
     if command is None or command == executor.BUILD:
       executor.process_target(args, executor.build_target, 'Build')
@@ -30,7 +30,7 @@ def main():
     elif command == executor.HELP:
       executor.list_commands()
     else:
-      logging.error(red_color(f'Unknown command {command}.'))
+      logging.error(red_color('Unknown command {command}.'.format(command=command)))
       return 1
 
     success = True
@@ -42,10 +42,10 @@ def main():
   duration = round(end_time - start_time, 3)
 
   if success:
-    logging.info(green_color(f'Build successfully finished in {duration} secs.'))
+    logging.info(green_color('Build successfully finished in {duration} secs.'.format(duration=duration)))
     return 0
   else:
-    logging.error(red_color(f'Build failed in {duration} secs.'))
+    logging.error(red_color('Build failed in {duration} secs.'.format(duration=duration)))
     return 1
 
 

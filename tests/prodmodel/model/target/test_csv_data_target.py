@@ -18,7 +18,7 @@ class TestCSVDataTarget(TargetTestUtil):
     output = target.output()
     self.assertEqual(2, len(output))
     expected = np.stack([np.array(['1', 'x']), np.array(['2', 'y'])])
-    self.assertTrue(np.array_equal(expected, output))
+    self.assertTrue(np.array_equal(expected, output), str(output))
 
 
   def test_csv_data_target__json_output_format(self):

@@ -47,7 +47,7 @@ def _parse_datetime(s: str):
   try:
     return datetime.strptime(s, __DATE_FORMAT)
   except Exception:
-    raise ExecutorException(f'Datetime {s} has to be in {__DATE_FORMAT} format.')
+    raise ExecutorException('Datetime {s} has to be in {format} format.'.format(s=s, format=__DATE_FORMAT))
 
 
 __OUTPUT_FORMATS = ['none', 'str', 'bytes', 'log']
@@ -55,7 +55,7 @@ __OUTPUT_FORMATS = ['none', 'str', 'bytes', 'log']
 def _parse_output_format(s: str):
   if s not in __OUTPUT_FORMATS:
     output_formats = ', '.join(__OUTPUT_FORMATS)
-    raise ExecutorException(f'Flag --output_type has to be one of {output_formats}.')
+    raise ExecutorException('Flag --output_type has to be one of {output_formats}.'.format(output_formats=output_formats))
   return s
 
 
@@ -83,7 +83,7 @@ def create_arg_parser(command):
       '--cutoff_date',
       type=_parse_datetime,
       default=datetime.now(),
-      help=f'Clean up files modified before this datetime ({__DATE_FORMAT}), default now.')
+      help='Clean up files modified before this datetime ({format}), default now.'.format(format=__DATE_FORMAT))
   elif command == LS:
     parser.add_argument('build_file', type=str, help='The build file or the directory of the build file to list.')
     _create_target_args(parser, with_command=False)
@@ -91,7 +91,7 @@ def create_arg_parser(command):
   elif command == HELP:
     pass
   else:
-    raise ExecutorException(f'Unknown command {command}.')
+    raise ExecutorException('Unknown command {command}.'.format(command=command))
   return parser
 
 
@@ -113,7 +113,7 @@ def _parse_target(target_arg):
 
 
 def _load_build_mod(build_file):
-  spec = importlib.util.spec_from_file_location('build', build_file)
+  spec = importlib.util.spec_from_file_location('build', str(build_file))
   build_mod = importlib.util.module_from_spec(spec)
   spec.loader.exec_module(build_mod)
 
@@ -135,16 +135,16 @@ def _target_dir(args_target_dir, build_file) -> Path:
 
 def setup():
   home_path = Path(os.path.expanduser('~')) / '.prodmodel'
-  os.makedirs(home_path, exist_ok=True)
+  os.makedirs(str(home_path), exist_ok=True)
 
   config_file = home_path / 'config'
-  if os.path.isfile(config_file):
+  if os.path.isfile(str(config_file)):
     read_config(config_file)
 
   rootLogger = logging.getLogger()
   rootLogger.setLevel(logging.DEBUG)
 
-  fileHandler = logging.FileHandler(home_path / 'app.log')
+  fileHandler = logging.FileHandler(str(home_path / 'app.log'))
   fileHandler.setLevel(default_config('FILE_LOG_LEVEL', logging.DEBUG))
   fileHandler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
   rootLogger.addHandler(fileHandler)
@@ -170,7 +170,8 @@ def process_target(args, fn, command_name):
   build_file, target_name = _parse_target(args.target)
   _setup_target_dirs(build_file, args.target_dir)
 
-  logging.info(f'{command_name} target {target_name} in {build_file}.')
+  logging.info('{command_name} target {target_name} in {build_file}.'.format(
+    command_name=command_name, target_name=target_name, build_file=build_file))
   build_mod = _load_build_mod(build_file)
 
   if target_name == '*':
@@ -185,9 +186,11 @@ def process_target(args, fn, command_name):
       if isinstance(target, Target):
         targets = [(target_name, target)]
       else:
-        raise ExecutorException(f'Variable "{target_name}" is not a target but a "{type(target).__name__}".')
+        raise ExecutorException('Variable "{target_name}" is not a target but a "{type_name}".'.format(
+          target_name=target_name, type_name=type(target).__name__))
     else:
-      raise ExecutorException(f'Target "{target_name}" not found in {build_mod.__file__}.')
+      raise ExecutorException('Target "{target_name}" not found in {build_file}.'.format(
+        target_name=target_name, build_file=build_mod.__file__))
   for target_name, target in targets:
     fn(target=target, target_name=target_name, args=args)
 
@@ -200,18 +203,19 @@ def _output(args, result):
     os.write(1, pickle.dumps(result))
     logging.info('')
   elif args.output_format == 'log':
-    logging.info(f'Created {result}.')
+    logging.info('Created {result}.'.format(result=result))
 
 
 def list_commands():
   commands = ', '.join([command.lower() for command in __COMMANDS])
-  logging.info(f'Supported commands: {commands}.')
+  logging.info('Supported commands: {commands}.'.format(commands=commands))
 
 
 def _setup_target_dirs(build_file, target_dir):
   if not build_file.is_file():
-    raise ExecutorException(f'Build file {build_file} does not exist or not a file.')
+    raise ExecutorException('Build file {build_file} does not exist or not a file.'.format(build_file=build_file))
   TargetConfig.target_base_dir = _target_dir(target_dir, build_file)
+  os.makedirs(str(TargetConfig.target_base_dir), exist_ok=True)
   _set_s3_target_dir(build_file)
 
 
@@ -233,8 +237,8 @@ def clean_target(target, args, **kwargs):
 
 
 def build_target(target, args, target_name, **kwargs):
-  logging.info(f'Initializing target {target_name}.')
+  logging.info('Initializing target {target_name}.'.format(target_name=target_name))
   target.init_with_deps(args)
-  logging.info(f'Target {target_name} initialized.')
+  logging.info('Target {target_name} initialized.'.format(target_name=target_name))
   result = target.output()
   _output(args, result)
