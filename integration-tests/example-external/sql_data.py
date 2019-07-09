@@ -1,5 +1,6 @@
 import os
 import sqlite3
+from collections import OrderedDict
 from pathlib import Path
 
 
@@ -17,9 +18,9 @@ def load_table(table):
   try:
     conn.row_factory = dict_factory
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM {table}'.format(table=table))
+    cursor.execute('SELECT score FROM {table}'.format(table=table))
     for row in cursor.fetchall():
-      result.append(row)
+      result.append(row['score'])
   finally:
     conn.close()
   return result

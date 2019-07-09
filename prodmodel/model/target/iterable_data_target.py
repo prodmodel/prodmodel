@@ -24,6 +24,6 @@ class IterableDataTarget(DataTarget):
 
   def execute(self):
     if self.output_format == 'pickle':
-      return np.stack([np.array(list(record.values())) for record in self])
+      return np.stack([np.array([t[1] for t in sorted(record)]) for record in self])
     else:
       return [record for record in self]

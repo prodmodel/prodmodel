@@ -9,3 +9,5 @@ cursor = conn.cursor()
 cursor.execute('update education_lookup set score=300 where education="secondary"')
 conn.commit()
 conn.close()
+
+print('DB updated.')
