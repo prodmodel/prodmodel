@@ -3,7 +3,7 @@
 import re
 import sys
 from inspect import Signature, getmembers, isfunction, signature
-from typing import GenericMeta, Tuple
+from typing import GenericMeta
 
 from prodmodel.rules.rules import EXTRA_DOC_PARAMS
 
