@@ -7,7 +7,7 @@ Users, testers, contributors are welcome!
   <a href="https://pypi.org/project/prodmodel">
     <img src="https://img.shields.io/pypi/v/prodmodel.svg"></img></a>
   <a href="https://pypi.org/project/prodmodel" alt="Downloads">
-    <img src="https://img.shields.io/pypi/dd/prodmodel.svg" /></a>
+    <img src="https://img.shields.io/pypi/dw/prodmodel.svg" /></a>
   <a href="https://github.com/prodmodel/prodmodel/graphs/contributors" alt="Contributors">
     <img src="https://img.shields.io/github/contributors/prodmodel/prodmodel.svg" /></a>
   <a href="https://github.com/prodmodel/prodmodel/pulse" alt="Activity">
