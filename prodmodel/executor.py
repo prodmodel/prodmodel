@@ -195,7 +195,7 @@ def process_target(args, fn, command_name):
     fn(target=target, target_name=target_name, args=args)
 
 
-def _output(args, result):
+def _output(args, result, log_prefix):
   if args.output_format == 'str':
     os.write(1, str(result).encode('utf-8'))
     logging.info('')
@@ -203,7 +203,7 @@ def _output(args, result):
     os.write(1, pickle.dumps(result))
     logging.info('')
   elif args.output_format == 'log':
-    logging.info('Created {result}.'.format(result=result))
+    logging.info('{log_prefix} {result}.'.format(log_prefix=log_prefix, result=result))
 
 
 def list_commands():
@@ -229,7 +229,7 @@ def list_targets(args):
     target = getattr(build_mod, target_name)
     if isinstance(target, Target):
       targets.append(target_name)
-  _output(args, targets)
+  _output(args, targets, log_prefix='Targets:')
 
 
 def clean_target(target, args, **kwargs):
@@ -241,4 +241,4 @@ def build_target(target, args, target_name, **kwargs):
   target.init_with_deps(args)
   logging.info('Target {target_name} initialized.'.format(target_name=target_name))
   result = target.output()
-  _output(args, result)
+  _output(args, result, log_prefix='Created')
