@@ -42,10 +42,10 @@ def main():
   duration = round(end_time - start_time, 3)
 
   if success:
-    logging.info(green_color('Build successfully finished in {duration} secs.'.format(duration=duration)))
+    logging.info(green_color('Command successfully finished in {duration} secs.'.format(duration=duration)))
     return 0
   else:
-    logging.error(red_color('Build failed in {duration} secs.'.format(duration=duration)))
+    logging.error(red_color('Command failed in {duration} secs.'.format(duration=duration)))
     return 1
 
 
