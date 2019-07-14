@@ -9,9 +9,13 @@ Creates a label encoder from the input `data` stream for the specified `columns`
 
 ## data_file
 
-`data_file(file: str) -> DataTarget`<br/>
+`data_file(file: str, data_type: str, dtypes: dict) -> DataTarget`<br/>
 
-Local binary data source `file`.<br>
+Local binary data source `file`, `data_type` is the format of the input file, `dtypes` is a type specification for the columns in the file. Allowed `data_type`s are:<br>
+ * bytes (default): reads a binary file into Python bytes,<br>
+ * str: reads a text file into a Python str,<br>
+ * csv: reads a CSV file into a list of dicts - `dtypes` must be specified together with it,<br>
+ * json: reads a JSON file into a list of dicts.<br>
 
 
 ## data_stream
