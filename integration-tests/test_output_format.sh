@@ -4,7 +4,16 @@ set -e
 BASEDIR=$(dirname "$0")/..
 cd $BASEDIR
 
-echo "Testing json output format."
+echo "Testing json output format of data_file."
+python3.5 -m prodmodel build integration-tests/example:csv_data_file --output_format='none'
+CACHE_FILES=$(ls integration-tests/example/.target/output/csv_data_file/*/output_1.json | wc -l)
+if [ "$CACHE_FILES" -eq 0 ]
+  then
+    echo "No json output files at integration-tests/example/.target/output/csv_data_file."
+    exit 1
+fi
+
+echo "Testing json output format of data_stream."
 python3.5 -m prodmodel build integration-tests/example:csv_data_to_json --output_format='none'
 CACHE_FILES=$(ls integration-tests/example/.target/output/csv_data_to_json/*/output_1.json | wc -l)
 if [ "$CACHE_FILES" -eq 0 ]

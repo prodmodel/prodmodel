@@ -24,6 +24,7 @@ from prodmodel.model.target.sample_data_target import SampleDataTarget
 from prodmodel.model.target.select_data_target import SelectDataTarget
 from prodmodel.model.target.target import Target
 from prodmodel.model.target.test_target import TestTarget
+from prodmodel.model.target.text_data_target import TextDataTarget
 from prodmodel.model.target.transform_data_target import TransformDataTarget
 from prodmodel.model.target.transform_stream_data_target import TransformStreamDataTarget
 from prodmodel.util import OUTPUT_FORMAT_TYPES, RuleException, checkargtypes
@@ -76,20 +77,39 @@ def data_stream(file: str, data_type: str, dtypes: dict=None, output_format: str
   __check_output_format(output_format)
   accepted_types = ('csv', 'json')
   if data_type not in accepted_types:
-    raise RuleException('Type must be one of {accepted_types}.'.format(accepted_types=accepted_types))
+    raise RuleException('Data type must be one of {accepted_types}.'.format(accepted_types=accepted_types))
   if dtypes is not None and data_type != 'csv':
-    raise RuleException('Dtypes should only be defined if type is csv.')
+    raise RuleException('Dtypes should only be defined if data_type is csv.')
 
   if data_type == 'csv':
     return CSVDataTarget(_decode_data_file(file), dtypes, output_format)
-  else: # type == 'json':
+  else: # data_type == 'json':
     return JSONDataTarget(_decode_data_file(file), output_format)
 
 
 @checkargtypes
-def data_file(file: str) -> DataTarget:
-  '''Local binary data source `file`.'''
-  return BinaryDataTarget(_decode_data_file(file))
+def data_file(file: str, data_type: str='bytes', dtypes: dict=None) -> DataTarget:
+  '''Local binary data source `file`, `data_type` is the format of the input file,
+     `dtypes` is a type specification for the columns in the file. Allowed `data_type`s are:<br>
+ * bytes (default): reads a binary file into Python bytes,<br>
+ * str: reads a text file into a Python str,<br>
+ * csv: reads a CSV file into a list of dicts - `dtypes` must be specified together with it,<br>
+ * json: reads a JSON file into a list of dicts.'''
+
+  accepted_types = ('bytes', 'str', 'csv', 'json')
+  if data_type not in accepted_types:
+    raise RuleException('Data type must be one of {accepted_types}.'.format(accepted_types=accepted_types))
+  if dtypes is not None and data_type != 'csv':
+    raise RuleException('Dtypes should only be defined if data_type is csv.')
+
+  if data_type == 'bytes':
+    return BinaryDataTarget(_decode_data_file(file))
+  elif data_type == 'str':
+    return TextDataTarget(_decode_data_file(file))
+  elif data_type == 'csv':
+    return CSVDataTarget(_decode_data_file(file), dtypes, output_format='json')
+  else: # data_type == 'json':
+    return JSONDataTarget(_decode_data_file(file), output_format='json')
 
 
 @checkargtypes
