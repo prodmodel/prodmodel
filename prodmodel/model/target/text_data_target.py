@@ -9,5 +9,5 @@ class TextDataTarget(DataTarget):
 
 
   def execute(self):
-    with open(str(self.source.dest_file_path), 'r') as f:
+    with open(str(self.source.dest_file_path), mode='r') as f:
       return f.read()
