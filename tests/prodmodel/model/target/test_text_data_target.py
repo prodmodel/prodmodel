@@ -1,5 +1,3 @@
-import numpy as np
-
 from prodmodel.model.target import text_data_target as undertest
 from tests.prodmodel.model.target_test_util import TargetTestUtil
 
