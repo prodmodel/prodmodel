@@ -96,7 +96,7 @@ def data_file(file: str, data_type: str='bytes', dtypes: dict=None) -> DataTarge
  * bytes (default): reads a binary file into Python bytes,<br>
  * str: reads a text file into a Python str,<br>
  * csv: reads a CSV file into a list of dicts - `dtypes` must be specified together with it,<br>
- * json: reads a JSON file into a list of dicts,
+ * json: reads a JSON file into a list of dicts,<br>
  * shp: reads a Shapefile with PyShp into a list of ShapeRecords.'''
 
   accepted_types = ('bytes', 'str', 'csv', 'json', 'shp')

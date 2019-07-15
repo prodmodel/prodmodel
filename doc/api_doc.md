@@ -15,7 +15,8 @@ Local binary data source `file`, `data_type` is the format of the input file, `d
  * bytes (default): reads a binary file into Python bytes,<br>
  * str: reads a text file into a Python str,<br>
  * csv: reads a CSV file into a list of dicts - `dtypes` must be specified together with it,<br>
- * json: reads a JSON file into a list of dicts, * shp: reads a Shapefile with PyShp into a list of ShapeRecords.<br>
+ * json: reads a JSON file into a list of dicts,<br>
+ * shp: reads a Shapefile with PyShp into a list of ShapeRecords.<br>
 
 
 ## data_stream
