@@ -6,6 +6,7 @@ from typing import Dict, List, Tuple
 import pip._internal
 
 from prodmodel.globals import TargetConfig
+from prodmodel.model.files.shape_file_util import enumerate_shape_files
 from prodmodel.model.file_cache import PyFileCache
 from prodmodel.model.files.data_file import DataFile
 from prodmodel.model.files.external_data_file import ExternalDataFile
@@ -22,6 +23,7 @@ from prodmodel.model.target.label_encoder_target import LabelEncoderTarget
 from prodmodel.model.target.pickle_data_target import PickleDataTarget
 from prodmodel.model.target.sample_data_target import SampleDataTarget
 from prodmodel.model.target.select_data_target import SelectDataTarget
+from prodmodel.model.target.shape_file_data_target import ShapeFileDataTarget
 from prodmodel.model.target.target import Target
 from prodmodel.model.target.test_target import TestTarget
 from prodmodel.model.target.text_data_target import TextDataTarget
@@ -94,9 +96,10 @@ def data_file(file: str, data_type: str='bytes', dtypes: dict=None) -> DataTarge
  * bytes (default): reads a binary file into Python bytes,<br>
  * str: reads a text file into a Python str,<br>
  * csv: reads a CSV file into a list of dicts - `dtypes` must be specified together with it,<br>
- * json: reads a JSON file into a list of dicts.'''
+ * json: reads a JSON file into a list of dicts,
+ * shp: reads a Shapefile with PyShp.'''
 
-  accepted_types = ('bytes', 'str', 'csv', 'json')
+  accepted_types = ('bytes', 'str', 'csv', 'json', 'shp')
   if data_type not in accepted_types:
     raise RuleException('Data type must be one of {accepted_types}.'.format(accepted_types=accepted_types))
   if dtypes is not None and data_type != 'csv':
@@ -108,8 +111,11 @@ def data_file(file: str, data_type: str='bytes', dtypes: dict=None) -> DataTarge
     return TextDataTarget(_decode_data_file(file))
   elif data_type == 'csv':
     return CSVDataTarget(_decode_data_file(file), dtypes, output_format='json')
-  else: # data_type == 'json':
+  elif data_type == 'json':
     return JSONDataTarget(_decode_data_file(file), output_format='json')
+  else: # data_type == 'shp'
+    candidates = [DataFile(f) for f in enumerate_shape_files(file)]
+    return ShapeFileDataTarget([f for f in candidates if f.file_name.is_file()])
 
 
 @checkargtypes

@@ -76,6 +76,11 @@ csv_data_file = rules.data_file(
   }
 )
 
+shape_file = rules.data_file(
+  file='countries/ne_50m_admin_0_countries',
+  data_type='shp'
+)
+
 average_age = rules.transform(
   file='util_functions.py',
   fn='average_age',
