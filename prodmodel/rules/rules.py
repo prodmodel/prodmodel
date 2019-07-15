@@ -97,7 +97,7 @@ def data_file(file: str, data_type: str='bytes', dtypes: dict=None) -> DataTarge
  * str: reads a text file into a Python str,<br>
  * csv: reads a CSV file into a list of dicts - `dtypes` must be specified together with it,<br>
  * json: reads a JSON file into a list of dicts,
- * shp: reads a Shapefile with PyShp.'''
+ * shp: reads a Shapefile with PyShp into a list of ShapeRecords.'''
 
   accepted_types = ('bytes', 'str', 'csv', 'json', 'shp')
   if data_type not in accepted_types:
@@ -114,8 +114,8 @@ def data_file(file: str, data_type: str='bytes', dtypes: dict=None) -> DataTarge
   elif data_type == 'json':
     return JSONDataTarget(_decode_data_file(file), output_format='json')
   else: # data_type == 'shp'
-    candidates = [DataFile(f) for f in enumerate_shape_files(file)]
-    return ShapeFileDataTarget([f for f in candidates if f.file_name.is_file()])
+    candidates = {k: DataFile(v) for k, v in enumerate_shape_files(file).items()}
+    return ShapeFileDataTarget({k: v for k, v in candidates.items() if v.file_name.is_file()})
 
 
 @checkargtypes
