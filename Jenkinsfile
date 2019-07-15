@@ -3,6 +3,9 @@ pipeline {
         docker {
             image 'python:3.5'
         }
+        docker {
+            image 'python:3.6'
+        }
     }
     environment {
         AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
